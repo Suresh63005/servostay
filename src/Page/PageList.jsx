@@ -8,6 +8,7 @@ import axios from 'axios';
 import PageHeader from './PageHeader';
 import { useNavigate } from 'react-router-dom';
 import { DeleteEntity } from '../utils/Delete';
+import api from '../utils/api';
 
 const PageList = () => {
     const navigate=useNavigate()
@@ -21,7 +22,7 @@ const PageList = () => {
     useEffect(() => {
         const fetchpage = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/pages/all");
+                const response = await api.get("pages/all");
                 console.log(response)
                 setpage(response.data);
                 setFilteredpage(response.data); 

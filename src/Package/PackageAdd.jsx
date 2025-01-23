@@ -8,6 +8,7 @@ import ImageUploader from '../common/ImageUploader';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
+import api from '../utils/api';
 
 const PackageAdd = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const PackageAdd = () => {
 
   const getPackage = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/packages/${id}`, {
+      const response = await api.get(`packages/${id}`, {
         withCredentials: true,
       });
       const packages = response.data;
@@ -85,9 +86,9 @@ const PackageAdd = () => {
     console.log("Data to be sent to the server:", dataToSend);
 
     try {
-      const url = id ? `http://localhost:5000/packages/upsert` : `http://localhost:5000/packages/upsert`;
+      const url =`packages/upsert`;
       const successMessage = id ? "Package updated successfully!" : "Package added successfully!";
-      const response = await axios.post(url, dataToSend, { withCredentials: true });
+      const response = await api.post(url, dataToSend, { withCredentials: true });
 
       if (response.status === 200 || response.status === 201) {
         NotificationManager.removeAll();

@@ -9,6 +9,7 @@ import Loader from '../common/Loader';
 import axios from 'axios';
 import { DeleteEntity } from '../utils/Delete';
 import { handleSort } from '../utils/sorting';
+import api from '../utils/api';
 
 const GalleryCategoryList = () => {
     const navigate=useNavigate();
@@ -29,7 +30,7 @@ const GalleryCategoryList = () => {
     useEffect(() => {
         const fetchProperties = async () => {
           try {
-            const response = await axios.get('http://localhost:5000/properties', {
+            const response = await api.get('properties', {
               withCredentials: true,
           });
             setProperties(response.data);
@@ -42,7 +43,7 @@ const GalleryCategoryList = () => {
 
     const fetchGalleryCategory=async()=>{
         try {
-            const response=await axios.get(`http://localhost:5000/galleryCategories/all`)
+            const response=await api.get(`galleryCategories/all`)
             // console.log(response.data)
             setGalleryCategory(response.data)
             setFilteredgalleryCat(response.data)

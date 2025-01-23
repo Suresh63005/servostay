@@ -64,7 +64,7 @@ const PropertiesAdd = () => {
 
   const getProperty = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/properties/${id}`)
+      const response = await api.get(`properties/${id}`)
       const Property = response.data;
       // console.log("Property Data: ", Property);
       const rate = Math.min(Math.max(Property.rate, 0), 5);

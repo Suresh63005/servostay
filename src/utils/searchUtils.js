@@ -1,7 +1,8 @@
-import axios from "axios";
-import { NotificationManager } from "react-notifications";
 
-const BASE_URL = "http://localhost:5000";
+import { NotificationManager } from "react-notifications";
+import api from "./api";
+
+const BASE_URL = api
 
 export const searchEntity = async (entity, query, setResults) => {
   try {
@@ -9,17 +10,17 @@ export const searchEntity = async (entity, query, setResults) => {
     let url = '';
     switch (entity) {
       case "Country":
-        url = `${BASE_URL}/countries/search?query=${query}`;
+        url = `${BASE_URL}countries/search?query=${query}`;
         break;
       case "Category":
-        url = `${BASE_URL}/categories/search?query=${query}`;
+        url = `${BASE_URL}categories/search?query=${query}`;
         break;
       case "Coupon":
-        url = `${BASE_URL}/coupons/search?query=${query}`;
+        url = `${BASE_URL}coupons/search?query=${query}`;
         break;
 
         case "Facility":
-          url = `${BASE_URL}/facilities/all?search=${query}`;
+          url = `${BASE_URL}facilities/all?search=${query}`;
           break;
       
       // Add more cases for other entities

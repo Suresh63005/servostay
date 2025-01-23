@@ -57,9 +57,9 @@ const handleSubmit = async (e) => {
   console.log("Form submitted:", formData);
 
   try {
-      const url = id  ? `http://localhost:5000/faqs/upsert` : `http://localhost:5000/faqs/upsert`;      
+      const url =`faqs/upsert`;      
       const successMessage = id  ? "FAQ updated successfully!" : "FAQ added successfully!";
-      const response = await axios.post(url, formData, { withCredentials: true });
+      const response = await api.post(url, formData, { withCredentials: true });
 
       if (response.status === 200 || response.status === 201) {
         NotificationManager.removeAll();

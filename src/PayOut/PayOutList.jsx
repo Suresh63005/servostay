@@ -5,6 +5,7 @@ import { FaPen,FaTrash } from "react-icons/fa";
 import PayOutHeader from './PayOutHeader';
 import axios from 'axios';
 import { handleSort } from '../utils/sorting';
+import api from '../utils/api';
 
 const PayOutList = () => {
     const [payOut,setPayOut]=useState([]);
@@ -20,7 +21,7 @@ const PayOutList = () => {
 
     const getPayOutList=async()=>{
         try {
-            const response=await axios.get(`http://localhost:5000/payout-settings/all`,{withCredentials:true})
+            const response=await api.get(`payout-settings/all`,{withCredentials:true})
             setPayOut(response.data);
             setFilteredpayOut(response.data)
         } catch (error) {
