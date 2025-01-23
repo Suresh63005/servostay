@@ -1,0 +1,47 @@
+/* White background and center content */
+.error-background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #ffffff; /* White background */
+    margin: 0;
+    padding: 0;
+}
+  
+/* Error card container */
+.error-container {
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    background: #f8d7da; /* Light grey card background */
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for card effect */
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Error icon */
+.error-icon {
+    width: 80px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block; /* Ensures it is treated as a block element */
+}
+  
+/* Error title */
+.error-title {
+    color: #dc3545; /* Bootstrap danger red */
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+  
+/* Error message */
+.error-message {
+    color: #6c757d; /* Neutral grey */
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
