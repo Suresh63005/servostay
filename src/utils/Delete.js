@@ -1,11 +1,10 @@
-
 import { NotificationManager } from "react-notifications";
 import Swal from "sweetalert2";
 import api from "./api";
 
 export const DeleteEntity = async (entity, id) => {
   // alert(entity)
-  const BASE_URL = api
+  const BASE_URL = api;
   try {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -20,120 +19,76 @@ export const DeleteEntity = async (entity, id) => {
     if (result.isConfirmed) {
       switch (entity) {
         case "Country":
-          await api.delete(`${BASE_URL}countries/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`countries/delete/${id}`);
           break;
 
         case "Category":
-          await api.delete(`${BASE_URL}categories/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`categories/delete/${id}`);
           break;
 
         case "Coupon":
-          await api.delete(`${BASE_URL}coupons/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`coupons/delete/${id}`);
           break;
 
         case "PaymentGateWay":
-          await api.delete(`${BASE_URL}payment-methods/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`payment-methods/delete/${id}`);
           break;
 
         case "Enquiry":
-          await api.delete(`${BASE_URL}enquiries/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`enquiries/delete/${id}`);
           break;
 
         case "PayOutList":
-          await api.delete(`${BASE_URL}payout-settings/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`payout-settings/delete/${id}`);
           break;
 
         case "Property":
-          await api.delete(`${BASE_URL}properties/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`properties/delete/${id}`);
           break;
 
         case "ExtraImages":
-          await api.delete(`${BASE_URL}extra/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`extra/delete/${id}`);
           break;
 
         case "Facility":
-          await api.delete(`${BASE_URL}facilities/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`facilities/delete/${id}`);
           break;
 
         case "Gallery":
-          await api.delete(`${BASE_URL}galleries/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`galleries/delete/${id}`);
           break;
 
         case "GalleryCategory":
-          await api.delete(`${BASE_URL}galleryCategories/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`galleryCategories/delete/${id}`);
           break;
 
         case "Package":
-          await api.delete(`${BASE_URL}packages/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`packages/delete/${id}`);
           break;
 
         case "Page":
-          await api.delete(`${BASE_URL}pages/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`pages/delete/${id}`);
           break;
 
         case "FAQ":
-          await api.delete(`${BASE_URL}faqs/delete/${id}`, {
-            withCredentials: true,
-          });
+          await api.delete(`faqs/delete/${id}`);
           break;
 
         case "UserList":
-          await api.delete(
-            `${BASE_URL}users/user/delete/${id}?forceDelete=true`,
-            {
-              withCredentials: true,
-            }
-          );
+          await api.delete(`users/user/delete/${id}?forceDelete=true`);
           break;
 
         case "Admin":
-          await api.delete(
-            `${BASE_URL}admin/delete/${id}?forceDelete=true`,
-            { withCredentials: true }
-          );
+          await api.delete(`admin/delete/${id}?forceDelete=true`);
           break;
 
         case "Role":
           // alert(id)
-          await api.delete(
-            `${BASE_URL}rollrequest/delete/${id}?forceDelete=true`,
-            { withCredentials: true }
-          );
+          await api.delete(`rollrequest/delete/${id}?forceDelete=true`);
           break;
 
         case "Property":
-          await api.delete(
-            `${BASE_URL}properties/delete/${id}?forceDelete=true`,
-            {
-              withCredentials: true,
-            }
-          );
+          await api.delete(`properties/delete/${id}?forceDelete=true`);
           break;
 
         default:
@@ -151,6 +106,6 @@ export const DeleteEntity = async (entity, id) => {
     NotificationManager.removeAll();
     console.error(error);
     NotificationManager.error(`Failed to delete ${entity}.`);
-    throw error;
+    throw error;  
   }
 };
