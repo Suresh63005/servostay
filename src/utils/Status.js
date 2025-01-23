@@ -1,7 +1,7 @@
 import { NotificationManager } from "react-notifications";
 import api from "./api";
 
-const BASE_URL = api
+const BASE_URL = api;
 
 export const StatusEntity = async (
   entityType,
@@ -17,37 +17,37 @@ export const StatusEntity = async (
 
     switch (entityType) {
       case "Category":
-        url = `${BASE_URL}categories/toggle-status`;
+        url = "categories/toggle-status";
         break;
       case "Property":
-        url = `${BASE_URL}properties/toggle-status`;
+        url = `properties/toggle-status`;
         break;
       case "Panorama":
-        url = `${BASE_URL}properties/toggle-panorama`;
+        url = `properties/toggle-panorama`;
         break;
       case "ExtraImage":
-        url = `${BASE_URL}extra/toggle-status`;
+        url = `extra/toggle-status`;
         break;
       case "Facility":
-        url = `${BASE_URL}facilities/toggle-status`;
+        url = `facilities/toggle-status`;
         break;
       case "Package":
-        url = `${BASE_URL}packages/toggle-status`;
+        url = `packages/toggle-status`;
         break;
       case "Coupon":
-        url = `${BASE_URL}coupons/toggle-status`;
+        url = `coupons/toggle-status`;
         break;
       case "UserList":
-        url = `${BASE_URL}users/user/toggle-update`;
+        url = `users/user/toggle-update`;
         break;
       case "Payment":
-        url = `${BASE_URL}payment-methods/toggle-status`;
+        url = `payment-methods/toggle-status`;
         break;
       case "FAQ'S":
-        url = `${BASE_URL}faqs/toggle-status`;
+        url = `faqs/toggle-status`;
         break;
       case "Country":
-        url = `${BASE_URL}countries/toggle-status`;
+        url = `countries/toggle-status`;
         break;
       default:
         throw new Error(`Invalid entity type: ${entityType}`);
