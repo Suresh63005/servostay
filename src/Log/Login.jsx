@@ -6,6 +6,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import api from '../utils/api';
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -40,12 +41,11 @@ const Login = () => {
 
       setTimeout(() => {
         if (res.data.token != undefined) {
-          //current date
-          let date = new Date();
-          date.setMinutes(date.getMinutes() + 1);
-          document.cookie = `user=${JSON.stringify(
-            res.data.token
-          )}; expires=${date.toUTCString()};path='/'`;
+          
+          Cookies.set("user", res.data.token, {
+            expires: 1, 
+            secure: true,  
+          });
 
           navigate("/dashboard");
         }         

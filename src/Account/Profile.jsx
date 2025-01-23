@@ -10,6 +10,8 @@ import Loader from '../common/Loader'
 import { NotificationManager,NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
+import api from '../utils/api';
+import Cookies from 'js-cookie';
 
 const Profile = () => {
   const navigate = useNavigate()
@@ -23,6 +25,16 @@ const Profile = () => {
     email: '',
     password: '',
   });
+
+  const getToken = () => {
+    const token = Cookies.get("user"); 
+    console.log("Retrieved token:", token);
+    return token;
+  };
+
+  useEffect(()=>{
+    const token = getToken();
+  })
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,7 +63,7 @@ const Profile = () => {
     useEffect(()=>{
       async function fetchData(){
           try { 
-              const response = await axios.get("http://localhost:5000/admin/userbytoken", {
+              const response = await api.get("admin/userbytoken", {
                   withCredentials: true,  
                 });
               
@@ -73,8 +85,8 @@ const Profile = () => {
     e.preventDefault();
     // console.log('Form submitted:', formData);
     try {
-        const response = await axios.put(
-            `http://localhost:5000/admin/update/${formData.id}`,
+        const response = await api.put(
+            `admin/update/${formData.id}`,
             formData,
             {
               withCredentials: true, 
