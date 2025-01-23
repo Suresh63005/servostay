@@ -93,12 +93,12 @@ const CupponAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData, "from formdata");
-    const url = id ? `http://localhost:5000/coupons/upsert` : `http://localhost:5000/coupons/upsert`;
+    const url =`coupons/upsert`;
 
     const successMessage = id ? `Coupon Updated Successfully` : `Coupon Added Successfully!`;
 
     try {
-      const response = await axios.post(url, formData, { withCredentials: true });
+      const response = await api.post(url, formData, { withCredentials: true });
       if (response.status === 200 || response.status === 201) {
         NotificationManager.removeAll();
         NotificationManager.success(successMessage)

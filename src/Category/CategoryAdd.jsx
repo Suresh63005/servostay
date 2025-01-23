@@ -93,10 +93,10 @@ const CategoryAdd = () => {
     }
 
     // console.log("Form submitted:", formData);
-    const url = `http://localhost:5000/categories/upsert`;
+    const url = `categories/upsert`;
     const successMessage = id ? 'Category Updated Succesfully!' : 'Category Added Successfully!'
     try {
-      const response = await axios.post(url, formData, { withCredentials: true });
+      const response = await api.post(url, formData, { withCredentials: true });
       if (response.status === 200 || response.status === 201) {
         NotificationManager.removeAll();
         NotificationManager.success(successMessage)

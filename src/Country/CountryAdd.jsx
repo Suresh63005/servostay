@@ -93,11 +93,11 @@ const CountryAdd = () => {
     e.preventDefault();
 
     try {
-      const apiEndpoint = id ? `http://localhost:5000/countries/upsert` : `http://localhost:5000/countries/upsert`;
+      const apiEndpoint =`countries/upsert`;
 
-      const method = id ? "post" : "post";
+      const method ="post";
 
-      const response = await axios[method](apiEndpoint, formData, {
+      const response = await api[method](apiEndpoint, formData, {
         withCredentials: true,
       });
 

@@ -150,8 +150,7 @@ const Settings = () => {
     };
 
     try {
-      const response = await axios.put(
-        `http://localhost:5000/settings/update/${formData.id}`,
+      const response = await api.put(`settings/update/${formData.id}`,
         updatedData,
         {
           withCredentials: true,

@@ -58,7 +58,7 @@ const PendingBook = () => {
 
     const navigateApprove = async (id, newStatus) => {
         try {
-            const response = await axios.put(`http://localhost:5000/bookings/status/${id}`, { status: newStatus }, { withCredentials: true });
+            const response = await api.put(`bookings/status/${id}`, { status: newStatus }, { withCredentials: true });
             if (response.status === 200) {
                 NotificationManager.removeAll();
                 NotificationManager.success('Status updated successfully!');

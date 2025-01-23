@@ -67,7 +67,7 @@ const SidebarMenu = () => {
   const logout = async () => {
     setLoading(true);
     try {
-      await axios.post(`http://localhost:5000/admin/logout`, {}, { withCredentials: true });
+      await api.post(`admin/logout`, {}, { withCredentials: true });
       setTimeout(() => {
         setLoading(false);
         navigate("/");

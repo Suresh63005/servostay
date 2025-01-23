@@ -6,6 +6,7 @@ import EnquiryHeader from './EnquiryHeader';
 import axios from 'axios';
 import { DeleteEntity } from '../utils/Delete';
 import { handleSort } from '../utils/sorting';
+import api from '../utils/api';
 
 const EnquiryList = () => {
     const [enquiry,setenquiry]=useState([]);
@@ -20,7 +21,7 @@ const EnquiryList = () => {
     },[])
 
     // const getEnquiryList= async()=>{
-    //     const response=await axios.get(`http://localhost:5000/enquiries/retrieve`,{withCredentials:true})
+        // const response=await api.get(`enquiries/retrieve`,{withCredentials:true})
     //     console.log(response.data)
     // }
     // for searching

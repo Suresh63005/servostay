@@ -10,6 +10,7 @@ import 'react-quill/dist/quill.snow.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import api from '../utils/api'
 
 const PageAdd = () => {
   const location=useLocation();
@@ -31,7 +32,7 @@ const PageAdd = () => {
 
   const getPage = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:5000/pages/${id}`);
+        const response = await api.get(`pages/${id}`);
         console.log(response.data)
         const page = response.data;
         setFormData({
@@ -70,16 +71,14 @@ const PageAdd = () => {
     console.log("Data to be sent to the server:", dataToSend);
 
     try {
-        const url = id 
-            ? `http://localhost:5000/pages/upsert` 
-            : `http://localhost:5000/pages/upsert`;
+        const url = `pages/upsert`;
 
         const successMessage = id 
             ? "Page updated successfully!" 
             : "Page added successfully!";
 
         // Make API call
-        const response = await axios.post(url, dataToSend, { withCredentials: true });
+        const response = await api.post(url, dataToSend, { withCredentials: true });
 
         if (response.status === 200 || response.status === 201) {
           NotificationManager.removeAll()

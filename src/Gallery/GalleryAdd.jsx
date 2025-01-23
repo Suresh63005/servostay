@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import Loader from '../common/Loader';
 import axios from 'axios';
 import ImageUploader from '../common/ImageUploader';
+import api from '../utils/api';
 
 const GalleryAdd = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const GalleryAdd = () => {
     }
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/properties', {
+        const response = await api.get('properties', {
           withCredentials: true,
       });
         setProperties(response.data);
@@ -51,7 +52,7 @@ const GalleryAdd = () => {
 
     const fetchGalleryCategory=async()=>{
       try {
-          const response=await axios.get(`http://localhost:5000/galleryCategories/all`)
+          const response=await api.get(`galleryCategories/all`)
           setgalleryCategory(response.data)
       } catch (error) {
           console.error("Error fetching galleries:", error);
@@ -64,7 +65,7 @@ const GalleryAdd = () => {
 
   const fetchGallery=async(id)=>{
     try {
-      const response=await axios.get(`http://localhost:5000/galleries/${id}`)
+      const response=await api.get(`galleries/${id}`)
       const gallery=response.data;
       setFormData({
         id,
@@ -100,7 +101,7 @@ const GalleryAdd = () => {
     console.log("Form submitted:", formData);
 
     try {
-      const response = await axios.post("http://localhost:5000/galleries/upsert",
+      const response = await api.post("galleries/upsert",
          formData
          ,
          {

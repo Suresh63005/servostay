@@ -7,6 +7,7 @@ import Loader from '../common/Loader';
 import axios from 'axios';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import api from '../utils/api';
 
 const GalleryCategoryAdd = () => {
   const location = useLocation();
@@ -30,7 +31,7 @@ const GalleryCategoryAdd = () => {
 
   const fetchGalleryCategory=async(id)=>{
     try {
-      const response=await axios.get(`http://localhost:5000/galleryCategories/${id}`)
+      const response=await api.get(`galleryCategories/${id}`)
       const GCat=response.data;
       setFormData({
         id,
@@ -55,7 +56,7 @@ const GalleryCategoryAdd = () => {
     const fetchProperties = async () => {
       setPropertiesLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/properties', {
+        const response = await api.get('properties', {
           withCredentials: true,
         });
         setProperties(response.data);
@@ -82,13 +83,13 @@ const GalleryCategoryAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData)
-    const url = `http://localhost:5000/galleryCategories/upsert`;
+    const url = `galleryCategories/upsert`;
     const successMessage = id
       ? 'Gallery Category updated successfully!'
       : 'Gallery Category added successfully!';
 
     try {
-      const response = await axios.post(url, formData, { withCredentials: true });
+      const response = await api.post(url, formData, { withCredentials: true });
       if (response.status === 200 || response.status === 201) {
         NotificationManager.success(successMessage);
         setTimeout(() => navigate('/gallery-category-list'), 2000);

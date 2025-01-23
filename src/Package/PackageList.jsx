@@ -11,6 +11,7 @@ import { NotificationContainer } from 'react-notifications';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { StatusEntity } from '../utils/Status';
+import api from '../utils/api';
 
 const PackageList = () => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const PackageList = () => {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/packages/all");
+                const response = await api.get("packages/all");
                 setpackages(response.data);
                 setFilteredpackages(response.data);
             } catch (error) {

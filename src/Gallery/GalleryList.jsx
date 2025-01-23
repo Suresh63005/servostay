@@ -10,6 +10,7 @@ import Loader from '../common/Loader';
 import axios from 'axios';
 import { DeleteEntity } from '../utils/Delete';
 import { handleSort } from '../utils/sorting';
+import api from '../utils/api';
 
 const GalleryList = () => {
     const navigate=useNavigate();
@@ -27,7 +28,7 @@ const GalleryList = () => {
 
     const fetchGallery=async()=>{
         try {
-            const response=await axios.get(`http://localhost:5000/galleries/all`);
+            const response=await api.get(`galleries/all`);
             console.log(response.data)
             setgallery(response.data)
             setFilteredgallery(response.data)
