@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 const SelectComponent = ({ options, value, onChange, label, name }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-[3px]">
       {label && <label htmlFor={name} className="text-sm font-medium text-start text-[12px] font-[Montserrat]">{label}</label>}
       <Select
   id={name}
@@ -21,7 +21,7 @@ const SelectComponent = ({ options, value, onChange, label, name }) => {
     control: (base, { isFocused }) => ({
       ...base,
       borderRadius: '8px',
-      borderColor: isFocused ? '#045D78' : '#EAEAFF',
+      borderColor: isFocused ? '#045D78' : '##dee2e6',
       boxShadow: isFocused ? '0px 0px 0 2px #045D78' : 'none',
       padding: '3px',
       height: '40px',
