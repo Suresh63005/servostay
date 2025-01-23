@@ -17,11 +17,11 @@ const CompletedBook = () => {
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    const status = 'completed'
+    const status = 'Completed'
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await api.get(`/bookings/status/${status}`,);
+                const response = await api.get(`bookings/status/${status}`,);
                 console.log(response.data)
                 setcompleted(response.data);
                 setFilteredcompleted(response.data);
