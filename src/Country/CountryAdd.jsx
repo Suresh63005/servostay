@@ -10,7 +10,7 @@ import ImageUploader from "../common/ImageUploader";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import api from "../utils/api";
-import CountryCodes from "../utils/CountryCodes";
+import   CountryCodeOptions  from "../utils/CountryCodes";
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
@@ -61,7 +61,7 @@ const CountryAdd = () => {
     let newValue = value;
 
     if (name === "currency") {
-      newValue = CountryCodes[value];
+      newValue = CountryCodeOptions[value];
     }
 
     setFormData((prevData) => ({
@@ -157,21 +157,20 @@ const CountryAdd = () => {
                       >
                         Currency
                       </label>
-                      <select 
-                        name="currency"
-                        id="currency"
-                        value={Object.keys(CountryCodes).find(key => CountryCodes[key] === formData.currency) || ""}
-                        onChange={handleChange}
-                        required
-                        className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:ring- focus:border-[#045D78] outline-none  text-sm mySelect" 
-                      >
-                        <option value="" disabled>Select Currency</option>
-                        {Object.keys(CountryCodes).map((currencyCode) => (
-                          <option key={currencyCode} value={currencyCode} >
-                            {currencyCode} ({CountryCodes[currencyCode]})
-                          </option>
-                        ))}
-                      </select>
+                     
+
+                      <SelectComponent
+                      
+                      name="currency"
+                      value={formData.currency}
+                      onChange={(selectedOption) => {
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          currency: selectedOption.value,
+                        }));
+                      }}
+                      options={CountryCodeOptions}
+                    />
 
                     </div>
                   </div>
