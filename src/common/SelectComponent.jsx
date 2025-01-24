@@ -63,11 +63,6 @@ const SelectComponent = ({ options, value, onChange, label, name }) => {
     }),
   }}
 />
-
-
-
-
-
     </div>
   );
 };

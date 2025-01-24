@@ -15,17 +15,17 @@ module.exports = {
       addComponents({
         '.dentify-logoName':{
             fontWeight:'normal',
-            fontSize:'2rem',
+            fontSize:'3rem',
             lineHeight:'3rem',
             color:'#FFFFFF',
             fontFamily:'Arial,sans-serif',
             '@screen sm':{
-              fontSize:'3rem',
+              fontSize:'2rem',
               lineHeight:'4.75rem',
 
             },
             '@screen md':{
-              fontSize:'4rem',
+              fontSize:'3rem',
               lineHeight:'6.375rem'
             }
         },
