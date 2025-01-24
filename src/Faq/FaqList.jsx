@@ -14,6 +14,7 @@ import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import api from '../utils/api';
 import { StatusEntity } from '../utils/Status';
 import { useLoading } from '../Context/LoadingContext';
+import Table from '../common/Table';
 
 const FaqList = () => {
     const navigate = useNavigate();
@@ -28,13 +29,17 @@ const FaqList = () => {
 
     useEffect(() => {
         const fetchfaq = async () => {
+            setIsLoading(true)
             try {
                 const response =await  api.get("/faqs/all");
                 console.log(response.data)
                 setfaq(response.data);
                 setFilteredfaq(response.data);
+                setIsLoading(false)
             } catch (error) {
                 console.error("Error fetching faq:", error);
+            }finally{
+                setIsLoading(false)
             }
         };
         fetchfaq();
@@ -94,6 +99,14 @@ const FaqList = () => {
         }
     };
 
+    const columns = [
+        { label: "Sr. No", field: "id", sortable: true, minWidth: "150px" },
+        { label: "question", field: "question", sortable: true, minWidth: "100px" },
+        { label: "answer", field: "answer", sortable: true, minWidth: "180px" },
+        { label: "Status", field: "status", sortable: true, minWidth: "150px" },
+        { label: 'Actions', field: 'actions', minWidth: '150px', sortable: false },
+      ];
+
     return (
         <div>
             <div className="h-screen flex">
@@ -102,119 +115,19 @@ const FaqList = () => {
                     <Header />
                     <FaqHeader onSearch={handleSearch} />
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
-                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-3 overflow-y-auto scrollbar-thin  ${filteredfaq.length > 0 ? 'h-[500px]' : ''}`}>
-                            <div className="relative sm:rounded-lg">
-                                <table className="min-w-full text-sm text-left text-gray-700 h-[80%] scrollbar-thin overflow-x-auto">
-                                    <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white">
-                                        <tr>
-                                            <th className="px-4 py-2 min-w-[150px]">
-                                                Sr. No
-                                                <div className="inline-flex items-center ml-2">
-                                                    <GoArrowUp className='cursor-pointer' onClick={() => sortData('id')} />
-                                                    <GoArrowDown className='cursor-pointer' onClick={() => sortData('id')} />
-                                                </div>
-                                            </th>
-                                            <th className="px-4 py-2 min-w-[200px]">
-                                                Faq Question
-                                                <div className="inline-flex items-center ml-2">
-                                                    <GoArrowUp className='cursor-pointer' onClick={() => sortData('question')} />
-                                                    <GoArrowDown className='cursor-pointer' onClick={() => sortData('question')} />
-                                                </div>
-                                            </th>
-                                            <th className="px-4 py-2 min-w-[200px]">
-                                                Faq Answer
-                                                <div className="inline-flex items-center ml-2">
-                                                    <GoArrowUp className='cursor-pointer' onClick={() => sortData('answer')} />
-                                                    <GoArrowDown className='cursor-pointer' onClick={() => sortData('answer')} />
-                                                </div>
-                                            </th>
-                                            <th className="px-4 py-2 min-w-[150px]">
-                                                Status
-                                                <div className="inline-flex items-center ml-2">
-                                                    <GoArrowUp className='cursor-pointer' onClick={() => sortData('status')} />
-                                                    <GoArrowDown className='cursor-pointer' onClick={() => sortData('status')} />
-                                                </div>
-                                            </th>
-                                            <th className="px-4 py-2 min-w-[150px]">
-
-                                                Action
-
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-200">
-                                        {currentfaq.length > 0 ? (
-                                            currentfaq.map((faq, index) => (
-                                                <tr key={faq.id}>
-                                                    <td className="px-4 py-1">{index + 1 + indexOfFirstFaq}</td>
-                                                    <td className="px-4 py-1">{faq?.question || "N/A"}</td>
-
-                                                    <td className="px-4 py-1">{faq?.answer || "N/A"}</td>
-                                                    <td>
-                                                        <FontAwesomeIcon
-                                                            className="h-7 w-16 cursor-pointer"
-                                                            style={{ color: faq.status === 1 ? "#045D78" : "#e9ecef" }}
-                                                            icon={faq.status === 1 ? faToggleOn : faToggleOff}
-                                                            onClick={() => handleToggleChange(faq.id, faq.status, "status")}
-                                                        />
-                                                    </td>
-                                                    <td className="px-4 py-1">
-                                                        <NotificationContainer />
-                                                        <button className="bg-[#2dce89] text-white p-2 rounded-full hover:bg-green-600 transition mr-2" onClick={() => { updateFAQ(faq.id) }}>
-                                                            <FaPen />
-                                                        </button>
-                                                        <NotificationContainer />
-                                                        <button className="bg-[#f5365c] text-white p-2 rounded-full hover:bg-red-600 transition" onClick={() => { handledelete(faq.id) }}>
-                                                            <FaTrash />
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="10" className="text-center">
-                                                    No data available
-                                                </td>
-                                            </tr>
-                                        )
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        {/* for pagination */}
-                        <div className="bottom-0 left-0 w-full bg-[#f7fbff] py-2 flex justify-between items-center">
-                            <span className="text-sm font-normal text-gray-500">
-                                Showing <span className="font-semibold text-gray-900">{indexOfFirstFaq + 1}</span> to <span className="font-semibold text-gray-900">{Math.min(indexOfLastFaq, filteredfaq.length)}</span> of <span className="font-semibold text-gray-900">{filteredfaq.length}</span>
-                            </span>
-                            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                                <li>
-                                    <button
-                                        onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
-                                        className={`previous-button ${filteredfaq.length === 0 ? 'cursor-not-allowed' : ''}`}
-                                        disabled={currentPage === 1 || filteredfaq.length === 0}
-                                        title={filteredfaq.length === 0 ? 'No data available' : ''}
-                                    >
-                                        <img src="/image/action/Left Arrow.svg" alt="Left" /> Previous
-                                    </button>
-                                </li>
-                                <li>
-                                    <span className="current-page">
-                                        Page {filteredfaq.length > 0 ? currentPage : 0} of {filteredfaq.length > 0 ? totalPages : 0}
-                                    </span>
-                                </li>
-                                <li>
-                                    <button style={{background:'#045D78'}}
-                                        onClick={() => paginate(currentPage < totalPages ? currentPage + 1 : totalPages)}
-                                        className={`next-button ${filteredfaq.length === 0 ? 'cursor-not-allowed button-disable' : ''}`}
-                                        disabled={currentPage === totalPages || filteredfaq.length === 0}
-                                        title={filteredfaq.length === 0 ? 'No data available' : ''}
-                                    >
-                                        Next <img src="/image/action/Right Arrow (1).svg" alt="Right" />
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+                    <Table
+              columns={columns}
+              data={currentfaq}
+              onSort={sortData}
+              onToggleChange={handleToggleChange}
+              onUpdate={updateFAQ}
+              onDelete={handledelete}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              paginate={paginate}
+              filteredData={filteredfaq}
+              loading={isLoading}
+            />
                     </div>
                 </div>
             </div>
