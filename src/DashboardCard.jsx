@@ -8,16 +8,18 @@ import { IoEyeOutline } from "react-icons/io5";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CardGiftcardOutlinedIcon from '@mui/icons-material/CardGiftcardOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import axios from "axios";
 import api from "./utils/api";
+import { BeatLoader } from "react-spinners";
+import CountUp from "react-countup"; // Import CountUp
 
 const DashboardCard = () => {
-    const [dataCounts, setDataCounts] = useState({});
+    const [dataCounts, setDataCounts] = useState(null); // Initially null to track loading state
+    const [isLoading, setIsLoading] = useState(true);
 
     const endpoints = [
         { key: "countryCount", url: "/countries/count" },
@@ -46,6 +48,8 @@ const DashboardCard = () => {
                 setDataCounts(counts);
             } catch (error) {
                 console.error("Error fetching counts:", error);
+            } finally {
+                setIsLoading(false); // Ensure loading state is set to false once complete
             }
         };
         fetchCounts();
@@ -53,76 +57,76 @@ const DashboardCard = () => {
 
     const cards = [
         {
-            card_logoIcon: <IoLocationOutline className="text-[#045D78]" />,
-            card_title: "Total Countries",
+            card_logoIcon: <IoLocationOutline className="text-[#045D78] text-[25px]" />,
+            card_title: "Countries",
             card_desc: "Number of countries",
-            card_data_value: dataCounts.countryCount,
+            card_data_key: "countryCount",
         },
         {
-            card_logoIcon: <GiHamburgerMenu className="text-[#045D78]" />,
-            card_title: "Total Categories",
+            card_logoIcon: <GiHamburgerMenu className="text-[#045D78] text-[25px]" />,
+            card_title: "Categories",
             card_desc: "Number of Categories",
-            card_data_value: dataCounts.categoryCount,
+            card_data_key: "categoryCount",
         },
         {
-            card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78]" />,
-            card_title: "Total Coupons",
+            card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_title: "Coupons",
             card_desc: "Number of Coupons",
-            card_data_value: dataCounts.couponCount,
+            card_data_key: "couponCount",
         },
         {
-            card_logoIcon: <CurrencyRupeeIcon className="text-[#045D78]" />,
-            card_title: "Total Payment Methods",
+            card_logoIcon: <CurrencyRupeeIcon className="text-[#045D78] text-[25px]" />,
+            card_title: "Payment Methods",
             card_desc: "Number of Payment Methods",
-            card_data_value: dataCounts.paymentCount,
+            card_data_key: "paymentCount",
         },
         {
-            card_logoIcon: <HomeOutlinedIcon className="text-[#045D78]" />,
-            card_title: "Total Properties",
+            card_logoIcon: <HomeOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_title: "Properties",
             card_desc: "Number of Properties",
-            card_data_value: dataCounts.propertyCount,
+            card_data_key: "propertyCount",
         },
         {
-            card_logoIcon: <ManageAccountsOutlinedIcon className="text-[#045D78]" />,
-            card_title: "Total Facilities",
+            card_logoIcon: <ManageAccountsOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_title: "Facilities",
             card_desc: "Number of Facilities",
-            card_data_value: dataCounts.facilityCount,
+            card_data_key: "facilityCount",
         },
         {
-            card_logoIcon: <MdOutlineCalendarToday className="text-[#045D78]" />,
-            card_title: "Total Bookings",
+            card_logoIcon: <MdOutlineCalendarToday className="text-[#045D78] text-[25px]" />,
+            card_title: "Bookings",
             card_desc: "Number of Bookings",
-            card_data_value: dataCounts.bookedCount,
+            card_data_key: "bookedCount",
         },
         {
-            card_logoIcon: <LuCheckSquare className="text-[#045D78]" />,
-            card_title: "Total Confirmed Bookings",
+            card_logoIcon: <LuCheckSquare className="text-[#045D78] text-[25px]" />,
+            card_title: "Confirmed Bookings",
             card_desc: "Number of Confirmed Bookings",
-            card_data_value: dataCounts.confirmedCount,
+            card_data_key: "confirmedCount",
         },
         {
-            card_logoIcon: <IoEyeOutline className="text-[#045D78]" />,
-            card_title: "Total Check-In",
+            card_logoIcon: <IoEyeOutline className="text-[#045D78] text-[25px]" />,
+            card_title: "Check-In",
             card_desc: "Number of Check-In",
-            card_data_value: dataCounts.checkInCount,
+            card_data_key: "checkInCount",
         },
         {
-            card_logoIcon: <BsCheck2Circle className="text-[#045D78]" />,
-            card_title: "Total Completed Bookings",
+            card_logoIcon: <BsCheck2Circle className="text-[#045D78] text-[25px]" />,
+            card_title: "Completed Bookings",
             card_desc: "Number of Completed Bookings",
-            card_data_value: dataCounts.completedCount,
+            card_data_key: "completedCount",
         },
         {
-            card_logoIcon: <PermMediaOutlinedIcon className="text-[#045D78]" />,
-            card_title: "Total Extra Images",
+            card_logoIcon: <PermMediaOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_title: "Extra Images",
             card_desc: "Number of Extra Images",
-            card_data_value: dataCounts.extraImagesCount,
+            card_data_key: "extraImagesCount",
         },
         {
-            card_logoIcon: <PiUsersBold className="text-[#045D78]" />,
-            card_title: "Total Users",
+            card_logoIcon: <PiUsersBold className="text-[#045D78] text-[25px]" />,
+            card_title: "Users",
             card_desc: "Number of Users",
-            card_data_value: dataCounts.usersCount,
+            card_data_key: "usersCount",
         },
     ];
 
@@ -133,15 +137,27 @@ const DashboardCard = () => {
                     <div className="px-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             {cards.map((card, index) => (
-                                <div key={index} className="bg-white rounded-lg shadow-md p-4  flex items-center gap-4 max-w-xs w-full">
-                                    <div className="bg-[#F2F6FE] p-3 rounded-lg flex items-center justify-center w-14 h-14">
+                                <div
+                                    key={index}
+                                    className="bg-white rounded-lg shadow-md p-1 flex items-center gap-4 max-w-xs w-full"
+                                >
+                                    <div className="bg-[#F2F6FE] p-3 rounded-lg flex items-center justify-center w-[40%] h-[100%]">
                                         {card.card_logoIcon}
                                     </div>
                                     <div>
-                                        <p className="text-2xl font-bold text-[#045D78] mt-2">
-                                            {card.card_data_value ?? 0}
-                                        </p>
-                                        <h4 className="text-[18px] text-[#25064C] leading-none">
+                                        <div className="text-[28px] mt-2 font-bold text-[#045D78] ">
+                                            {isLoading ? (
+                                                <BeatLoader size={5} color="#045D78" />
+                                            ) : (
+                                                <CountUp
+                                                    start={0}
+                                                    end={dataCounts?.[card.card_data_key] ?? 0}
+                                                    duration={10}
+                                                    separator=","
+                                                />
+                                            )}
+                                        </div>
+                                        <h4 className="text-[15px] font-bold uppercase text-[#555456] leading-none">
                                             {card.card_title}
                                         </h4>
                                     </div>

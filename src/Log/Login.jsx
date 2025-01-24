@@ -67,7 +67,7 @@ const Login = () => {
         <div>
           <img src="/image/Group 2.svg" alt="" className="w-[250px] h-[220px]" />
         </div>
-        <div className="text-center gap-5">
+        <div className="text-center  gap-5">
           <span className="dentify-logoName" style={{ letterSpacing: '0.1rem' }}>
             SERVOSTAY
           </span>
