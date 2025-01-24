@@ -124,7 +124,7 @@ const CountryAdd = () => {
     <div>
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
-        <main className="flex-grow">
+        <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
@@ -134,7 +134,7 @@ const CountryAdd = () => {
               <h2 className="text-lg font-semibold ml-4 " style={{ color: '#000000', fontSize: '24px', fontFamily: 'Montserrat' }}>Country Management</h2>
             </div>
             <div className="h-full px-6 max-w-5xl" style={{ paddingTop: "24px" }} >
-              <div className="bg-white h-[57vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+              <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
                     {/* Country Name */}
@@ -145,7 +145,7 @@ const CountryAdd = () => {
                       >
                         Country Name
                       </label>
-                      <input id="country_name" value={formData.title} onChange={handleChange} name="title" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14"
+                      <input id="country_name" value={formData.title} onChange={handleChange} name="title" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
                           border: "1px solid #EAEAFF",
@@ -243,7 +243,7 @@ const CountryAdd = () => {
                   <div className="flex justify-start mt-6 gap-3">
                     <button
                       type="submit"
-                      className={`py-2 bg-[#045D78]  text-white rounded-lg  w-[120px] h-10 font-poppins font-medium`}
+                      className={`py-2 bg-[#045D78]  text-white rounded-lg   h-10 font-poppins font-medium`}
                       style={{ borderRadius: "8px" }}
                     >
                       {id ? "Update Country" : "Add Country"}

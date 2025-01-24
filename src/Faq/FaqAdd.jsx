@@ -6,6 +6,8 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import api from '../utils/api';
+import SelectComponent from '../common/SelectComponent';
+import { statusoptions } from '../common/data';
 
 const FaqAdd = () => {
   const location=useLocation();
@@ -81,7 +83,7 @@ const handleSubmit = async (e) => {
     <div>
       <div className="flex bg-[#f7fbff]">
       {/* Sidebar */}
-      <main className="flex-grow">
+      <main className="flex-grow h-[100vh]">
         <Header />
         <div className="container mx-auto">
           <div className="flex items-center mt-6  mb-4">
@@ -93,19 +95,19 @@ const handleSubmit = async (e) => {
 
           {/* Form Container */}
           <div className="h-full px-6 max-w-5xl" style={{paddingTop:'24px'}}> 
-            <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto" style={{scrollbarWidth:'none'}}>
+            <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto" style={{scrollbarWidth:'none'}}>
               <form onSubmit={handleSubmit} className="mt-4">
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
                   {/* faq question */}
                   <div className="flex flex-col">
                       <label  htmlFor="question"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ's Question </label>
-                      <input id="question" value={formData.question} onChange={handleChange} name="question" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}} placeholder="Enter question "  />
+                      <input id="question" value={formData.question} onChange={handleChange} name="question" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}} placeholder="Enter question "  />
                   </div>
 
                   {/* faq answer */}
                   <div className="flex flex-col">
                       <label  htmlFor="answer"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ's Answer </label>
-                      <input id="answer" value={formData.answer} onChange={handleChange} name="answer" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}  placeholder="Enter Anwer " />
+                      <input id="answer" value={formData.answer} onChange={handleChange} name="answer" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}  placeholder="Enter Anwer " />
                   </div>
 
                 </div>
@@ -113,7 +115,20 @@ const handleSubmit = async (e) => {
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
                   {/* page Status */}
                   <div className="flex flex-col">
-                    <label  htmlFor="status"   className="text-sm font-medium text-start text-[12px] font-[Montserrat]" >FAQ's  Status </label>                   
+                    <label  htmlFor="status"   className="text-sm font-medium text-start text-[12px] font-[Montserrat]" >FAQ's  Status </label>  
+
+                    <SelectComponent
+                        name="status"
+                        value={formData.status}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            status: selectedOption.value,
+                          }));
+                        }}
+                        options={statusoptions}
+                        
+                      />                 
                   </div>
                 </div>
 
