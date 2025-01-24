@@ -25,7 +25,7 @@ const ApprovedBook = () => {
     useEffect(() => {
         const fetchingApprovedList = async () => {
             try {
-                const response = await api.get(`/bookings/status/${status}`);
+                const response = await api.get(`bookings/status/${status}`);
                 setapprove(response.data);
                 setfilteredApprove(response.data);
             } catch (error) {

@@ -45,6 +45,9 @@ import PrivateRoute from "./Context/PrivateRoute.js";
 import RoleChange from "./Roles/RoleChange.jsx";
 import AdminList from "./Admin/AdminList.jsx";
 import ErrorBoundary from "./ErrorBoundary.jsx";
+import ProtectedRoute from "./ProtectedRoute.js";
+import ProductTable from "./common/ProductTable.js";
+import UserTable from "./common/UserTable.js";
 
 
 const LayoutWithSidebar = ({ children }) => (
@@ -55,16 +58,16 @@ const LayoutWithSidebar = ({ children }) => (
 );
 
 function App() {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("/firebase-messaging-sw.js")
-      .then((registration) => {
-        console.log("Service Worker registered:", registration);
-      })
-      .catch((error) => {
-        console.error("Service Worker registration failed:", error);
-      });
-  }
+  // if ("serviceWorker" in navigator) {
+  //   navigator.serviceWorker
+  //     .register("/firebase-messaging-sw.js")
+  //     .then((registration) => {
+  //       console.log("Service Worker registered:", registration);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Service Worker registration failed:", error);
+  //     });
+  // }
 
   return (
     <div className="App">
@@ -72,316 +75,347 @@ function App() {
         <BrowserRouter>
           <AuthProvider>
             <Routes>
+
               {/* Excluded routes */}
               <Route path="/" element={<Login />} />
+              <Route path="/pp" element={<ProductTable />} />
+              <Route path="/ppp" element={<UserTable />} />
               <Route path="/*" element={<NotFound />} />
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               <Route path="/sendotp" element={<SendOTP />} />
               <Route path="/setnewpassword" element={<SetNewPassword />} />
 
               {/* Routes with Sidebar */}
-              <Route
-                path="/dashboard"
-                element={
-                  <LayoutWithSidebar>
-                    <Dashboard />
-                  </LayoutWithSidebar>
-                }
-              />
+              <Route  path="/dashboard"  element={<ProtectedRoute> <LayoutWithSidebar> <Dashboard /> </LayoutWithSidebar> </ProtectedRoute> }/>
               <Route
                 path="/add-country"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CountryAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/country-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CountryList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/add-category"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CategoryAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/category-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CategoryList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/add-cuppon"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CupponAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/cuppon-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CupponList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/payment-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PaymentGatewayList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/enquiry-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <EnquiryList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/payout-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PayOutList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/property-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PropertiesList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-property"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PropertiesAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/extra-image-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <ExtraImageList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-extra-image"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <ExtraImageAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/facility-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <FacilityList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-facility"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <FacilityAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/gallery-category-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <GalleryCategoryList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-gallery-category"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <GalleryCategoryAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/gallery-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <GalleryList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-gallery"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <GalleryAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/package-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PackageList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-package"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PackageAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/page-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PageList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-page"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PageAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/role"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     {" "}
                     <RoleChange />{" "}
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/faq-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <FaqList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/create-faq"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <FaqAdd />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               <Route
                 path="/pending-book-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PendingBook />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/approved-book-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <ApprovedBook />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/check-in-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CheckInBook />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/completed-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CompletedBook />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/cancelled-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <CancelledBook />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
 
               {/* For profile and settings */}
               <Route
                 path="/profile"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <Profile />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/settings"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <Settings />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/user-list"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <UserList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/admin"
-                element={
+                element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <AdminList />
                   </LayoutWithSidebar>
+                  </ProtectedRoute>
                 }
               />
             </Routes>

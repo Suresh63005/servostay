@@ -108,10 +108,10 @@ const CupponList = () => {
                     <CupponHeader onSearch={handleSearch} />
                     {/* Main Content */}
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
-                        <div className={` bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-3 overflow-x-auto  scrollbar-thin ${filteredcouppons.length > 0 ? 'h-[500px]' : ''}`}>
-                            <div className="relative sm:rounded-lg h-[80%] scrollbar-thin overflow-y-auto">
+                        <div className={` bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto  scrollbar-none ${filteredcouppons.length > 0 ? 'h-[380px]' : ''}`}>
+                            <div className="relative sm:rounded-lg h-[380px] scrollbar-thin  overflow-y-auto ">
                                 <table className="min-w-full text-sm text-left text-gray-700">
-                                    <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white" style={{lineHeight:"6px"}}>
+                                    <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0" style={{lineHeight:"6px"}}>
                                         <tr>
                                             <th className="px-4 py-2 min-w-[120px]">
                                                 Sr. No
@@ -235,7 +235,7 @@ const CupponList = () => {
                         </div>
 
                         {/* Pagination */}
-                        <div className="bottom-0 left-0 w-full bg-[#f7fbff] py-2 flex justify-between items-center">
+                        <div className="bottom-0 left-0 w-full bg-[#f7fbff] pt-2 flex justify-between items-center">
                             <span className="text-sm font-normal text-gray-500">
                                 Showing <span className="font-semibold text-gray-900">{indexOfFirst + 1}</span> to <span className="font-semibold text-gray-900">{Math.min(indexOfLast, filteredcouppons.length)}</span> of <span className="font-semibold text-gray-900">{filteredcouppons.length}</span>
                             </span>
