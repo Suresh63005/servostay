@@ -25,7 +25,7 @@ const PendingBook = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await api.get(`/bookings/status/${status}`,);
+                const response = await api.get(`bookings/status/${status}`,);
                 // console.log(response.data)
                 setpending(response.data);
                 setFilteredpending(response.data);

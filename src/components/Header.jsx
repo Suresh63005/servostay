@@ -4,6 +4,7 @@ import { FaUser, FaSignOutAlt, FaCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import api from "../utils/api";
+import  Cookies from 'js-cookie'
 
 const Header = () => {
   const [showCard, setShowCard] = useState(false);
@@ -13,7 +14,8 @@ const Header = () => {
   const logout = async () => {
     setLoading(true);
     try {
-      await api.post(`/admin/logout`, {});
+      // await api.post(`/admin/logout`, {});
+      Cookies.remove('user')
       setTimeout(() => {
         navigate("/");
       }, 2000);

@@ -113,8 +113,7 @@ const handleSubmit = async (e) => {
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
                   {/* page Status */}
                   <div className="flex flex-col">
-                    <label  htmlFor="status"   className="text-sm font-medium text-start text-[12px] font-[Montserrat]" >FAQ's  Status </label>
-                    w
+                    <label  htmlFor="status"   className="text-sm font-medium text-start text-[12px] font-[Montserrat]" >FAQ's  Status </label>                   
                   </div>
                 </div>
 
