@@ -14,7 +14,8 @@ import   CountryCodeOptions  from "../utils/CountryCodes";
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
-import CustomDropdown from './CustomDropdown'
+import CustomDropdown from './CustomDropdown';
+import Cities from "../common/Cities";
 
 const CountryAdd = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const CountryAdd = () => {
     img: "",
     status: 0,
     currency: "",
+    city:""
   });
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const CountryAdd = () => {
         img: country.img,
         status: country.status,
         currency: country.currency,
+        city:country.city
       });
     } catch (error) {
       console.error("Error fetching country data:", error);
@@ -93,9 +96,9 @@ const CountryAdd = () => {
     e.preventDefault();
 
     try {
-      const apiEndpoint =`countries/upsert`;
+      const apiEndpoint = `countries/upsert`;
 
-      const method ="post";
+      const method = "post";
 
       const response = await api[method](apiEndpoint, formData, {
         withCredentials: true,
@@ -125,9 +128,9 @@ const CountryAdd = () => {
           <Header />
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
-                <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
-                  <ArrowBackIosNewIcon style={{color:'#045D78'}}  />
-                </Link>
+              <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
+                <ArrowBackIosNewIcon style={{ color: '#045D78' }} />
+              </Link>
               <h2 className="text-lg font-semibold ml-4 " style={{ color: '#000000', fontSize: '24px', fontFamily: 'Montserrat' }}>Country Management</h2>
             </div>
             <div className="h-full px-6 max-w-5xl" style={{ paddingTop: "24px" }} >
@@ -151,13 +154,12 @@ const CountryAdd = () => {
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label 
+                      <label
                         htmlFor="currency"
                         className="text-sm font-medium mt-[2px] text-start text-[12px] font-[Montserrat]"
                       >
                         Currency
-                      </label>
-                     
+                      </label>                     
 
                       <SelectComponent
                       
@@ -195,6 +197,24 @@ const CountryAdd = () => {
                         </div>
                       )}
                     </div>
+                    {/* Cities */}
+                    <div className="flex flex-col">
+                      <label htmlFor="city" className="text-sm font-medium mt-[2px] text-start text-[12px] font-[Montserrat]">
+                        City
+                      </label>
+                      <select name="city" id="city" 
+                      onChange={handleChange}
+                      value={formData.city}
+                      required
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring- focus:border-[#045D78] outline-none  text-sm mySelect"
+                      
+                      >
+                        <option value="" disabled>Select City</option>
+                        {Cities.map((city, index) => (
+                          <option key={index} value={city}>{city}</option>
+                        ))}
+                      </select>
+                    </div>
                     {/* Country Status */}
                     <div className="flex flex-col">
                       <label
@@ -203,20 +223,20 @@ const CountryAdd = () => {
                       >
                         Status
                       </label>
-                      
+
 
                       <SelectComponent
-                      
-                      name="status"
-                      value={formData.status}
-                      onChange={(selectedOption) => {
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          status: selectedOption.value,
-                        }));
-                      }}
-                      options={statusoptions}
-                    />
+
+                        name="status"
+                        value={formData.status}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            status: selectedOption.value,
+                          }));
+                        }}
+                        options={statusoptions}
+                      />
                     </div>
                   </div>
 
