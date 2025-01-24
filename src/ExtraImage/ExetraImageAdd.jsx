@@ -117,7 +117,7 @@ const ExtraImageAdd = () => {
         <div>
             {isLoading && <Loader />}
             <div className="flex bg-[#f7fbff]">
-                <main className="flex-grow">
+                <main className="flex-grow h-[100vh]">
                     <Header />
                     <div className="container mx-auto">
                         <div className="flex items-center mt-6 mb-4">
@@ -127,18 +127,28 @@ const ExtraImageAdd = () => {
                             <h2 className="text-lg font-semibold ml-4" style={{ color: '#000000', fontSize: '24px', fontFamily: 'Montserrat' }}>Extra Image Management</h2>
                         </div>
                         <div className="h-full px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
-                            <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
+                            <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
                                 <form className="mt-4" onSubmit={handleSubmit}>
                                     <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
                                         {/* Select Property */}
                                         <div className="flex flex-col">
                                             <label htmlFor="pid" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Select Property</label>
-                                            <select name="pid" id="pid" value={formData.pid} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" onChange={handleChange} required>
-                                                <option value="" disabled selected>Select Property</option>
-                                                {properties.map((property) => (
-                                                    <option key={property.id} value={property.id}>{property.title}</option>
-                                                ))}
-                                            </select>
+                                            
+
+                                            <SelectComponent
+                        name="pid"
+                        value={formData.pid}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            pid: selectedOption.value,
+                          }));
+                        }}
+                        options={properties.map((property) => ({
+                            value: property.id, label:property.title
+                        }))}
+                        
+                      />
 
                                         </div>
                                         {/* Property Image */}
@@ -146,14 +156,14 @@ const ExtraImageAdd = () => {
                                             <label htmlFor="img" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Property Image</label>
                                             <MultiImageUploader onUploadSuccess={handleImageUploadSuccess} />
                                             {formData.img && (  
-                                                <div className="mt-4 flex gap-3">
+                                                <div className="mt-2  flex gap-3">
                                                     {
                                                         formData.img.map((item) => (
                                                             <div>
                                                                 <img
                                                                     src={item.url}
                                                                     alt="Uploaded Preview"
-                                                                    className="w-32 h-32 object-cover rounded"
+                                                                    className="w-[50px] h-[50px] object-cover rounded"
                                                                 />
                                                             </div>
                                                         ))
@@ -163,16 +173,9 @@ const ExtraImageAdd = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
-                                        {/* Yes/No */}
-                                        <div className="flex flex-col">
-                                            <label htmlFor="image2" className="text-sm font-medium text-start text-[12px] font-[Montserrat]" > Status </label>
-                                            <select name="image2" id="image2" className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"  >
-                                                <option value="" disabled selected>Select Status</option>
-                                                <option value="yes">Yes</option>
-                                                <option value="no">No</option>
-                                            </select>
-                                        </div>
+                                    <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-4">
+                                        
+                                        
                                         {/* Property Image Status */}
                                         <div className="flex flex-col">
                                             <label htmlFor="status" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Property Image Status</label>

@@ -10,6 +10,10 @@ import { NotificationManager, NotificationContainer } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import api from '../utils/api';
+import { statusoptions } from '../common/data';
+import SelectComponent from '../common/SelectComponent';
+import { SelectField } from '../common/SelectInput';
+import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined';
 
 const CupponAdd = () => {
   const location = useLocation();
@@ -121,7 +125,7 @@ const CupponAdd = () => {
       <div className="flex bg-[#f7fbff]">
         {/* Sidebar */}
 
-        <main className="flex-grow">
+        <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
@@ -132,8 +136,8 @@ const CupponAdd = () => {
             </div>
 
             {/* Form Container */}
-            <div className="h-full px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
-              <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
+            <div className="px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
+              <div className="bg-white h-[380px]  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-4 mt-6">
                     {/* couppon image*/}
@@ -141,11 +145,11 @@ const CupponAdd = () => {
                       <label htmlFor="cupponimage" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Coupon Image</label>
                       <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
                       {formData.c_img && (
-                        <div className="mt-4">
+                        <div className="mt-2">
                           <img
                             src={formData.c_img}
                             alt="Uploaded Preview"
-                            className="w-32 h-32 object-cover rounded"
+                            className="w-12 h-12 object-cover rounded"
                           />
                         </div>
                       )}
@@ -172,7 +176,7 @@ const CupponAdd = () => {
                     {/* Coupon code */}
                     <div className="flex flex-col">
                       <label htmlFor="c_title" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon code </label>
-                      <input id="c_title" name="c_title" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="c_title" name="c_title" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         value={formData.c_title}
                         onChange={handleChange}
                         placeholder="Enter Coupon code"
@@ -181,21 +185,21 @@ const CupponAdd = () => {
                     {/*btn*/}
                     <div className="flex flex-col">
                       {/* <label  htmlFor="cupponCode"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> cuppon Generate</label> */}
-                      <button className='btn border rounded-lg ml-4 mt-[25px] w-full h-14' style={{ background: '#61eb34', height: '40px', width: '65px' }} onClick={(e) => { e.preventDefault(); makeEightDigitRand(); }}><img src="/image/cuppon/update_8303700.png" alt="refresh" height={20} width={20} className='ml-3' /></button>
+                      <button className='btn border text-[#fff] rounded-lg  mt-[25px] w-full h-14' style={{ background: '#045D78', height: '40px', width: '65px' }} onClick={(e) => { e.preventDefault(); makeEightDigitRand(); }}> <AutorenewOutlinedIcon className='text-[#f0f0f0]'/></button>
                     </div>
                   </div>
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-4  mt-6">
                     {/* Coupon title */}
                     <div className="flex flex-col">
                       <label htmlFor="ctitle" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon Title </label>
-                      <input id="ctitle" value={formData.ctitle} onChange={handleChange} name="ctitle" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="ctitle" value={formData.ctitle} onChange={handleChange} name="ctitle" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         placeholder="Enter Coupon title"
                       />
                     </div>
                     {/* coupon subtitle */}
                     <div className="flex flex-col">
                       <label htmlFor="subtitle" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon Sub Title </label>
-                      <input id="subtitle" value={formData.subtitle} name="subtitle" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="subtitle" value={formData.subtitle} name="subtitle" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                         placeholder="Enter Coupon subtitle"
                       />
@@ -205,18 +209,24 @@ const CupponAdd = () => {
                     <div className="flex flex-col">
                       <label htmlFor="status" className="text-sm font-medium text-start text-[12px] font-[Montserrat]" > Status </label>
 
-                      <select name="status" value={formData.status} onChange={handleChange} id="status" className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-[#045D78] focus:bg-[#045D78] focus:border-[#045D78]  outline-none text-sm" >
-
-                        <option value="" disabled selected>Select Status</option>
-                        <option  value={1}>Publish</option>
-                        <option value={0}>Unpublish</option>
-                      </select>
+                      <SelectComponent
+                        name="status"
+                        value={formData.status}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            status: selectedOption.value,
+                          }));
+                        }}
+                        options={statusoptions}
+                        defaultplaceholder={'Select Status'}
+                      />
                     </div>
 
                     {/* Couppon min order amount */}
                     <div className="flex flex-col">
                       <label htmlFor="min_amt" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon Min Order Amount </label>
-                      <input id="min_amt" name="min_amt" value={formData.min_amt} type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="min_amt" name="min_amt" value={formData.min_amt} placeholder='Enter Min Order Amount' type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
 
                       />
@@ -226,7 +236,7 @@ const CupponAdd = () => {
                     {/* Couppon value */}
                     <div className="flex flex-col">
                       <label htmlFor="c_value" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon Value </label>
-                      <input id="c_value" name="c_value" value={formData.c_value} type="text" required className="border rounded-lg p-3 mt-1 " style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="c_value" name="c_value" placeholder='Enter Coupon Value' value={formData.c_value} type="text" required className="border input-tex rounded-lg p-3 mt-1 " style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
 
                       />
@@ -235,7 +245,7 @@ const CupponAdd = () => {
                     {/* Coupon Description */}
                     <div className="flex flex-col">
                       <label htmlFor="c_desc" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon Description </label>
-                      <textarea id="c_desc" value={formData.c_desc} name="c_desc" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <textarea id="c_desc" placeholder='Enter Description' value={formData.c_desc} name="c_desc" type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                       ></textarea>
                     </div>

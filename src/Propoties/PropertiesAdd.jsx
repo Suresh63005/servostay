@@ -12,6 +12,8 @@ import { NotificationContainer, NotificationManager } from "react-notifications"
 import 'react-notifications/lib/notifications.css';
 import Loader from "../common/Loader";
 import { useLoading } from "../Context/LoadingContext";
+import { statusoptions } from "../common/data";
+import SelectComponent from "../common/SelectComponent";
 
 const PropertiesAdd = () => {
   const [countries, setCountries] = useState([]);
@@ -289,7 +291,7 @@ const PropertiesAdd = () => {
                         type="text"
                         value={formData.title}
                         required
-                        className="border rounded-lg p-3 mt-1 w-full h-14"
+                        className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
                           border: "1px solid #EAEAFF",
@@ -318,11 +320,23 @@ const PropertiesAdd = () => {
                       <label htmlFor="is_panorama" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">
                         Is Panorama
                       </label>
-                      <select name="is_panorama" value={formData.is_panorama} onChange={handleChange} id="is_panorama" className="mt-1 block w-full   bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"  >
-                        <option value="" disabled selected>Select Panorama</option>
-                        <option value={1}>Yes</option>
-                        <option value={0}>No</option>
-                      </select>
+                      
+                      <SelectComponent
+                        name="is_panorama"
+                        value={formData.is_panorama}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            is_panorama: selectedOption.value,
+                          }));
+                        }}
+                        options={[
+                          
+                          { value: 1, label: 'yes' },
+    { value: 0, label: 'No' },
+                        ]}
+                        defaultplaceholder={'Select Panorama'}
+                      />
                     </div>
 
                     {/* property price per night */}
@@ -427,23 +441,23 @@ const PropertiesAdd = () => {
                         {" "}
                         Property Country ?
                       </label>
-                      <select
+
+                      <SelectComponent
                         name="country_id"
                         value={formData.country_id}
-                        onChange={handleChange}
-                        id="country_id"
-                        className="mt-1 block w-full   bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
-                      >
-                        <option value={0} disabled selected>
-                          Select Country
-                        </option>
-                        {countries &&
-                          countries.map((item) => {
-                            return (
-                              <option key={item.id} value={item.id}>{item.title}</option>
-                            );
-                          })}
-                      </select>
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            country_id: selectedOption.value,
+                          }));
+                        }}
+                        options={countries.map((item) => ({
+                          value: item.id, 
+                          label: item.title, 
+                        }))}
+                        
+                      />
+                     
                     </div>
 
                     {/* propert status */}
@@ -455,19 +469,21 @@ const PropertiesAdd = () => {
                         {" "}
                         property Status
                       </label>
-                      <select
+                      
+
+                      <SelectComponent
                         name="status"
                         value={formData.status}
-                        onChange={handleChange}
-                        id="propertySellOrRent"
-                        className="mt-1 block w-full   bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
-                      >
-                        <option value="" disabled selected>
-                          Select Staus
-                        </option>
-                        <option value={1}>Publish</option>
-                        <option value={0}>Unpublish</option>
-                      </select>
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            status: selectedOption.value,
+                          }));
+                        }}
+                        options={statusoptions}
+                        
+                      />
+                      
                     </div>
 
                     
@@ -488,7 +504,7 @@ const PropertiesAdd = () => {
                         type="text"
                         value={formData.address}
                         required
-                        className="border rounded-lg p-3 mt-1 w-full h-14"
+                        className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
                           border: "1px solid #EAEAFF",
@@ -529,9 +545,19 @@ const PropertiesAdd = () => {
                         classNamePrefix="select"
                         placeholder="Select Facilities"
                         styles={{
-                          control: (provided) => ({
+                          control: (provided,{isFocused}) => ({
                             ...provided,
-                            minHeight: "40px", 
+                            border: isFocused ? "2px solid #045D78" : " 1px solid #EAEAFF",
+                            boxShadow: isFocused ? 'none':'none',
+                            borderRadius: "8px",
+                            
+                            fontSize: "12px", 
+                            maxHeight:"40px",
+                            overflowY:'scroll',
+                            color: "#757575",
+                            "&:hover":{
+        
+      }
                           }),
                           placeholder: (provided) => ({
                             ...provided,
@@ -569,6 +595,7 @@ const PropertiesAdd = () => {
                           type="number"
                           id="beds"
                           name="beds"
+                          min={0}
                           value={formData.beds}
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Beds Count"
@@ -588,6 +615,7 @@ const PropertiesAdd = () => {
                           type="number"
                           id="bathroom"
                           name="bathroom"
+                          min={0}
                           value={formData.bathroom}
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Bathroom Count"
@@ -606,6 +634,8 @@ const PropertiesAdd = () => {
                         <input
                           type="number"
                           id="sqrft"
+                          min={0}
+                      
                           value={formData.sqrft}
                           name="sqrft"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
@@ -624,6 +654,7 @@ const PropertiesAdd = () => {
                         <input
                           type="number"
                           id="rate"
+                          min={1}
                           value={formData.rate || ""} 
                           name="rate"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
@@ -644,27 +675,33 @@ const PropertiesAdd = () => {
                       </div>
 
                       {/* Property Type */}
-                      <div className="sm:col-span-2 md:col-span-1">
+                      <div className=" ">
                         <label
                           htmlFor="ptype"
-                          className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
+                          className="text-sm  font-medium  text-[12px] font-[Montserrat]"
                         >
                           Select Property Type
                         </label>
-                        <select
-                          name="ptype"
-                          id="ptype"
-                          value={formData.ptype}
-                          className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
-                          onChange={handleChange}
-                        >
-                          <option value="">Select Property Type</option>
-                          {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                              {category.title}
-                            </option>
-                          ))}
-                        </select>
+                        
+
+                        <SelectComponent
+                        name="ptype"
+                        value={formData.ptype}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            ptype: selectedOption.value,
+                          }));
+                        }}
+                        options={categories.map((category) => (
+                          {value:category.id, label:category.title}
+                        ))}
+                        
+                      />
+                        
+
+                        
+                      
                       </div>
 
                       {/* Latitude */}
@@ -680,7 +717,7 @@ const PropertiesAdd = () => {
                           id="latitude"
                           value={formData.latitude}
                           name="latitude"
-                          className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+                          className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Latitude"
                           onChange={handleChange}
                         />
@@ -699,7 +736,7 @@ const PropertiesAdd = () => {
                           id="longitude"
                           value={formData.longtitude}
                           name="longtitude"
-                          className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+                          className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Longitude"
                           onChange={handleChange}
                         />
@@ -737,7 +774,7 @@ const PropertiesAdd = () => {
                           id="city"
                           value={formData.city}
                           name="city"
-                          className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+                          className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Like New York, US"
                           onChange={handleChange}
                         />
@@ -811,7 +848,7 @@ const PropertiesAdd = () => {
                             placeholder="Write a rule and press Enter"
                             value={currentRule}
                             onChange={(e) => setCurrentRule(e.target.value)} // Update currentRule state
-                            className="focus:outline-none text-sm border-t border-gray-300 pt-2 w-full"
+                            className="focus:outline-none input-tex text-sm border-t border-gray-300 pt-2 w-full"
                             onKeyDown={handleKeyPress}
                           />
                         </div>

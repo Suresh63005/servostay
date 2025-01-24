@@ -104,7 +104,7 @@ const Profile = () => {
     <div>
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
-      <main className="flex-grow">
+      <main className="flex-grow h-[100vh]">
         <Header />
         <div className="container mx-auto">
           <div className="flex items-center mt-6  mb-4">
@@ -123,8 +123,8 @@ const Profile = () => {
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
                   {/*  name */}
                   <div className="flex flex-col">
-                      <label  htmlFor="username"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Profile name </label>
-                      <input id="username" name="username" type="text" value={formData.username} required className="border rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}
+                      <label  htmlFor="username"  className="text-sm  font-medium text-start text-[12px] font-[Montserrat]"> Profile name </label>
+                      <input id="username" name="username" type="text" value={formData.username} required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}
                         onChange={handleChange}
                         placeholder="Enter User name or email address" 
                       />
@@ -134,7 +134,7 @@ const Profile = () => {
                   {/* password */}
                   <div className="flex flex-col relative">
                       <label  htmlFor="Password"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Password </label>
-                      <input id="Password" name="password" value={formData.password} type={passwordType} required className="border rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}
+                      <input id="Password" name="password" value={formData.password} type={passwordType} required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}
                         onChange={handleChange}
                         placeholder="********************************"
                       />
@@ -151,7 +151,7 @@ const Profile = () => {
                         
                 {/* Action Buttons */}
                 <div className="flex justify-start mt-6 gap-3">
-                  <button  type="submit" className=" py-2 bg-[#045D78] text-white rounded-lg  w-[120px] h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Profile </button>
+                  <button  type="submit" className=" py-2 bg-[#045D78] text-white rounded-lg   h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Profile </button>
                 </div>
               </form>
             </div>
