@@ -103,6 +103,10 @@ const PaymentGatewayList = () => {
         }
     };
 
+    const updatedPaymentGateway=()=>{
+
+    }
+
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "150px" },
         { label: " Title", field: "title", sortable: true, minWidth: "180px" },
@@ -110,7 +114,7 @@ const PaymentGatewayList = () => {
         { label: " attributes", field: "attributes", sortable: true, minWidth: "180px" },
         { label: " p_show", field: "p_show", sortable: true, minWidth: "180px" },
         { label: " s_show", field: "s_show", sortable: true, minWidth: "180px" },
-        { label: "Status", field: "status", sortable: true, minWidth: "100px" },
+        { label: "Status", field: "status", sortable: true, minWidth: "130px" },
         { label: 'Actions', field: 'actions', minWidth: '150px', sortable: false },
       ];
 
@@ -128,18 +132,18 @@ const PaymentGatewayList = () => {
                     {/* Card */}
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
                     <Table
-              columns={columns}
-              data={currentPaymentGateway}
-              onSort={sortData}
-              onToggleChange={handleToggleChange}
-            //   onUpdate={up}
-              onDelete={handleDelete}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              paginate={paginate}
-              filteredData={filteredPaymentGateway}
-              loading={isLoading}
-            />
+                        columns={columns}
+                        data={currentPaymentGateway}
+                        onSort={sortData}
+                        onToggleChange={handleToggleChange}
+                        onUpdate={updatedPaymentGateway}
+                        onDelete={handleDelete}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        paginate={paginate}
+                        filteredData={filteredPaymentGateway}
+                        loading={isLoading}
+                    />
                     </div>
                 </div>
             </div>
