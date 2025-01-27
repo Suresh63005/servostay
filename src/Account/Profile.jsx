@@ -63,9 +63,7 @@ const Profile = () => {
     useEffect(()=>{
       async function fetchData(){
           try { 
-              const response = await api.get("admin/userbytoken", {
-                  withCredentials: true,  
-                });
+              const response = await api.get("admin/userbytoken");
               
                 setFormData({
                   id: response.data.id,
