@@ -90,7 +90,7 @@ const handleSubmit = async (e) => {
           <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
                 <ArrowBackIosNewIcon style={{color:'#045D78'}} />
               </Link>
-            <h2 className="text-lg font-semibold ml-4 header" >FAQ's Management</h2>
+            <h2 className="text-lg font-semibold ml-4 header" >FAQ Management</h2>
           </div>
 
           {/* Form Container */}
@@ -100,13 +100,13 @@ const handleSubmit = async (e) => {
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
                   {/* faq question */}
                   <div className="flex flex-col">
-                      <label  htmlFor="question"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ's Question </label>
+                      <label  htmlFor="question"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ Question </label>
                       <input id="question" value={formData.question} onChange={handleChange} name="question" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}} placeholder="Enter question "  />
                   </div>
 
                   {/* faq answer */}
                   <div className="flex flex-col">
-                      <label  htmlFor="answer"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ's Answer </label>
+                      <label  htmlFor="answer"  className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ Answer </label>
                       <input id="answer" value={formData.answer} onChange={handleChange} name="answer" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{  borderRadius: '8px',border: '1px solid #EAEAFF'}}  placeholder="Enter Anwer " />
                   </div>
 
@@ -115,7 +115,7 @@ const handleSubmit = async (e) => {
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
                   {/* page Status */}
                   <div className="flex flex-col">
-                    <label  htmlFor="status"   className="text-sm font-medium text-start text-[12px] font-[Montserrat]" >FAQ's  Status </label>  
+                    <label  htmlFor="status"   className="text-sm font-medium text-start text-[12px] font-[Montserrat]" >FAQ  Status </label>  
 
                     <SelectComponent
                         name="status"
@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
 
                 {/* Action Buttons */}
                 <div className="flex justify-start mt-6 gap-3">
-                  <button  type="submit" className={`py-2 bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[100px]'}`} style={{ borderRadius: "8px", }} > {id ? "Update FAQ's" : "Add FAQ's"}</button>
+                  <button  type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium `} style={{ borderRadius: "8px", }} > {id ? "Update FAQ" : "Add FAQ"}</button>
                 </div>
               </form>
             </div>

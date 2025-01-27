@@ -312,6 +312,15 @@ const PropertiesAdd = () => {
                       <ImageUploader
                         onUploadSuccess={handleImageUploadSuccess}
                       />
+                    {
+                      formData.image && 
+                     <div className="mt-4">
+                          <img
+                            src={formData.image}
+                            alt="Uploaded Preview"
+                            className="w-[50px] h-[50px] object-cover rounded"
+                          />
+                        </div>}
                       {error2 && (<p className="text-red-500 text-sm mt-2">{error2}</p>)}
                     </div>
 
@@ -331,7 +340,6 @@ const PropertiesAdd = () => {
                           }));
                         }}
                         options={[
-                          
                           { value: 1, label: 'yes' },
     { value: 0, label: 'No' },
                         ]}
@@ -858,7 +866,7 @@ const PropertiesAdd = () => {
 
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className={`py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: '8px' }}   >
+                    <button type="submit" className={`px-4 py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}   >
                       {id ? 'Update Property' : 'Add  Property'}
                     </button>
                   </div>

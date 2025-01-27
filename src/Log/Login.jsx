@@ -30,6 +30,7 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(formData,"from datraaaaaaaaaaa")
     e.preventDefault();
     try {
       const res = await api.post('/admin/login', formData);

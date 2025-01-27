@@ -180,7 +180,7 @@ const FacilityAdd = () => {
 
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className={`py-2 bg-[#045D78] text-white rounded-lg   h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: "8px", }} > {id ? 'Update Facility' : 'Add Facility'} </button>
+                    <button type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg   h-10 font-poppins font-medium `} style={{ borderRadius: "8px", }} > {id ? 'Update Facility' : 'Add Facility'} </button>
                   </div>
                 </form>
 
