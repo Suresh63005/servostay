@@ -32,6 +32,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import { MdAdminPanelSettings } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdManageAccounts } from "react-icons/md";import axios from "axios";
+import { FaCity } from "react-icons/fa";
 import Loader from "../common/Loader";
 import api from "../utils/api"
 
@@ -172,6 +173,28 @@ const SidebarMenu = () => {
                   List Countries
                 </MenuItem>
               </SubMenu>
+
+        {/* City */}
+        <SubMenu label="City" active={location.pathname === "/add-city" || location.pathname === "/city-list"} icon={<FaCity  />}>
+                  <MenuItem icon={<KeyboardArrowRightOutlinedIcon/>} className="sub-menu-item"
+                    onClick={()=>{
+                      navigate("/add-city");
+                      toggleSidebar1();
+                    }}
+                  >
+                    Add City                    
+                  </MenuItem>
+                  <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
+
+
+                  onClick={() => {
+                    navigate("/city-list");
+                    toggleSidebar1();
+                  }}
+                >
+                City List
+                </MenuItem>
+        </SubMenu>
 
               {/* category */}
               <SubMenu label="Category" active={location.pathname === "/add-category" || location.pathname === "/category-list"} icon={<RxHamburgerMenu />}>

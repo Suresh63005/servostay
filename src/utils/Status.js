@@ -49,6 +49,9 @@ export const StatusEntity = async (
       case "Country":
         url = `countries/toggle-status`;
         break;
+      case "City":
+        url = `cities/toggle-status`;
+        break;
       default:
         throw new Error(`Invalid entity type: ${entityType}`);
     }
