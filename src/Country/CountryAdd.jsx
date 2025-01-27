@@ -192,7 +192,7 @@ const CountryAdd = () => {
                           <img
                             src={formData.img}
                             alt="Uploaded Preview"
-                            className="w-32 h-32 object-cover rounded"
+                            className="w-[50px] h-[50px] object-cover rounded"
                           />
                         </div>
                       )}
@@ -225,7 +225,7 @@ const CountryAdd = () => {
                   <div className="flex justify-start mt-6 gap-3">
                     <button
                       type="submit"
-                      className={`py-2 bg-[#045D78]  text-white rounded-lg   h-10 font-poppins font-medium`}
+                      className={`py-2 px-4 bg-[#045D78]  text-white rounded-lg   h-10 font-poppins font-medium`}
                       style={{ borderRadius: "8px" }}
                     >
                       {id ? "Update Country" : "Add Country"}

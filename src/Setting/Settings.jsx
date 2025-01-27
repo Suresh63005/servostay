@@ -173,10 +173,10 @@ const Settings = () => {
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
         {/* Sidebar */}
-        <main className="flex-grow">
+        <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
-            <div className="flex items-center mt-6">
+            <div className="flex items-center ">
               {/* <Link to="/rolesList" className="cursor-pointer ml-6">
               
             </Link> */}
@@ -190,13 +190,13 @@ const Settings = () => {
 
             {/* Form Container */}
             <div className="h-full px-6 max-w-5xl" >
-              <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
+              <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-thin ">
                 <form className="mt-4" onSubmit={handleSubmit}>
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-3 mt-6">
                     {/* website Name*/}
                     <div className="flex flex-col">
                       <label htmlFor="webname" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> <span style={{ color: 'red' }}>*</span> Website Name </label>
-                      <input id="webname" name="webname" type="text" value={formData.webname} required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="webname" name="webname" type="text" value={formData.webname} required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                       />
                     </div>
@@ -205,10 +205,10 @@ const Settings = () => {
                     <div className="flex flex-col">
                       <label htmlFor="weblogo" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"><span style={{ color: 'red' }}>*</span>Website Image</label>
                       <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
-                      <img width={100} src={formData.weblogo} alt="" />
+                      <img width={50} src={formData.weblogo} alt="" />
                     </div>
                     
-                    <div className="grid gap-32  w-max sm:grid-cols-1 md:grid-cols-3  ">
+                    <div className="grid  gap-4 w-full sm:grid-cols-1 md:grid-cols-3">
                       {/* currency */}
                       <div className="flex flex-col">
                         <label htmlFor="currency" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">
@@ -220,7 +220,7 @@ const Settings = () => {
                           type="text"
                           value={formData.currency}
                           required
-                          className="border rounded-lg p-3 mt-1 w-full h-14"
+                          className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                           style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                           onChange={handleChange}
                         />
@@ -234,10 +234,10 @@ const Settings = () => {
                         <input
                           id="tax"
                           name="tax"
-                          type="text"
+                          type="number"
                           required
                           value={formData.tax}
-                          className="border rounded-lg p-3 mt-1 w-full h-14"
+                          className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                           style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                           onChange={handleChange}
                           placeholder="e.g 5"
@@ -252,10 +252,10 @@ const Settings = () => {
                         <input
                           id="admin_tax"
                           name="admin_tax"
-                          type="text"
+                          type="number"
                           required
                           value={formData.admin_tax}
-                          className="border rounded-lg p-3 mt-1 w-full h-14"
+                          className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                           style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                           onChange={handleChange}
                           placeholder="e.g 5"
@@ -333,7 +333,7 @@ const Settings = () => {
                   </div>
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className=" py-2  text-white rounded-lg bg-[#045D78] w-[140px] h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Setting's </button>
+                    <button type="submit" className=" px-4 py-2  text-white rounded-lg bg-[#045D78]  h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Setting's </button>
                   </div>
                 </form>
               </div>
