@@ -118,7 +118,7 @@ const CategoryAdd = () => {
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
         {/* Sidebar */}
-        <main className="flex-grow">
+        <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
@@ -130,13 +130,13 @@ const CategoryAdd = () => {
 
             {/* Form Container */}
             <div className="h-full px-6 max-w-5xl " style={{ paddingTop: '24px' }}>
-              <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
+              <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
                     {/* category name */}
                     <div className="flex flex-col">
                       <label htmlFor="category_name" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Category name </label>
-                      <input id="category_name" name="title" value={formData.title} type="text" required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="category_name" name="title" value={formData.title} type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                         placeholder="Enter Category Title"
                       />

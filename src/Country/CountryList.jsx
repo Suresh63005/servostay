@@ -33,10 +33,10 @@ const CountryList = () => {
     useEffect(() => {
         setIsLoading(true);
         const timer = setTimeout(() => {
-            setIsLoading(false);
+          setIsLoading(false);
         }, 1000);
         return () => clearTimeout(timer);
-    }, [location, setIsLoading]);
+      }, [ location, setIsLoading]);
 
     const fetchCountries = async () => {
         try {
@@ -168,8 +168,7 @@ const CountryList = () => {
                                                     <td className="px-4 py-1 text-sm">
                                                         {country?.currency && Object.keys(CountryCodes).find(key => CountryCodes[key] === country.currency)
                                                             ? `${Object.keys(CountryCodes).find(key => CountryCodes[key] === country.currency)} (${country.currency})`
-                                                            : (country?.currency ? country.currency : "N/A")}
-
+                                                            : "N/A"}
                                                     </td>
                                                     <td className="px-4 py-1 text-sm">
                                                         {country.img && country.img.trim() !== '' ? (
@@ -243,11 +242,11 @@ const CountryList = () => {
                                     </span>
                                 </li>
                                 <li>
-                                    <button style={{ background: '#045D78' }}
+                                    <button style={{background:'#045D78'}}
                                         onClick={() => paginate(currentPage < totalPages ? currentPage + 1 : totalPages)}
                                         className={`next-button ${filteredCountries.length === 0 ? 'cursor-not-allowed' : ''}`}
                                         disabled={currentPage === totalPages || filteredCountries.length === 0}
-                                        title={filteredCountries.length === 0 ? 'No data available' : ''}
+                                        title={filteredCountries.length === 0 ? 'No data available' : '' }
                                     >
                                         Next <img src="/image/action/Right Arrow (1).svg" alt="Right" />
                                     </button>

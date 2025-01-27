@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IoLocationOutline } from "react-icons/io5";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { PiUsersBold } from "react-icons/pi";
-import { LuCheckSquare } from "react-icons/lu";
-import { BsCheck2Circle } from "react-icons/bs";
-import { IoEyeOutline } from "react-icons/io5";
-import { MdOutlineCalendarToday } from "react-icons/md";
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -57,73 +57,73 @@ const DashboardCard = () => {
 
     const cards = [
         {
-            card_logoIcon: <IoLocationOutline className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <LocationOnOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Countries",
             card_desc: "Number of countries",
             card_data_key: "countryCount",
         },
         {
-            card_logoIcon: <GiHamburgerMenu className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <MenuOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Categories",
             card_desc: "Number of Categories",
             card_data_key: "categoryCount",
         },
         {
-            card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Coupons",
             card_desc: "Number of Coupons",
             card_data_key: "couponCount",
         },
         {
-            card_logoIcon: <CurrencyRupeeIcon className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <CurrencyRupeeIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Payment Methods",
             card_desc: "Number of Payment Methods",
             card_data_key: "paymentCount",
         },
         {
-            card_logoIcon: <HomeOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <HomeOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Properties",
             card_desc: "Number of Properties",
             card_data_key: "propertyCount",
         },
         {
-            card_logoIcon: <ManageAccountsOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <ManageAccountsOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Facilities",
             card_desc: "Number of Facilities",
             card_data_key: "facilityCount",
         },
         {
-            card_logoIcon: <MdOutlineCalendarToday className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <CalendarTodayOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Bookings",
             card_desc: "Number of Bookings",
             card_data_key: "bookedCount",
         },
         {
-            card_logoIcon: <LuCheckSquare className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <CheckBoxOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Confirmed Bookings",
             card_desc: "Number of Confirmed Bookings",
             card_data_key: "confirmedCount",
         },
         {
-            card_logoIcon: <IoEyeOutline className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <RemoveRedEyeOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Check-In",
             card_desc: "Number of Check-In",
             card_data_key: "checkInCount",
         },
         {
-            card_logoIcon: <BsCheck2Circle className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <TaskAltOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Completed Bookings",
             card_desc: "Number of Completed Bookings",
             card_data_key: "completedCount",
         },
         {
-            card_logoIcon: <PermMediaOutlinedIcon className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <PermMediaOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Extra Images",
             card_desc: "Number of Extra Images",
             card_data_key: "extraImagesCount",
         },
         {
-            card_logoIcon: <PiUsersBold className="text-[#045D78] text-[25px]" />,
+            card_logoIcon: <PeopleAltOutlinedIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Users",
             card_desc: "Number of Users",
             card_data_key: "usersCount",
@@ -152,7 +152,7 @@ const DashboardCard = () => {
                                                 <CountUp
                                                     start={0}
                                                     end={dataCounts?.[card.card_data_key] ?? 0}
-                                                    duration={10}
+                                                    duration={7}
                                                     separator=","
                                                 />
                                             )}

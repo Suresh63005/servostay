@@ -117,7 +117,7 @@ const FacilityAdd = () => {
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
         {/* Sidebar */}
-        <main className="flex-grow">
+        <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
@@ -129,14 +129,14 @@ const FacilityAdd = () => {
 
             {/* Form Container */}
             <div className="h-full px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
-              <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none" >
+              <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none" >
                 {/* <p className='text-left font-bold font-[Montserrat]' >Create Service</p> */}
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
                     {/* facility name */}
                     <div className="flex flex-col">
                       <label htmlFor="title" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Name</label>
-                      <input id="title" name="title" type="text" value={formData.title} required className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="title" name="title" type="text" value={formData.title} placeholder='Enter Facility Name' required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                       />
                     </div>
@@ -150,7 +150,7 @@ const FacilityAdd = () => {
                           <img
                             src={formData.img}
                             alt="Uploaded Preview"
-                            className="w-32 h-32 object-cover rounded"
+                            className="w-[50px] h-[50px] object-cover rounded"
                           />
                         </div>
                       )}
