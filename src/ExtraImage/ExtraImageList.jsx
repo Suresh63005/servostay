@@ -9,10 +9,8 @@ import { handleSort } from "../utils/sorting";
 import { DeleteEntity } from "../utils/Delete";
 import { useNavigate } from "react-router-dom";
 import { NotificationContainer } from "react-notifications";
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
-
 import api from "../utils/api";
 import { StatusEntity } from "../utils/Status";
 import { useLoading } from "../Context/LoadingContext";
@@ -126,18 +124,18 @@ const ExtraImageList = () => {
                     <ExtraImageHeader onSearch={handleSearch} />
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
                     <Table
-              columns={columns}
-              data={currentImages}
-              onSort={sortData}
-              onToggleChange={handleToggleChange}
-              onUpdate={updateExtraImage}
-              onDelete={handledelete}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              paginate={paginate}
-              filteredData={filteredImages}
-              loading={isLoading}
-            />
+                        columns={columns}
+                        data={currentImages}
+                        onSort={sortData}
+                        onToggleChange={handleToggleChange}
+                        onUpdate={updateExtraImage}
+                        onDelete={handledelete}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        paginate={paginate}
+                        filteredData={filteredImages}
+                        loading={isLoading}
+                    />
                     </div>
                 </div>
             </div>

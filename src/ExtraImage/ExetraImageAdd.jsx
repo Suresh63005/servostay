@@ -98,7 +98,8 @@ const ExtraImageAdd = () => {
             // console.log('Extra image added successfully:', response.data);
             if(response.status === 200 || response.status === 201){
                 NotificationManager.removeAll();
-                NotificationManager.success('Extra image added successfully!')
+                const successMessage = id ? `Coupon Updated Successfully` : `Coupon Added Successfully!`;
+                NotificationManager.success(successMessage);
                 setTimeout(() => {
                     navigate("/extra-image-list")
                 }, 2000);
