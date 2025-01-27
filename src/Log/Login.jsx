@@ -34,11 +34,13 @@ const Login = () => {
     try {
       const res = await api.post('/admin/login', formData);
 
+
       NotificationManager.success('Admin logged in successfully!');
       Cookies.set('user', res.data.token, {
         expires: 1, 
         secure: true,
       });
+
 
       
       const previousPage = location.state?.from || '/dashboard'; 
@@ -70,7 +72,7 @@ const Login = () => {
           className="w-full max-w-md bg-white rounded-xl p-8 border border-gray-300"
           style={{
             boxShadow: `0px 0px 5px 0px #0000001A, 0px 0px 10px 0px #00000017, 0px 0px 13px 0px #0000000D, 0px 0px 15px 0px #00000003, 0px 0px 17px 0px #00000000`,
-          }}                  
+          }}
         >
           <h2 className="auth-head">Welcome </h2>
           <p className="text-[#045D78] float-left mb-[38px] ml-[5px] mt-[10px] leading-[26px]">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom'
-import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ImageUploader from '../common/ImageUploader';
 import axios from 'axios';
 import { useLoading } from '../Context/LoadingContext';
@@ -12,7 +12,7 @@ import 'react-notifications/lib/notifications.css';
 import api from '../utils/api';
 import Select from 'react-select';
 import SelectComponent from '../common/SelectComponent';
-import {statusoptions} from '../common/data';
+import { statusoptions } from '../common/data';
 
 const CategoryAdd = () => {
   const navigate = useNavigate();
@@ -34,13 +34,13 @@ const CategoryAdd = () => {
   }, [id])
 
 
-   
+
 
   const getCategory = async () => {
     try {
       const response = await api.get(`/categories/${id}`)
       const Category = response.data;
-      console.log("Category Data: ", response.data) 
+      console.log("Category Data: ", response.data)
       setFormData({
         id,
         title: Category.title,
@@ -112,7 +112,7 @@ const CategoryAdd = () => {
       console.error("Error submitting Category:", error);
       NotificationManager.error("Error submitting Category:", error);
     }
-  }; 
+  };
   return (
     <div>
       {isLoading && <Loader />}
@@ -123,7 +123,7 @@ const CategoryAdd = () => {
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
               <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
-                <ArrowBackIosNewIcon style={{color:'#045D78'}} />
+                <ArrowBackIosNewIcon style={{ color: '#045D78' }} />
               </Link>
               <h2 className="text-lg font-semibold ml-4 " style={{ color: '#000000', fontSize: '24px', fontFamily: 'Montserrat' }}>Create Category</h2>
             </div>
@@ -164,17 +164,17 @@ const CategoryAdd = () => {
                     <div className="flex flex-col">
                       <label htmlFor="category_status" className="text-sm font-medium text-start text-[12px] font-[Montserrat]" > Status </label>
                       <SelectComponent
-                      
-                      name="status"
-                      value={formData.status}
-                      onChange={(selectedOption) => {
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          status: selectedOption.value,
-                        }));
-                      }}
-                      options={statusoptions}
-                    />
+
+                        name="status"
+                        value={formData.status}
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            status: selectedOption.value,
+                          }));
+                        }}
+                        options={statusoptions}
+                      />
 
                     </div>
                   </div>

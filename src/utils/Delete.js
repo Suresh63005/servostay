@@ -90,6 +90,10 @@ export const DeleteEntity = async (entity, id) => {
         case "Property":
           await api.delete(`properties/delete/${id}?forceDelete=true`);
           break;
+        
+        case "City":
+          await api.delete(`cities/delete/${id}?forceDelete=true`);
+          break;
 
         default:
           throw new Error(`Unknown entity: ${entity}`);

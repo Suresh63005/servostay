@@ -48,6 +48,8 @@ import ErrorBoundary from "./ErrorBoundary.jsx";
 import ProtectedRoute from "./ProtectedRoute.js";
 import ProductTable from "./common/ProductTable.js";
 import UserTable from "./common/UserTable.js";
+import CityAdd from "./City/CityAdd.jsx";
+import CityList from "./City/CityList.jsx";
 
 
 const LayoutWithSidebar = ({ children }) => (
@@ -123,6 +125,22 @@ function App() {
                   </LayoutWithSidebar>
                   </ProtectedRoute>
                 }
+              />
+              <Route
+                path="/add-city"
+                element={<ProtectedRoute>
+                  <LayoutWithSidebar>
+                    <CityAdd/>
+                  </LayoutWithSidebar>
+                </ProtectedRoute>}
+              />
+              <Route
+                path="/city-list"
+                element={<ProtectedRoute>
+                  <LayoutWithSidebar>
+                    <CityList/>
+                  </LayoutWithSidebar>
+                </ProtectedRoute>}
               />
               <Route
                 path="/add-cuppon"
