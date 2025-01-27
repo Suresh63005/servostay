@@ -197,24 +197,6 @@ const CountryAdd = () => {
                         </div>
                       )}
                     </div>
-                    {/* Cities */}
-                    <div className="flex flex-col">
-                      <label htmlFor="city" className="text-sm font-medium mt-[2px] text-start text-[12px] font-[Montserrat]">
-                        City
-                      </label>
-                      <select name="city" id="city" 
-                      onChange={handleChange}
-                      value={formData.city}
-                      required
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring- focus:border-[#045D78] outline-none  text-sm mySelect"
-                      
-                      >
-                        <option value="" disabled>Select City</option>
-                        {Cities.map((city, index) => (
-                          <option key={index} value={city}>{city}</option>
-                        ))}
-                      </select>
-                    </div>
                     {/* Country Status */}
                     <div className="flex flex-col">
                       <label
