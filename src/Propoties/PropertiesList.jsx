@@ -16,6 +16,7 @@ import { useLoading } from '../Context/LoadingContext';
 
 const PropotiesList = () => {
     const [properties, setProperties] = useState([]);
+
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +27,8 @@ const PropotiesList = () => {
         const fetchProperties = async () => {
             try {
                 const response = await api.get('/properties');
+                console.log("Property data:", response.data);
+
                 const fetchedProperties = response.data.map((property) => {
                     return {
                         ...property,
@@ -104,17 +107,17 @@ const PropotiesList = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        
+
         const timer = setTimeout(() => {
-          setIsLoading(false);
+            setIsLoading(false);
         }, 1000);
         return () => clearTimeout(timer);
-      }, [ setIsLoading]);
+    }, [setIsLoading]);
 
     // Pagination calculations
-    const indexOfLastItem = currentPage * itemsPerPage; 
+    const indexOfLastItem = currentPage * itemsPerPage;
     console.log(indexOfLastItem)
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage; 
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     console.log(indexOfFirstItem)
     const currentProperties = filteredProperties.slice(indexOfFirstItem, indexOfLastItem);
     console.log(currentProperties)
@@ -133,7 +136,7 @@ const PropotiesList = () => {
         }
         try {
             await StatusEntity("Property", id, currentStatus, setFilteredProperties, filteredProperties, field);
-            
+
         } catch (error) {
             console.error("Error toggling property status:", error);
         }
@@ -182,7 +185,7 @@ const PropotiesList = () => {
                                             <th className=" py-2 min-w-[140px]">
                                                 Property Image
                                             </th>
-                                            
+
                                             <th className=" py-2 min-w-[150px]">
                                                 property Tittle
                                                 <div className="inline-flex items-center ml-2">
@@ -368,11 +371,18 @@ const PropotiesList = () => {
                                                             onClick={() => handlePanoramaToggle(property.id, property.is_panorama, "is_panorama")}
                                                         />
                                                     </td>
-                                                    
+
                                                     <td className=" ">{property.category?.title || 'N/A'}</td>
                                                     <td className=" ">{property?.description || 'N/A'}</td>
                                                     <td className=" ">{property?.address || 'N/A'}</td>
-                                                    <td className=" ">{property?.city || 'N/A'}</td>
+                                                    {/* <td className=" ">{property?.city || 'N/A'}</td> */}
+                                                    <td className=" ">
+                                                        {property?.city && property?.country?.title
+                                                            ? `${property.city} (${property.country.title})`
+                                                            : 'N/A'}
+                                                    </td>
+
+
                                                     {/* <td className=" ">{property?.listing_date || 'N/A'}</td> */}
                                                     <td className=" ">
                                                         {property?.listing_date ? new Date(property.listing_date).toISOString().split("T")[0] : 'N/A'}
@@ -462,7 +472,7 @@ const PropotiesList = () => {
                                     </span>
                                 </li>
                                 <li>
-                                    <button style={{background:'#045D78'}}
+                                    <button style={{ background: '#045D78' }}
                                         onClick={() => paginate(currentPage < totalPages ? currentPage + 1 : totalPages)}
                                         className={`next-button ${filteredProperties.length === 0 ? 'cursor-not-allowed button-disable' : ''}`}
                                         disabled={currentPage === totalPages || filteredProperties.length === 0}
