@@ -3,38 +3,29 @@ import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ImageUploader from '../common/ImageUploader';
-import axios from 'axios';
 import { useLoading } from '../Context/LoadingContext';
 import { useLocation } from 'react-router-dom';
 import Loader from '../common/Loader';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import api from '../utils/api';
-import Select from 'react-select';
 import SelectComponent from '../common/SelectComponent';
 import { statusoptions } from '../common/data';
+import { Vortex } from 'react-loader-spinner';
 
 const CategoryAdd = () => {
   const navigate = useNavigate();
   const location = useLocation()
   const id = location.state ? location.state.id : null;
-  console.log(id, "form id")
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const [error, setError] = useState("");
-  const [formData, setFormData] = useState({
-    id: id || null,
-    title: '',
-    img: '',
-    status: 0,
-  });
+  const [formData, setFormData] = useState({  id: id || null,  title: '',  img: '',  status: 0,});
   useEffect(() => {
     if (id) {
       getCategory()
     }
   }, [id])
-
-
-
 
   const getCategory = async () => {
     try {
@@ -86,7 +77,7 @@ const CategoryAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     if (!formData.img) {
       setError("Image is required.");
       return;
@@ -111,8 +102,11 @@ const CategoryAdd = () => {
       NotificationManager.removeAll();
       console.error("Error submitting Category:", error);
       NotificationManager.error("Error submitting Category:", error);
+    }finally{
+      setloading(false)
     }
   };
+
   return (
     <div>
       {isLoading && <Loader />}
@@ -151,7 +145,7 @@ const CategoryAdd = () => {
                           <img
                             src={formData.img}
                             alt="Uploaded Preview"
-                            className="w-32 h-32 object-cover rounded"
+                            className="w-[50px] h-[50px] object-cover rounded"
                           />
                         </div>
                       )}
@@ -180,8 +174,20 @@ const CategoryAdd = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <button type="submit" className={`py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: '8px' }}   >
-                    {id ? 'Update Category' : 'Add  Category'}
+                  <button type="submit" disabled={loading} className={`py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: '8px' }}   >
+                    {loading ? (
+                      <Vortex
+                        visible={true}
+                        height="25"
+                        width="100%"
+                        ariaLabel="vortex-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="vortex-wrapper"
+                        colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                      />
+                    ): (
+                      id ? `Update Category` : `Add  Category`
+                    )}
                   </button>
                 </form>
 

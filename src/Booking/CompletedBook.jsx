@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '../components/Header';
-import SidebarMenu from '../components/SideBar';
+// import SidebarMenu from '../components/SideBar';
 import { GoArrowDown, GoArrowUp } from 'react-icons/go';
-import axios from 'axios';
+// import axios from 'axios';
 import PendingBookHeader from './PendingBookHeader';
 import 'jspdf-autotable';
 import OrderPreviewModal from './OrderPreviewModal';
@@ -54,7 +54,6 @@ const CompletedBook = () => {
         handleSort(filteredcompleted, key, sortConfig, setSortConfig, setFilteredcompleted)
     };
 
-
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
     const currentcompleted = filteredcompleted.slice(indexOfFirst, indexOfLast);
@@ -79,8 +78,8 @@ const CompletedBook = () => {
                     <Header />
                     <PendingBookHeader onSearch={handleSearch} />
 
-                    <div className="py-6 px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
-                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-3 overflow-x-auto scrollbar-thin  ${filteredcompleted.length > 0 ? 'h-[500px]' : ''}`}>
+                    <div className=" px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto scrollbar-thin  ${filteredcompleted.length > 0 ? 'max-h-[380px]' : ''}`}>
 
                             <div className="relative sm:rounded-lg scrollbar-thin overflow-y-auto">
                                 <table className="min-w-full text-sm text-left text-gray-700">

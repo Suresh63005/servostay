@@ -3,14 +3,15 @@ import { NotificationIcon, ProfileIcon } from "./Icons";
 import { FaUser, FaSignOutAlt, FaCog } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import api from "../utils/api";
 import  Cookies from 'js-cookie'
+import { useLoading } from "../Context/LoadingContext";
 
 const Header = () => {
   const [showCard, setShowCard] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [hideTimeout, setHideTimeout] = useState(null);
+  const { isLoading, setIsLoading } = useLoading();
 
   const logout = async () => {
     setLoading(true);

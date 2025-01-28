@@ -3,7 +3,6 @@ import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import { Link, useNavigate } from 'react-router-dom';
 
 const CategoryHeader = ({ onSearch }) => {
-
     const navigate = useNavigate()
 
     return (
