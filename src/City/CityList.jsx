@@ -44,7 +44,7 @@ const CityList = () => {
             NotificationManager.error("No authentication token found. Please log in.");
             return;
         }
-    
+        setIsLoading(true);
         try {
             const response = await api.get("/cities/active-cities", {
                 headers: { Authorization: `Bearer ${token}` },
@@ -62,6 +62,7 @@ const CityList = () => {
                 }));
                 setCities(citiesWithCountry);
                 setFilteredCities(citiesWithCountry);
+                
             } else {
                 console.error("Unexpected data format:", response.data);
                 setCities([]);
@@ -72,6 +73,8 @@ const CityList = () => {
             NotificationManager.error("Failed to fetch cities. Please try again.");
             setCities([]);
             setFilteredCities([]);
+        }finally{
+            setIsLoading(false);
         }
     };
 
