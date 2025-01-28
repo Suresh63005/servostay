@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faToggleOn, faToggleOff, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NotificationContainer } from 'react-notifications';
 import { ColorRing } from 'react-loader-spinner';
+import { BarLoader, BeatLoader } from 'react-spinners';
 
 const Table = ({
     columns,
@@ -48,19 +49,7 @@ const Table = ({
         }
     };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-64">
-                <ColorRing
-                    visible={true}
-                    height="80"
-                    width="80"
-                    ariaLabel="loading-indicator"
-                    colors={['#045D78', '#045D78', '#045D78', '#045D78', '#045D78']}
-                />
-            </div>
-        );
-    }
+    
 
     return (
         <div>
@@ -68,7 +57,18 @@ const Table = ({
                 <div className="relative sm:rounded-lg max-h-[380px] scrollbar-thin overflow-y-auto">
                     <div className="flex-grow max-h-[380px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
-                            <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0">
+                            {loading ? (<div className="flex flex-col justify-center items-center h-64">
+                {/* <BeatLoader 
+                    
+                    
+                    size={15} color="#045D78"
+                /> */}
+
+                <img width={100} src="image/Hotels Search.gif" alt="loading" />
+                
+            </div>):(
+                <>
+                <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0">
                                 <tr>
                                     {columns.map((col, index) => (
                                         <th key={index} className={`px-4 py-2 ${col.minWidth ? `min-w-[${col.minWidth}]` : 'min-w-[120px]'}`}>
@@ -151,6 +151,10 @@ const Table = ({
                                     </tr>
                                 )}
                             </tbody>
+                </>
+            )
+            }
+                            
                         </table>
                     </div>
                 </div>

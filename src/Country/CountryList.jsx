@@ -40,11 +40,13 @@ const CountryList = () => {
     //   }, [ location, setIsLoading]);
 
     const fetchCountries = async () => {
+        setIsLoading(true);
         try {
             const response = await api.get("/countries/all")
             console.log(response.data)
             setCountries(response.data);
             setFilteredCountries(response.data);
+            setIsLoading(false);
         } catch (error) {
             console.error("Error fetching countries:", error);
         }

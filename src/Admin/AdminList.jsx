@@ -296,7 +296,7 @@ const AdminList = () => {
                                 <Form.Group controlId="formPassword">
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control
-                                        type="password"
+                                        type="text"
                                         name="password"
                                         value={editForm.password}
                                         onChange={handleEditChange} />
@@ -307,7 +307,7 @@ const AdminList = () => {
                                         type="text"
                                         name="userType"
                                         value={editForm.userType}
-                                        onChange={handleEditChange} />
+                                        onChange={handleEditChange}/>
                                 </Form.Group>
                             </Form>
                         </Modal.Body>
