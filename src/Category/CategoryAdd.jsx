@@ -20,7 +20,9 @@ const CategoryAdd = () => {
   const { isLoading, setIsLoading } = useLoading();
   const [loading,setloading]=useState(false)
   const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({  id: id || null,  title: '',  img: '',  status: 0,});
+
   useEffect(() => {
     if (id) {
       getCategory()
@@ -62,21 +64,27 @@ const CategoryAdd = () => {
     }));
   };
 
-  const handleImageUploadSuccess = (imageUrl) => {
-    const extension = imageUrl.split(".").pop().toLowerCase();
-    if (extension !== "svg") {
-      setError("Only SVG files are allowed");
-      return;
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type !== "image/svg+xml") {
+        setError("Only SVG files are allowed.");
+        setFormData((prevData) => ({ ...prevData, img: null, previewUrl: null }));
+        return;
+      }
+        const previewUrl = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        img: file,
+        previewUrl: previewUrl,
+      }));
+      setError(""); 
     }
-    setError("");
-    setFormData((prevData) => ({
-      ...prevData,
-      img: imageUrl,
-    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setloading(true)
     if (!formData.img) {
       setError("Image is required.");
@@ -86,19 +94,37 @@ const CategoryAdd = () => {
     // console.log("Form submitted:", formData);
     const url = `categories/upsert`;
     const successMessage = id ? 'Category Updated Succesfully!' : 'Category Added Successfully!'
+
     try {
-      const response = await api.post(url, formData, { withCredentials: true });
-      if (response.status === 200 || response.status === 201) {
-        NotificationManager.removeAll();
-        NotificationManager.success(successMessage)
-        setTimeout(() => {
+      if (!formData.img) {
+        setError("Please upload an image in SVG format.");
+        setIsLoading(false);
+        return;
+      }
+  
+      const data = new FormData();
+      data.append("id", formData.id || "");
+      data.append("title", formData.title);
+      data.append("img", formData.img);
+      data.append("status", formData.status);
+  
+      const response = await api.post(
+        `/categories/upsert`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      
+      NotificationManager.success(id ? "Category updated successfully!" : "Category added successfully!");
+      
+      setTimeout(() => {
           navigate("/category-list");
         }, 2000);
-      } else {
-        throw new Error('Unexpected server response')
-      }
-
     } catch (error) {
+
       NotificationManager.removeAll();
       console.error("Error submitting Category:", error);
       NotificationManager.error("Error submitting Category:", error);
@@ -106,6 +132,7 @@ const CategoryAdd = () => {
       setloading(false)
     }
   };
+
 
   return (
     <div>
@@ -139,16 +166,25 @@ const CategoryAdd = () => {
                     {/* category image*/}
                     <div className="flex flex-col">
                       <label htmlFor="category_image" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Category Image</label>
-                      <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
-                      {formData.img && (
-                        <div className="mt-4">
-                          <img
-                            src={formData.img}
-                            alt="Uploaded Preview"
-                            className="w-[50px] h-[50px] object-cover rounded"
-                          />
-                        </div>
-                      )}
+
+                      {/* <ImageUploader onUploadSuccess={handleImageUploadSuccess} /> */}
+                      <input
+        type="file"
+        accept=".svg"
+        onChange={handleFileChange}
+        className="border rounded-lg p-2 mt-1 w-full h-14"
+        style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
+      />
+                      {formData.previewUrl && (
+  <div className="mt-4">
+    <img
+      src={formData.previewUrl}
+      alt="Uploaded Preview"
+      className="w-[50px] h-[50px] object-cover rounded"
+    />
+  </div>
+)}
+
                       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                     </div>
                   </div>
@@ -174,7 +210,8 @@ const CategoryAdd = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <button type="submit" disabled={loading} className={`py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: '8px' }}   >
+
+                  <button type="submit" disabled={loading} className={`py-2 px-4 mt-6 float-start bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}   >
                     {loading ? (
                       <Vortex
                         visible={true}
@@ -188,6 +225,7 @@ const CategoryAdd = () => {
                     ): (
                       id ? `Update Category` : `Add  Category`
                     )}
+
                   </button>
                 </form>
 
