@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Table, Modal, Button, Form } from 'react-bootstrap';
+// import axios from 'axios';
+import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaPen, FaTrash } from "react-icons/fa";
 import Header from '../components/Header';
@@ -17,7 +17,6 @@ import { handleSort } from '../utils/sorting';
 import { GoArrowDown, GoArrowUp } from 'react-icons/go';
 
 const AdminList = () => {
-    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const adminsPerPage = 10;
     const { isLoading, setIsLoading } = useLoading();
@@ -28,16 +27,8 @@ const AdminList = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [adminToEdit, setAdminToEdit] = useState(null);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
-    const [editForm, setEditForm] = useState({
-        username: '',
-        password: '',
-        userType: ''
-    });
-    const [addForm, setAddForm] = useState({
-        username: '',
-        password: '',
-        userType: 'admin'
-    });
+    const [editForm, setEditForm] = useState({ username: '', password: '',rType: ''});
+    const [addForm, setAddForm] = useState({    username: '',    password: '',    userType: 'admin'});
 
     useEffect(() => {
         fetchAdmins();
@@ -58,6 +49,14 @@ const AdminList = () => {
             console.error('Error fetching admins:', error);
         }
     };
+
+    useEffect(() => {
+        setIsLoading(true);
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, [location, setIsLoading])
 
     // Handle sorting
     const sortData = (key) => {
@@ -107,9 +106,8 @@ const AdminList = () => {
         setAddForm({ ...addForm, [e.target.name]: e.target.value });
     };
 
-
     const handleAdd = async () => {
-        console.log("Form Data: ", addForm)
+        // console.log("Form Data: ", addForm)
         try {
             const response = await api.post('/admin/register', addForm, { withCredentials: true });
             console.log(response.status)
@@ -135,7 +133,6 @@ const AdminList = () => {
         }
     };
 
-
     // Search functionality
     const handleSearch = (event) => {
         const querySearch = event.target.value.toLowerCase();
@@ -152,14 +149,6 @@ const AdminList = () => {
         setCurrentPage(1);
 
     };
-
-    useEffect(() => {
-        setIsLoading(true);
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, [location, setIsLoading])
 
     const indexOfLastAdmin = currentPage * adminsPerPage;
     const indexOfFirstAdmin = indexOfLastAdmin - adminsPerPage;

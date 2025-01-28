@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '../components/Header';
 import { GoArrowDown, GoArrowUp } from 'react-icons/go';
-import axios from 'axios';
+// import axios from 'axios';
 import PendingBookHeader from './PendingBookHeader';
 import 'jspdf-autotable';
 import { useNavigate } from 'react-router-dom';
 import OrderPreviewModal from './OrderPreviewModal';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import { handleSort, sortData } from '../utils/sorting'
+import { handleSort } from '../utils/sorting'
 import api from '../utils/api';
 
 const CheckInBook = () => {
@@ -73,11 +73,7 @@ const CheckInBook = () => {
 
     const navigateApprove = async (id, newStatus) => {
         try {
-            const response = await api.put(
-                `bookings/status/${id}`,
-                { status: newStatus },
-                { withCredentials: true }
-            );
+            const response = await api.put( `bookings/status/${id}`, { status: newStatus }, { withCredentials: true });
             if (response.status === 200) {
                 NotificationManager.removeAll();
                 NotificationManager.success('Status updated successfully!');
@@ -101,7 +97,7 @@ const CheckInBook = () => {
                     <PendingBookHeader onSearch={handleSearch} />
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
 
-                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-3 overflow-x-auto ${filteredcheckIn.length > 0 ? 'h-[500px]' : ''}`}>
+                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto ${filteredcheckIn.length > 0 ? 'max-h-[380px]' : ''}`}>
                             <div className="relative sm:rounded-lg scrollbar-thin overflow-y-auto">
                                 <table className="min-w-full text-sm text-left text-gray-700">
                                     <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white">
@@ -120,12 +116,7 @@ const CheckInBook = () => {
                                                     <GoArrowDown className='cursor-pointer' onClick={() => sortData('prop_title')} />
                                                 </div>
                                             </th>
-                                            <th className="px-4 py-2 min-w-[200px]">Property Image 
-                                            <div className="inline-flex items-center ml-2">
-                                                    <GoArrowUp className='cursor-pointer' onClick={() => sortData('image')} />
-                                                    <GoArrowDown className='cursor-pointer' onClick={() => sortData('image')} />
-                                                </div>
-                                            </th>
+                                            <th className="px-4 py-2 min-w-[200px]">Property Image</th>
                                             <th className="px-4 py-2 min-w-[200px]">
                                             Booking Price
                                                 <div className="inline-flex items-center ml-2">

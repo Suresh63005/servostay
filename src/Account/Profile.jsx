@@ -3,7 +3,6 @@ import Header from '../components/Header'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { useLoading } from '../Context/LoadingContext';
 import { useLocation } from 'react-router-dom';
 import Loader from '../common/Loader'
@@ -90,6 +89,7 @@ const Profile = () => {
               withCredentials: true, 
             }
           );
+          console.log(response.data)
           NotificationManager.removeAll();
           NotificationManager.success("updated Profile successfully");
     } catch (error) {

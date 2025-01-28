@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const PendingBookHeader = ({ onSearch }) => {
     const location = useLocation();
-
     const navigate = useNavigate()
 
     const getTitle = () => {

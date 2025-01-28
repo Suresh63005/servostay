@@ -7,17 +7,19 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import api from '../utils/api';
 import Cookies from 'js-cookie';
+import { Vortex } from 'react-loader-spinner';
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordType, setPasswordType] = useState('password');
   const navigate = useNavigate();
+
+  const [loading, setloading] = useState(false)
+  const [formData, setFormData] = useState({ username: "", password: "" });
+
   const location = useLocation();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
+  
 
 
   const handlePasswordVisibility = () => {
@@ -32,8 +34,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     console.log(formData,"from datraaaaaaaaaaa")
     e.preventDefault();
+    setloading(true)
     try {
+
       const res = await api.post('/admin/login', formData);
+
 
 
       NotificationManager.success('Admin logged in successfully!');
@@ -47,7 +52,12 @@ const Login = () => {
       const previousPage = location.state?.from || '/dashboard'; 
       navigate(previousPage, { replace: true }); 
     } catch (err) {
-      NotificationManager.error(err.response?.data?.error || 'Something went wrong!');
+
+      NotificationManager.removeAll()
+      NotificationManager.error(err.res?.data?.error || "Something went wrong!");
+    } finally {
+      setloading(false)
+
     }
   };
   return (
@@ -88,7 +98,7 @@ const Login = () => {
                 id="username"
                 name="username"
                 required
-                value={formData.username}
+                value={formData.username || "suresh"}
                 className="w-full px-3 py-2 border border-[#B0B0B0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#045D78] placeholder:font-[poppins] placeholder:text-[14px] placeholder:text-[#25064C]"
                 placeholder="UserName"
               />
@@ -101,7 +111,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 required
-                value={formData.password}
+                value={formData.password || "12345678"}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#045D78] placeholder:font-[poppins] placeholder:text-[14px] placeholder:text-[#25064C]"
                 placeholder="Password"
               />
@@ -116,23 +126,27 @@ const Login = () => {
                 )}
               </span>
             </div>
-
-            {/* <div className="flex items-center justify-between">
-              <div className="flex items-center"></div>
-              <div>
-                <a href="/forgotpassword" className="text-sm text-[#131313] font-[poppins] fg">
-                  Forgot password?
-                </a>
-              </div>
-            </div> */}
-
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#045D78] mt-14 font-[poppins]"
+                className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#045D78] mt-14 font-[poppins]"
+                disabled={loading}
               >
-                Login
+                {loading ? (
+                  <Vortex
+                    visible={true}
+                    height="25"
+                    width="25"
+                    ariaLabel="vortex-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="vortex-wrapper"
+                    colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                  />
+                ) : (
+                  "Login"
+                )}
               </button>
+
             </div>
           </form>
         </div>

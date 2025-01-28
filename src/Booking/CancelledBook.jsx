@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Header from '../components/Header';
 import { GoArrowDown, GoArrowUp } from 'react-icons/go';
-import axios from 'axios';
+// import axios from 'axios';
 import PendingBookHeader from './PendingBookHeader';
 import 'jspdf-autotable';
 import OrderPreviewModal from './OrderPreviewModal';
@@ -21,8 +21,7 @@ const CancelledBook = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await api.get(`bookings/status/${status}`
-                );
+                const response = await api.get(`bookings/status/${status}`);
                 //   console.log(response.data)
                 setcancelled(response.data);
                 setFilteredcancelled(response.data);
@@ -73,12 +72,11 @@ const CancelledBook = () => {
     return (
         <div>
             <div className="h-screen flex">
-
                 <div className="flex flex-1 flex-col bg-[#f7fbff]">
                     <Header />
                     <PendingBookHeader onSearch={handleSearch} />
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
-                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-3 overflow-x-auto scrollbar-thin ${filteredcancelled.length > 0 ? 'h-[500px]' : ''}`}>
+                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto scrollbar-thin ${filteredcancelled.length > 0 ? 'max-h-[380px]' : ''}`}>
                             <div className="relative sm:rounded-lg scrollbar-thin overflow-y-auto ">
                                 <table className="min-w-full text-sm text-left text-gray-700">
                                     <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white">
@@ -97,12 +95,7 @@ const CancelledBook = () => {
                                                     <GoArrowDown className='cursor-pointer' onClick={() => sortData('prop_title')} />
                                                 </div>
                                             </th>
-                                            <th className="px-4 py-2 min-w-[200px]">Property Image
-                                                <div className="inline-flex items-center ml-2">
-                                                    <GoArrowUp className='cursor-pointer' onClick={() => sortData('prop_img')} />
-                                                    <GoArrowDown className='cursor-pointer' onClick={() => sortData('prop_img')} />
-                                                </div>
-                                            </th>
+                                            <th className="px-4 py-2 min-w-[200px]">Property Image</th>
                                             <th className="px-4 py-2 min-w-[180px]">
                                             Booking Price
                                                 <div className="inline-flex items-center ml-2">

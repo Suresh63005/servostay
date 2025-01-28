@@ -78,7 +78,6 @@ const CityAdd = () => {
       }
     };
 
-
     fetchCountries();
   }, [setIsLoading]);
 
@@ -93,30 +92,16 @@ const CityAdd = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Generate a preview URL for the image
       const previewUrl = URL.createObjectURL(file);
 
-      // Update formData with both the file (for submission) and the preview URL (for display)
       setFormData((prevData) => ({
         ...prevData,
-        img: file,  // Keep the actual file for submission
-        previewUrl: previewUrl // Store the preview URL for display
+        img: file, 
+        previewUrl: previewUrl 
       }));
     }
     setError('');
   };
-
-
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       img: file,  // Store the actual file, not the preview URL
-  //     }));
-  //   }
-  //   setError('');
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -170,7 +155,6 @@ const CityAdd = () => {
       setIsLoading(false);
     }
   };
-
 
   return (
     <div>
@@ -254,10 +238,6 @@ const CityAdd = () => {
                       />
                     </div>
                   </div>
-
-                  {/* <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
-                    
-                  </div> */}
 
                   <div className="flex justify-start mt-6 gap-3">
                     <button type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}>

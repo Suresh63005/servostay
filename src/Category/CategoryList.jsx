@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import SidebarMenu from "../components/SideBar";
-import { GoArrowDown, GoArrowUp } from "react-icons/go";
-import { FaPen, FaTrash } from "react-icons/fa";
 import CategoryHeader from "./CategoryHeader";
-import axios from "axios";
 import { useLoading } from '../Context/LoadingContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Loader from '../common/Loader';
 import { DeleteEntity } from '../utils/Delete';
 import { handleSort } from "../utils/sorting";
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { StatusEntity } from "../utils/Status";
 import api from "../utils/api";
 import Table from "../common/Table";
@@ -25,7 +17,6 @@ const CategoryList = () => {
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 1;
-  const location = useLocation();
   const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
@@ -33,8 +24,6 @@ const CategoryList = () => {
       setIsLoading(true)
       try {
         const response = await api.get("/categories/all");
-
-        console.log("Fetched categories:", response.data);
         setCategories(response.data);
         setFilteredCategories(response.data);
         setIsLoading(false);
@@ -47,9 +36,6 @@ const CategoryList = () => {
     fetchCategories();
   }, []);
 
-
-
-  // Handle search
   // Search functionality
   const handleSearch = (event) => {
     const querySearch = event.target.value.toLowerCase();

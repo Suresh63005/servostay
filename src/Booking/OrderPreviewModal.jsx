@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import { generateInvoicePdf } from '../utils/pdfUtils';
+import api from '../utils/api';
 
 const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalAsImage }) => {
     console.log(selectedProperty)
@@ -13,26 +14,19 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
           fetchBookingId(selectedProperty.id);
         }
       }, [isOpen, selectedProperty?.id]);
-      const fetchBookingId = async (id) => {
-        try {
-          const response = await fetch(`http://localhost:5000/bookings/status/${id}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ status: selectedProperty.book_status }),
-          });
-      
-          if (!response.ok) {
-            throw new Error(`Failed to fetch booking data: ${response.statusText}`);
-          }
-      
-          const data = await response.json();
-          setBookingId(data.data);
-        } catch (error) {
-          console.error("Error fetching booking data:", error.message);
-        }
-      };
+
+        const fetchBookingId = async (id) => {
+            try {
+                const response = await api.post(`bookings/status/${id}`, { status: selectedProperty.book_status },
+                    { 
+                        headers: { "Content-Type": "application/json", },
+                    }
+                );
+                setBookingId(response.data.data);
+            } catch (error) {
+                console.error("Error fetching booking data:", error.message);
+            }
+        };
     
       if (!isOpen || !bookingId) return null;
       if (!isOpen) return null;
@@ -58,7 +52,6 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
       
         // Load the background image (optional)
         const backgroundImage = "/image/Frame 1984078701.png"; 
-      
         generateInvoicePdf(dynamicData, backgroundImage);
       };
       

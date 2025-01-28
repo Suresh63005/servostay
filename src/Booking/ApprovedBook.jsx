@@ -55,7 +55,6 @@ const ApprovedBook = () => {
         handleSort(filteredApprove, key, sortConfig, setSortConfig, setfilteredApprove);
     };
 
-
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
     const currentApprove = filteredApprove.slice(indexOfFirst, indexOfLast);
@@ -74,10 +73,7 @@ const ApprovedBook = () => {
 
     const navigateApprove = async (id, newStatus) => {
         try {
-            const response = await api.put(
-                `/bookings/status/${id}`,
-                { status: newStatus },
-            );
+            const response = await api.put( `/bookings/status/${id}`, { status: newStatus }, );
 
             if (response.status === 200) {
                 NotificationManager.removeAll();
@@ -100,12 +96,11 @@ const ApprovedBook = () => {
     return (
         <div>
             <div className="h-screen flex">
-
                 <div className="flex flex-1 flex-col bg-[#f7fbff]">
                     <Header />
                     <PendingBookHeader onSearch={handleSearch} />
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
-                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-3 overflow-x-auto scrollbar-thin ${filteredApprove.length > 0 ? 'h-[500px]' : ''}`}>
+                        <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto scrollbar-thin ${filteredApprove.length > 0 ? 'max-h-[380px]' : ''}`}>
                             <div className="relative sm:rounded-lg overflow-y-auto max-h-[400px] scrollbar-none scrollbar-thin ">
                                 <table className="min-w-full text-sm text-left text-gray-700">
                                     <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white">
