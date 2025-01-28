@@ -27,6 +27,7 @@ const PropotiesList = () => {
 
     useEffect(() => {
         const fetchProperties = async () => {
+            setIsLoading(true);
             try {
                 const response = await api.get('/properties');
                 console.log("Property data:", response.data);
@@ -48,8 +49,12 @@ const PropotiesList = () => {
                 // setFilteredProperties(response.data);
                 setProperties(fetchedProperties);
                 setFilteredProperties(fetchedProperties);
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching properties:', error.response ? error.response.data : error.message);
+            }
+            finally{
+                setIsLoading(false);
             }
         };
         fetchProperties();
