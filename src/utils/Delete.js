@@ -30,7 +30,7 @@ export const DeleteEntity = async (entity, id) => {
           await api.delete(`coupons/delete/${id}`);
           break;
 
-        case "PaymentGateWay":
+        case "PaymentGateway":
           await api.delete(`payment-methods/delete/${id}`);
           break;
 

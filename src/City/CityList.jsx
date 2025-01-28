@@ -129,14 +129,13 @@ const CityList = () => {
 
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "150px" },
-        { label: "Image", field: "img", sortable: true, minWidth: "180px" },
+        { label: "Image", field: "img", sortable: false, minWidth: "180px" },
         { label: "City", field: "title", sortable: true, minWidth: "180px" },
         { label: "Country Name", field: "countryName", sortable: true, minWidth: "180px" },
         { label: "Status", field: "status", sortable: true, minWidth: "130px" },
         { label: "Actions", field: "actions", minWidth: "150px", sortable: false },
     ];
     
-
     return (
         <div>
             {/* {isLoading && <Loader />} */}

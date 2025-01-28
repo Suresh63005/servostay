@@ -43,14 +43,6 @@ const PaymentGatewayList = () => {
         fetchData();
     }, []);
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     const timer = setTimeout(() => {
-    //         setIsLoading(false);
-    //     }, 1000);
-    //     return () => clearTimeout(timer);
-    // }, [location, setIsLoading]);
-
     const handleSearch = (event) => {
         const searchQuery = event.target.value.toLowerCase();
         const filteredResults = paymentGateway.filter(gateway =>
@@ -73,7 +65,6 @@ const PaymentGatewayList = () => {
     const currentPaymentGateway = filteredPaymentGateway.slice(indexOfFirstPaymentGateway, indexOfLastPaymentGateway);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const totalPages = Math.ceil(filteredPaymentGateway.length / itemsPerPage);
-
 
     // for delete
     const handleDelete = async (id) => {

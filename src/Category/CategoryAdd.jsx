@@ -169,21 +169,21 @@ const CategoryAdd = () => {
 
                       {/* <ImageUploader onUploadSuccess={handleImageUploadSuccess} /> */}
                       <input
-        type="file"
-        accept=".svg"
-        onChange={handleFileChange}
-        className="border rounded-lg p-2 mt-1 w-full h-14"
-        style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
-      />
-                      {formData.previewUrl && (
-  <div className="mt-4">
-    <img
-      src={formData.previewUrl}
-      alt="Uploaded Preview"
-      className="w-[50px] h-[50px] object-cover rounded"
-    />
-  </div>
-)}
+                            type="file"
+                            accept=".svg"
+                            onChange={handleFileChange}
+                            className="border rounded-lg p-2 mt-1 w-full h-14"
+                            style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
+                          />
+                                          {formData.previewUrl && (
+                      <div className="mt-4">
+                        <img
+                          src={formData.previewUrl}
+                          alt="Uploaded Preview"
+                          className="w-[50px] h-[50px] object-cover rounded"
+                        />
+                      </div>
+                    )}
 
                       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                     </div>

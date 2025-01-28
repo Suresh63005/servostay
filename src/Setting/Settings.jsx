@@ -13,6 +13,7 @@ import 'react-notifications/lib/notifications.css';
 import api from '../utils/api'
 import JoditEditor from 'jodit-react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import { Vortex } from 'react-loader-spinner'
 
 
 const Settings = () => {
@@ -26,6 +27,7 @@ const Settings = () => {
   const [formData, setFormData] = useState({ id: '', webname: '', weblogo: '', timezone: 'Asia/Kolkata', currency: '', tax: '', sms_type: '',one_key: '',  privacy_policy: '', terms_conditions: '', admin_tax: '', cancellation_policy: '', refund_policy: '' });
   const location = useLocation();
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
@@ -137,7 +139,7 @@ const Settings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     // Update formData with editor content
     const privacyPolicyText = new DOMParser().parseFromString(privacycontent, 'text/html').body.innerText;
     const termsConditionsText = new DOMParser().parseFromString(termscontent, 'text/html').body.innerText;
@@ -164,9 +166,10 @@ const Settings = () => {
     } catch (error) {
       NotificationManager.removeAll();
       NotificationManager.error(error.response?.data || error.message);
+    }finally{
+      setloading(false)
     }
   };
-
 
   return (
     <div>
@@ -333,7 +336,24 @@ const Settings = () => {
                   </div>
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className=" px-4 py-2  text-white rounded-lg bg-[#045D78]  h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Setting's </button>
+                    <button type="submit" className=" px-4 py-2  text-white rounded-lg bg-[#045D78]  h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >
+                    {
+                        loading ? (
+                          <Vortex
+                            visible={true}
+                            height="25"
+                            width="100%"
+                            ariaLabel="vortex-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="vortex-wrapper"
+                            colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                          />
+                        ):
+                        (
+                          `Update Setting's`
+                        )
+                      }
+                    </button>
                   </div>
                 </form>
               </div>

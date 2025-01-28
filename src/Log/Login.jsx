@@ -98,7 +98,7 @@ const Login = () => {
                 id="username"
                 name="username"
                 required
-                value={formData.username || "suresh"}
+                value={formData.username }
                 className="w-full px-3 py-2 border border-[#B0B0B0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#045D78] placeholder:font-[poppins] placeholder:text-[14px] placeholder:text-[#25064C]"
                 placeholder="UserName"
               />
@@ -111,7 +111,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 required
-                value={formData.password || "12345678"}
+                value={formData.password}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#045D78] placeholder:font-[poppins] placeholder:text-[14px] placeholder:text-[#25064C]"
                 placeholder="Password"
               />

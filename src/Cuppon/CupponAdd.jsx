@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom'
 import ImageUploader from '../common/ImageUploader';
-import axios from 'axios';
 import { useLoading } from '../Context/LoadingContext';
 import { useLocation } from 'react-router-dom';
 import Loader from '../common/Loader';
@@ -12,14 +11,15 @@ import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import api from '../utils/api';
 import { statusoptions } from '../common/data';
 import SelectComponent from '../common/SelectComponent';
-import { SelectField } from '../common/SelectInput';
 import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined';
+import { Vortex } from 'react-loader-spinner';
 
 const CupponAdd = () => {
   const location = useLocation();
   const id = location.state ? location.state.id : null;
   const navigate = useNavigate();
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const [formData, setFormData] = useState({ id: id || null, c_img: '', status: 0, c_title: '', cdate: '', ctitle: '', subtitle: '', min_amt: '', c_value: '', c_desc: '', });
 
   useEffect(() => {
@@ -52,15 +52,36 @@ const CupponAdd = () => {
       console.error(error)
     }
   }
-  const handleChange = (e) => {
-    const { name, value } = e.target;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-      id: prevData.id
-    }));
-  }
+  useEffect(() => {
+    setIsLoading(true);
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [location, setIsLoading]);
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (files && files.length > 0) {
+      const file = files[0];
+      const previewUrl = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        c_img: file, 
+        imgPreview: previewUrl, 
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+        id: prevData.id
+      }));
+    }
+  };
 
   // random cuppon generation
   const makeEightDigitRand = () => {
@@ -76,33 +97,29 @@ const CupponAdd = () => {
     }));
   };
 
-  const handleImageUploadSuccess = (imageUrl) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      c_img: imageUrl,
-    }));
-
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [location, setIsLoading]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData, "from formdata");
-    const url =`coupons/upsert`;
-
-    const successMessage = id ? `Coupon Updated Successfully` : `Coupon Added Successfully!`;
-
+    setloading(true)
     try {
-      const response = await api.post(url, formData, { withCredentials: true });
+      const form=new FormData();
+      form.append("c_title",formData.c_title)
+      form.append("ctitle",formData.ctitle)
+      form.append("subtitle",formData.subtitle)
+      form.append("c_value",formData.c_value)
+      form.append("c_desc",formData.c_desc)
+      form.append("cdate",formData.cdate)
+      form.append("min_amt",formData.min_amt)
+      form.append("status",formData.status)
+      if (formData.img) {
+        form.append("c_img", formData.c_img); 
+      }
+
+      if (id) {
+        form.append("id", id);
+      }
+      const url =`coupons/upsert`;
+      const successMessage = id ? `Coupon Updated Successfully` : `Coupon Added Successfully!`;
+      const response = await api.post(url, form, { withCredentials: true });
       if (response.status === 200 || response.status === 201) {
         NotificationManager.removeAll();
         NotificationManager.success(successMessage)
@@ -116,6 +133,8 @@ const CupponAdd = () => {
       NotificationManager.removeAll();
       console.error("Error submitting Category:", error);
       NotificationManager.error("Error submitting Category:", error);
+    }finally{
+      setloading(false)
     }
   }
 
@@ -124,7 +143,6 @@ const CupponAdd = () => {
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
         {/* Sidebar */}
-
         <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
@@ -143,7 +161,7 @@ const CupponAdd = () => {
                     {/* couppon image*/}
                     <div className="flex flex-col">
                       <label htmlFor="cupponimage" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Coupon Image</label>
-                      <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
+                      <input type="file" name="c_img" id="c_img" onChange={handleChange} accept='image/*' />
                       {formData.c_img && (
                         <div className="mt-2">
                           <img
@@ -171,7 +189,6 @@ const CupponAdd = () => {
                         style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
                       />
                     </div>
-
 
                     {/* Coupon code */}
                     <div className="flex flex-col">
@@ -238,7 +255,6 @@ const CupponAdd = () => {
                       <label htmlFor="c_value" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Coupon Value </label>
                       <input id="c_value" name="c_value" placeholder='Enter Coupon Value' value={formData.c_value} type="text" required className="border input-tex rounded-lg p-3 mt-1 " style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
-
                       />
                     </div>
 
@@ -253,7 +269,23 @@ const CupponAdd = () => {
 
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className={` py-2 px-4 bg-[#045D78] text-white rounded-lg   h-10 font-poppins font-medium`} style={{ borderRadius: "8px", }} > {id ? 'Update Coupon' : 'Add Coupon'} </button>
+                    <button type="submit" className={` py-2 px-4 bg-[#045D78] text-white rounded-lg   h-10 font-poppins font-medium`} style={{ borderRadius: "8px", }} >
+                      {
+                        loading ? (
+                          <Vortex
+                            visible={true}
+                            height="25"
+                            width="100%"
+                            ariaLabel="vortex-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="vortex-wrapper"
+                            colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                        />
+                        ):(
+                          id ? 'Update Coupon' : 'Add Coupon'
+                        )
+                      }
+                    </button>
                   </div>
                 </form>
               </div>

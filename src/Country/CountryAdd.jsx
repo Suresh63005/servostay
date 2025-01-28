@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import SidebarMenu from "../components/SideBar";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoading } from "../Context/LoadingContext";
 import { useLocation } from "react-router-dom";
 import Loader from "../common/Loader";
-import ImageUploader from "../common/ImageUploader";
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from "react-notifications";
+import "react-notifications/lib/notifications.css";
 import api from "../utils/api";
-import   CountryCodeOptions  from "../utils/CountryCodes";
-import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
+import CountryCodeOptions from "../utils/CountryCodes";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
-import CustomDropdown from './CustomDropdown';
-import Cities from "../common/Cities";
+import { Vortex } from "react-loader-spinner";
 
 const CountryAdd = () => {
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   const id = location.state ? location.state.id : null;
   const { isLoading, setIsLoading } = useLoading();
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     id: id || null,
     title: "",
-    img: "",
+    img: null, // For storing the uploaded file
+    imgPreview: null, // For image preview
     status: 0,
     currency: "",
-    city:""
+    city: "",
   });
 
   useEffect(() => {
@@ -50,9 +49,10 @@ const CountryAdd = () => {
         id: country.id,
         title: country.title,
         img: country.img,
+        imgPreview: country.img,
         status: country.status,
         currency: country.currency,
-        city:country.city
+        city: country.city,
       });
     } catch (error) {
       console.error("Error fetching country data:", error);
@@ -60,63 +60,63 @@ const CountryAdd = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newValue = value;
+    const { name, value, files } = e.target;
 
-    if (name === "currency") {
-      newValue = CountryCodeOptions[value];
+    if (files && files.length > 0) {
+      const file = files[0];
+      const previewUrl = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        img: file, // Save the file
+        imgPreview: previewUrl, // Save the preview URL
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
     }
-
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: newValue,
-      id: prevData.id
-    }));
-  };
-
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //     id: prevData.id
-  //   }));
-  // };
-
-
-  const handleImageUploadSuccess = (imageUrl) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      img: imageUrl,
-    }));
   };
 
   const handleSubmit = async (e) => {
+    console.log(formData)
     e.preventDefault();
+    setLoading(true);
 
     try {
+      const form = new FormData();
+      form.append("title", formData.title);
+      form.append("status", formData.status);
+      form.append("currency", formData.currency);
+      form.append("city", formData.city);
+
+      if (formData.img) {
+        form.append("img", formData.img); // Append the file
+      }
+
+      if (id) {
+        form.append("id", id);
+      }
+
       const apiEndpoint = `countries/upsert`;
-
-      const method = "post";
-
-      const response = await api[method](apiEndpoint, formData, {
+      const response = await api.post(apiEndpoint, form, {
         withCredentials: true,
       });
 
-      const successMessage = id ? "Country updated successfully!" : "Country added successfully!";
+      const successMessage = id
+        ? "Country updated successfully!"
+        : "Country added successfully!";
       if (response.status === 200 || response.status === 201) {
-        NotificationManager.removeAll();
         NotificationManager.success(successMessage);
         setTimeout(() => {
           navigate("/country-list");
         }, 2000);
       }
-
     } catch (error) {
-      NotificationManager.removeAll();
       console.error("Error submitting country data:", error);
       NotificationManager.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,17 +127,24 @@ const CountryAdd = () => {
         <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
-            <div className="flex items-center mt-6  mb-4">
-              <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
-                <ArrowBackIosNewIcon style={{ color: '#045D78' }} />
+            <div className="flex items-center mt-6 mb-4">
+              <Link onClick={() => navigate(-1)} className="cursor-pointer ml-6">
+                <ArrowBackIosNewIcon style={{ color: "#045D78" }} />
               </Link>
-              <h2 className="text-lg font-semibold ml-4 " style={{ color: '#000000', fontSize: '24px', fontFamily: 'Montserrat' }}>Country Management</h2>
+              <h2
+                className="text-lg font-semibold ml-4"
+                style={{ color: "#000000", fontSize: "24px", fontFamily: "Montserrat" }}
+              >
+                Country Management
+              </h2>
             </div>
-            <div className="h-full px-6 max-w-5xl" style={{ paddingTop: "24px" }} >
-              <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+            <div className="h-full px-6 max-w-5xl" style={{ paddingTop: "24px" }}>
+              <div
+                className="bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto"
+                style={{ scrollbarWidth: "none" }}
+              >
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
-                    {/* Country Name */}
                     <div className="flex flex-col">
                       <label
                         htmlFor="country_name"
@@ -145,40 +152,39 @@ const CountryAdd = () => {
                       >
                         Country Name
                       </label>
-                      <input id="country_name" value={formData.title} onChange={handleChange} name="title" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
-                        style={{
-                          borderRadius: "8px",
-                          border: "1px solid #EAEAFF",
-                        }}
+                      <input
+                        id="country_name"
+                        value={formData.title}
+                        onChange={handleChange}
+                        name="title"
+                        type="text"
+                        required
+                        className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         placeholder="Enter Country name"
                       />
                     </div>
                     <div className="flex flex-col">
                       <label
                         htmlFor="currency"
-                        className="text-sm font-medium mt-[2px] text-start text-[12px] font-[Montserrat]"
+                        className="text-sm font-medium text-start text-[12px] font-[Montserrat]"
                       >
                         Currency
-                      </label>                     
-
+                      </label>
                       <SelectComponent
-                      
-                      name="currency"
-                      value={formData.currency}
-                      onChange={(selectedOption) => {
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          currency: selectedOption.value,
-                        }));
-                      }}
-                      options={CountryCodeOptions}
-                    />
-
+                        name="currency"
+                        value={formData.currency}
+                        onChange={(selectedOption) =>
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            currency: selectedOption.value,
+                          }))
+                        }
+                        options={CountryCodeOptions}
+                      />
                     </div>
                   </div>
 
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
-                    {/* Country Image */}
                     <div className="flex flex-col">
                       <label
                         htmlFor="country_image"
@@ -186,18 +192,23 @@ const CountryAdd = () => {
                       >
                         Country Image
                       </label>
-                      <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
-                      {formData.img && (
+                      <input
+                        type="file"
+                        name="img"
+                        id="img"
+                        onChange={handleChange}
+                        accept="image/*"
+                      />
+                      {formData.imgPreview && (
                         <div className="mt-4">
                           <img
-                            src={formData.img}
+                            src={formData.imgPreview}
                             alt="Uploaded Preview"
                             className="w-[50px] h-[50px] object-cover rounded"
                           />
                         </div>
                       )}
                     </div>
-                    {/* Country Status */}
                     <div className="flex flex-col">
                       <label
                         htmlFor="status"
@@ -205,18 +216,15 @@ const CountryAdd = () => {
                       >
                         Status
                       </label>
-
-
                       <SelectComponent
-
                         name="status"
                         value={formData.status}
-                        onChange={(selectedOption) => {
+                        onChange={(selectedOption) =>
                           setFormData((prevData) => ({
                             ...prevData,
                             status: selectedOption.value,
-                          }));
-                        }}
+                          }))
+                        }
                         options={statusoptions}
                       />
                     </div>
@@ -225,10 +233,22 @@ const CountryAdd = () => {
                   <div className="flex justify-start mt-6 gap-3">
                     <button
                       type="submit"
-                      className={`py-2 px-4 bg-[#045D78]  text-white rounded-lg   h-10 font-poppins font-medium`}
-                      style={{ borderRadius: "8px" }}
+                      disabled={loading}
+                      className="py-2 px-4 bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium"
                     >
-                      {id ? "Update Country" : "Add Country"}
+                      {loading ? (
+                        <Vortex
+                          visible={true}
+                          height="25"
+                          width="100%"
+                          ariaLabel="vortex-loading"
+                          colors={["white", "white", "white"]}
+                        />
+                      ) : id ? (
+                        "Update Country"
+                      ) : (
+                        "Add Country"
+                      )}
                     </button>
                   </div>
                 </form>
