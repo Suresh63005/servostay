@@ -110,6 +110,10 @@ const UserList = () => {
         }
     };
 
+    const updateuser=()=>{
+        
+    }
+
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "150px" },
         { label: "Image", field: "pro_pic", sortable: false, minWidth: "100px" },
@@ -118,7 +122,7 @@ const UserList = () => {
         { label: "Mobile", field: "mobile", sortable: true, minWidth: "180px" },
         { label: "Gender", field: "gender", sortable: true, minWidth: "180px" },
         { label: "Join Date", field: "reg_date", sortable: true, minWidth: "180px" },
-        { label: "Status", field: "status", sortable: true, minWidth: "100px" },
+        { label: "Status", field: "status", sortable: true, minWidth: "130px" },
         { label: 'Actions', field: 'actions', minWidth: '150px', sortable: false },
       ];
 
@@ -132,18 +136,18 @@ const UserList = () => {
                     <UseListHeader onSearch={handleSearch} />
                     <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
                     <Table
-              columns={columns}
-              data={currentuser}
-              onSort={sortData}
-              onToggleChange={handleToggleChange}
-            //   onUpdate={updateCategory}
-              onDelete={handledelete}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              paginate={paginate}
-              filteredData={filtereduser}
-              loading={isLoading}
-            />
+                        columns={columns}
+                        data={currentuser}
+                        onSort={sortData}
+                        onToggleChange={handleToggleChange}
+                        onUpdate={updateuser}
+                        onDelete={handledelete}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        paginate={paginate}
+                        filteredData={filtereduser}
+                        loading={isLoading}
+                    />
                     </div>
                 </div>
             </div>

@@ -98,7 +98,8 @@ const ExtraImageAdd = () => {
             // console.log('Extra image added successfully:', response.data);
             if(response.status === 200 || response.status === 201){
                 NotificationManager.removeAll();
-                NotificationManager.success('Extra image added successfully!')
+                const successMessage = id ? `Coupon Updated Successfully` : `Coupon Added Successfully!`;
+                NotificationManager.success(successMessage);
                 setTimeout(() => {
                     navigate("/extra-image-list")
                 }, 2000);
@@ -194,7 +195,7 @@ const ExtraImageAdd = () => {
                                         </div>
                                     </div>
                                     {/* Action Buttons */}
-                                    <button type="submit" className={`py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: '8px' }}   >
+                                    <button type="submit" className={`py-2 px-4 mt-6 float-start bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}   >
                                         {id ? 'Update  Image' : 'Add  Image'}
                                     </button>
                                 </form>

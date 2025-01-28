@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -12,11 +12,13 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordType, setPasswordType] = useState('password');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -28,36 +30,26 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(formData,"from datraaaaaaaaaaa")
     e.preventDefault();
     try {
-      const res = await api.post(
-        "/admin/login",
-        formData,
-      );
+      const res = await api.post('/admin/login', formData);
 
-      console.log(res.data.token)
-      NotificationManager.removeAll();
-      NotificationManager.success("Admin logged in successfully!");
 
-      setTimeout(() => {
-        if (res.data.token != undefined) {
+      NotificationManager.success('Admin logged in successfully!');
+      Cookies.set('user', res.data.token, {
+        expires: 1, 
+        secure: true,
+      });
 
-          Cookies.set("user", res.data.token, {
-            expires: 7,
-            secure: true,
-            sameSite: 'strict'
-          });
 
-          navigate("/dashboard");
-        }
-      }, 2000);
-
+      
+      const previousPage = location.state?.from || '/dashboard'; 
+      navigate(previousPage, { replace: true }); 
     } catch (err) {
-      NotificationManager.removeAll()
-      NotificationManager.error(err.res?.data?.error || "Something went wrong!");
+      NotificationManager.error(err.response?.data?.error || 'Something went wrong!');
     }
   };
-
   return (
     <div className="h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left Side */}

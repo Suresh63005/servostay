@@ -64,9 +64,9 @@ const Table = ({
 
     return (
         <div>
-            <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `h-[380px]` : ''}`}>
-                <div className="relative sm:rounded-lg h-[380px] scrollbar-thin overflow-y-auto">
-                    <div className="flex-grow h-[380px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
+            <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `max-h-[380px]` : ''}`}>
+                <div className="relative sm:rounded-lg max-h-[380px] scrollbar-thin overflow-y-auto">
+                    <div className="flex-grow max-h-[380px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
                             <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0">
                                 <tr>
@@ -91,7 +91,7 @@ const Table = ({
                                                 <td key={colIndex} className="px-4 py-1">
                                                     {col.field === 'id' ? (
                                                         <span>{startIndex + index + 1}</span>
-                                                    ) : col.field === 'status' ? (
+                                                    ) : col.field === 'status'  || col.field === 'is_panorama'? (
                                                         <div className="relative">
                                                             {loadingId === row.id ? (
                                                                 <ColorRing
@@ -128,9 +128,15 @@ const Table = ({
                                                                 <FontAwesomeIcon icon={faTrash} />
                                                             </button>
                                                         </div>
-                                                    ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' ? (
+                                                    ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' || col.field==='id_proof_img' || col.field === 'prop_img'  ? (
                                                         renderImageField(row, col)
-                                                    ) : (
+                                                    ) :
+                                                    col.field.includes(".") ? (
+                                                        // Dynamically access nested fields
+                                                        col.field
+                                                            .split(".")
+                                                            .reduce((obj, key) => obj?.[key], row) || "N/A"
+                                                    ): (
                                                         row[col.field] || 'N/A'
                                                     )}
                                                 </td>

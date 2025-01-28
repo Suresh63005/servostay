@@ -63,9 +63,7 @@ const Profile = () => {
     useEffect(()=>{
       async function fetchData(){
           try { 
-              const response = await api.get("admin/userbytoken", {
-                  withCredentials: true,  
-                });
+              const response = await api.get("admin/userbytoken");
               
                 setFormData({
                   id: response.data.id,
@@ -151,7 +149,7 @@ const Profile = () => {
                         
                 {/* Action Buttons */}
                 <div className="flex justify-start mt-6 gap-3">
-                  <button  type="submit" className=" py-2 bg-[#045D78] text-white rounded-lg   h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Profile </button>
+                  <button  type="submit" className="px-4 py-2 bg-[#045D78] text-white rounded-lg   h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Profile </button>
                 </div>
               </form>
             </div>
