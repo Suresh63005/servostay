@@ -160,7 +160,7 @@ const CityAdd = () => {
     <div>
       {isLoading && <Loader />}
       <div className="flex bg-[#f7fbff]">
-        <main className="flex-grow">
+        <main className="flex-grow h-[100vh]">
           <Header />
           <div className="container mx-auto">
             <div className="flex items-center mt-6 mb-4">
@@ -171,7 +171,7 @@ const CityAdd = () => {
             </div>
 
             <div className="h-full px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
-              <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
+              <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
                     <div className='flex flex-col'>
@@ -199,7 +199,7 @@ const CityAdd = () => {
                         value={formData.title}
                         type="text"
                         required
-                        className="border rounded-lg p-3 mt-1 w-full h-14"
+                        className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                         placeholder='Enter City Name'
@@ -219,7 +219,7 @@ const CityAdd = () => {
                       />
                       {formData.previewUrl && (
                         <div className="mt-4">
-                          <img src={formData.previewUrl} alt="Uploaded Preview" className="w-32 h-32 object-cover rounded" />
+                          <img src={formData.previewUrl} alt="Uploaded Preview" className="w-[50px] h-[50px] object-cover rounded" />
                         </div>
                       )}
                       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -240,7 +240,7 @@ const CityAdd = () => {
                   </div>
 
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className={`py-2 bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium ${id ? 'w-[140px]' : 'w-[120px]'}`} style={{ borderRadius: '8px' }}>
+                    <button type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}>
                       {id ? 'Update City' : 'Add City'}
                     </button>
                   </div>

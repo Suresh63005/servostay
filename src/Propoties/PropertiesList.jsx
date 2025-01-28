@@ -17,6 +17,7 @@ import Table from '../common/Table';
 
 const PropotiesList = () => {
     const [properties, setProperties] = useState([]);
+
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,8 @@ const PropotiesList = () => {
         const fetchProperties = async () => {
             try {
                 const response = await api.get('/properties');
+                console.log("Property data:", response.data);
+
                 const fetchedProperties = response.data.map((property) => {
                     return {
                         ...property,
@@ -102,6 +105,7 @@ const PropotiesList = () => {
         }
     }
 
+
     // useEffect(() => {
     //     setIsLoading(true);
         
@@ -111,10 +115,11 @@ const PropotiesList = () => {
     //     return () => clearTimeout(timer);
     //   }, [ setIsLoading]);
 
+
     // Pagination calculations
-    const indexOfLastItem = currentPage * itemsPerPage; 
+    const indexOfLastItem = currentPage * itemsPerPage;
     console.log(indexOfLastItem)
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage; 
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     console.log(indexOfFirstItem)
     const currentProperties = filteredProperties.slice(indexOfFirstItem, indexOfLastItem);
     console.log(currentProperties)
@@ -133,10 +138,12 @@ const PropotiesList = () => {
         }
     
         try {
+
             // Dynamically determine the entity type based on the field
             const entityType = field === "is_panorama" ? "Panorama" : "Property";
     
             await StatusEntity(entityType, id, currentStatus, setFilteredProperties, filteredProperties, field);
+
         } catch (error) {
             console.error(`Error toggling ${field} status:`, error);
         }
@@ -188,6 +195,7 @@ const PropotiesList = () => {
                     <PropotiesHeader onSearch={handleSearch} />
                     {/* Card */}
                     <div className=" px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+
                         <Table 
                             columns={columns}
                             data={filteredProperties}
@@ -201,6 +209,7 @@ const PropotiesList = () => {
                             filteredData={filteredProperties}
                             loading={isLoading}
                         />
+
 
                     </div>
                 </div>

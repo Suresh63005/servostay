@@ -31,6 +31,7 @@ const ImageUploader = ({ onUploadSuccess, uploadPreset = "infinitum-task", cloud
       <input
         type="file"
         accept="image/*"
+        required
         onChange={handleImageUpload}
         className="border rounded-lg p-2 mt-1 w-full h-14"
         style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}

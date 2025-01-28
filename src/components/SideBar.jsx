@@ -351,7 +351,7 @@ const SidebarMenu = () => {
                   }}
 
                 >
-                  Pending Booking
+                  Pending 
                 </MenuItem>
 
                 {/*  Approved Booking */}
@@ -364,7 +364,7 @@ const SidebarMenu = () => {
                   }}
 
                 >
-                  Approved Booking
+                  Approved
                 </MenuItem>
 
                 {/* Check In Booking */}
@@ -377,7 +377,7 @@ const SidebarMenu = () => {
                   }}
 
                 >
-                  Check In Booking
+                  Check-In
                 </MenuItem>
 
                 {/* Completed Booking */}
@@ -390,7 +390,7 @@ const SidebarMenu = () => {
                   }}
 
                 >
-                  Completed Booking
+                  Completed
                 </MenuItem>
 
                 {/* Cancelled Booking */}
@@ -403,7 +403,7 @@ const SidebarMenu = () => {
                   }}
 
                 >
-                  Cancelled Booking
+                  Cancelled
                 </MenuItem>
               </SubMenu>
 
