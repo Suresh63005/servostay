@@ -5,7 +5,7 @@ import SidebarMenu from "../components/SideBar";
 import axios from "axios";
 import ImageUploader from "../common/ImageUploader";
 import Select from 'react-select';
-import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import api from "../utils/api";
 import { RxCrossCircled } from "react-icons/rx";
 import { NotificationContainer, NotificationManager } from "react-notifications";
@@ -14,6 +14,7 @@ import Loader from "../common/Loader";
 import { useLoading } from "../Context/LoadingContext";
 import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
+import Cookies from "js-cookie";
 
 const PropertiesAdd = () => {
   const [countries, setCountries] = useState([]);
@@ -27,6 +28,7 @@ const PropertiesAdd = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [currentRule, setCurrentRule] = useState('');
   const { isLoading, setIsLoading } = useLoading();
+  const [cityOptions, setCityOptions] = useState([]);
   const [formData, setFormData] = useState({
     id: 0 || null,
     title: '',
@@ -49,15 +51,17 @@ const PropertiesAdd = () => {
     listing_date: '',
     add_user_id: 1,
     rules: [],
-    country_id: null,  
+    country_id: null,
     is_sell: 0,
     adults: null,
     children: null,
     infants: null,
     pets: null,
-    setting_id:1,
+    setting_id: 1,
+    extra_guest_charges: null
   });
-// console.log(formData)
+  // console.log(formData)
+
   useEffect(() => {
     if (id) {
       getProperty();
@@ -99,18 +103,62 @@ const PropertiesAdd = () => {
           }
         })(),
         country_id: Property.country_id,
-        
+
         is_sell: Property.is_sell,
         adults: Property.adults,
         children: Property.children,
         infants: Property.infants,
         pets: Property.pets,
-        setting_id:1,
+        setting_id: 1,
+        extra_guest_charges: Property.extra_guest_charges
       })
     } catch (error) {
       console.error("Error fetching Property:", error);
     }
   }
+
+  useEffect(() => {
+    const fetchActiveCities = async () => {
+      try {
+        setIsLoading(true);
+        const token = Cookies.get("user");
+        if (!token) {
+          NotificationManager.error("No authentication token found!");
+          return;
+        }
+
+        const response = await api.get('/cities/active-cities', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+        if (response.status === 200 && response.data && response.data.cities) {
+          const formattedCities = response.data.cities.map((city) => ({
+            value: city.id,
+            label: `${city.title} ${city.TblCountry ? `(${city.TblCountry.countryName})` : ''}`.trim()
+          }));          
+          setCityOptions(formattedCities);
+        } else {
+          console.error("Unexpected response:", response);
+          NotificationManager.error("Unexpected response format. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+        if (error.response) {
+          NotificationManager.error(`Error: ${error.response.status} - ${error.response.data.message || 'Failed to fetch cities'}`);
+        } else {
+          NotificationManager.removeAll();
+          NotificationManager.error("Network error. Please try again.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+
+    fetchActiveCities();
+  }, [setIsLoading])
 
 
   const handleKeyPress = (e) => {
@@ -153,33 +201,33 @@ const PropertiesAdd = () => {
     const { name, value } = e.target;
 
     // Fields that require positive integers
-    if (['adults', 'children', 'infants', 'pets','price'].includes(name)) {
-        const positiveNumberRegex = /^[0-9]*$/; // Only positive integers allowed
+    if (['adults', 'children', 'infants', 'pets', 'price'].includes(name)) {
+      const positiveNumberRegex = /^[0-9]*$/; // Only positive integers allowed
 
-        // Validate input
-        if (!positiveNumberRegex.test(value)) {
-            // alert("Please enter a positive number.");
-            return; // Stop further execution if invalid input
-        }
+      // Validate input
+      if (!positiveNumberRegex.test(value)) {
+        // alert("Please enter a positive number.");
+        return; // Stop further execution if invalid input
+      }
     }
 
     // Update the form data
     setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-        id: prevData.id,
+      ...prevData,
+      [name]: value,
+      id: prevData.id,
     }));
-};
-  
+  };
+
 
   useEffect(() => {
     setIsLoading(true);
-    
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [ location, setIsLoading]);
+  }, [location, setIsLoading]);
 
   const handleImageUploadSuccess = (imageUrl) => {
     setFormData((prevData) => ({
@@ -191,7 +239,7 @@ const PropertiesAdd = () => {
   // console.log(formData, "from formdata");
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Check for required fields like image
     if (!formData.image) {
       NotificationManager.removeAll();
@@ -199,7 +247,7 @@ const PropertiesAdd = () => {
       setError2('Please upload an image');
       return;
     }
-  
+
     // Prepare the data to submit
     const formDataToSubmit = {
       ...formData,
@@ -213,7 +261,7 @@ const PropertiesAdd = () => {
       if (response?.status === 200 || response?.status === 201) {
         NotificationManager.removeAll();
         NotificationManager.success(successMessage);
-  
+
         // Delay navigation slightly to ensure the toast is shown
         setTimeout(() => {
           navigate('/property-list');
@@ -225,7 +273,7 @@ const PropertiesAdd = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-  
+
       // Handle different error scenarios
       NotificationManager.removeAll();
       if (error?.response?.data?.message) {
@@ -247,7 +295,7 @@ const PropertiesAdd = () => {
           <div className="container mx-auto">
             <div className="flex items-center mt-6  mb-4">
               <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
-                <ArrowBackIosNewIcon style={{color:'#045D78'}} />
+                <ArrowBackIosNewIcon style={{ color: '#045D78' }} />
               </Link>
               <h2
                 className="text-lg font-semibold ml-4 "
@@ -329,7 +377,7 @@ const PropertiesAdd = () => {
                       <label htmlFor="is_panorama" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">
                         Is Panorama
                       </label>
-                      
+
                       <SelectComponent
                         name="is_panorama"
                         value={formData.is_panorama}
@@ -340,8 +388,9 @@ const PropertiesAdd = () => {
                           }));
                         }}
                         options={[
+
                           { value: 1, label: 'yes' },
-    { value: 0, label: 'No' },
+                          { value: 0, label: 'No' },
                         ]}
                         defaultplaceholder={'Select Panorama'}
                       />
@@ -387,7 +436,7 @@ const PropertiesAdd = () => {
                       <input
                         id="adults"
                         name="adults"
-                        type="number" 
+                        type="number"
                         min={0}
                         required
                         value={formData.adults}
@@ -439,7 +488,7 @@ const PropertiesAdd = () => {
                     </div>
                   </div>
 
-                  <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
+                  <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-3  mt-6">
                     {/*property country*/}
                     <div className="flex flex-col">
                       <label
@@ -460,12 +509,12 @@ const PropertiesAdd = () => {
                           }));
                         }}
                         options={countries.map((item) => ({
-                          value: item.id, 
-                          label: item.title, 
+                          value: item.id,
+                          label: item.title,
                         }))}
-                        
+
                       />
-                     
+
                     </div>
 
                     {/* propert status */}
@@ -477,7 +526,7 @@ const PropertiesAdd = () => {
                         {" "}
                         property Status
                       </label>
-                      
+
 
                       <SelectComponent
                         name="status"
@@ -489,12 +538,33 @@ const PropertiesAdd = () => {
                           }));
                         }}
                         options={statusoptions}
-                        
+
                       />
-                      
+
                     </div>
 
-                    
+                    <div className="flex flex-col">
+                      <label
+                        htmlFor="country_id"
+                        className="text-sm font-medium text-start text-[12px] font-[Montserrat]"
+                      >
+                        {" "}
+                        Extra Guest Charges
+                      </label>
+                      <input type="number"
+                        id="extra_guest_charges"
+                        name="extra_guest_charges"
+                        value={formData.extra_guest_charges}
+                        required
+                        className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
+                        style={{
+                          borderRadius: "8px",
+                          border: "1px solid #EAEAFF",
+                        }}
+                        onChange={handleChange}
+                        placeholder="Enter Extra Guest Charges"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
@@ -546,41 +616,41 @@ const PropertiesAdd = () => {
                           const selectedIds = selectedOptions.map((option) => option.value);
                           setFormData((prevData) => ({
                             ...prevData,
-                            facility: selectedIds.join(","), 
+                            facility: selectedIds.join(","),
                           }));
                         }}
                         className="block w-full text-sm border-color border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#045D78] focus:border-[#045D78]"
                         classNamePrefix="select"
                         placeholder="Select Facilities"
                         styles={{
-                          control: (provided,{isFocused}) => ({
+                          control: (provided, { isFocused }) => ({
                             ...provided,
                             border: isFocused ? "2px solid #045D78" : " 1px solid #EAEAFF",
-                            boxShadow: isFocused ? 'none':'none',
+                            boxShadow: isFocused ? 'none' : 'none',
                             borderRadius: "8px",
-                            
-                            fontSize: "12px", 
-                            maxHeight:"40px",
-                            overflowY:'scroll',
+
+                            fontSize: "12px",
+                            maxHeight: "40px",
+                            overflowY: 'scroll',
                             color: "#757575",
-                            "&:hover":{
-        
-      }
+                            "&:hover": {
+
+                            }
                           }),
                           placeholder: (provided) => ({
                             ...provided,
                             position: "absolute",
-                            top: "50%", 
-                            transform: "translateY(-50%)", 
+                            top: "50%",
+                            transform: "translateY(-50%)",
                             width: "100%",
-                            textAlign: "center", 
+                            textAlign: "center",
                           }),
                           valueContainer: (provided) => ({
                             ...provided,
-                            height: "40px", 
-                            padding: "0 8px", 
+                            height: "40px",
+                            padding: "0 8px",
                           }),
-                          border:"1px solid #045D78"
+                          border: "1px solid #045D78"
                         }}
                       />
                     </div>
@@ -643,7 +713,7 @@ const PropertiesAdd = () => {
                           type="number"
                           id="sqrft"
                           min={0}
-                      
+
                           value={formData.sqrft}
                           name="sqrft"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
@@ -663,12 +733,12 @@ const PropertiesAdd = () => {
                           type="number"
                           id="rate"
                           min={1}
-                          value={formData.rate || ""} 
+                          value={formData.rate || ""}
                           name="rate"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Property Rating"
                           onChange={(e) => {
-                            const value = Math.min(Number(e.target.value), 5); 
+                            const value = Math.min(Number(e.target.value), 5);
                             setFormData((prevData) => ({
                               ...prevData,
                               rate: value,
@@ -690,26 +760,26 @@ const PropertiesAdd = () => {
                         >
                           Select Property Type
                         </label>
-                        
+
 
                         <SelectComponent
-                        name="ptype"
-                        value={formData.ptype}
-                        onChange={(selectedOption) => {
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            ptype: selectedOption.value,
-                          }));
-                        }}
-                        options={categories.map((category) => (
-                          {value:category.id, label:category.title}
-                        ))}
-                        
-                      />
-                        
+                          name="ptype"
+                          value={formData.ptype}
+                          onChange={(selectedOption) => {
+                            setFormData((prevData) => ({
+                              ...prevData,
+                              ptype: selectedOption.value,
+                            }));
+                          }}
+                          options={categories.map((category) => (
+                            { value: category.id, label: category.title }
+                          ))}
 
-                        
-                      
+                        />
+
+
+
+
                       </div>
 
                       {/* Latitude */}
@@ -770,22 +840,25 @@ const PropertiesAdd = () => {
                       </div>
 
                       {/* City, Country */}
-                      <div>
-                        <label
+                      <div className=" ">
+                      <label
                           htmlFor="city"
-                          className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
+                          className="text-sm  font-medium  text-[12px] font-[Montserrat]"
                         >
                           City, Country
                         </label>
-                        <input
-                          type="text"
-                          id="city"
-                          value={formData.city}
+                        <SelectComponent
                           name="city"
-                          className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Like New York, US"
-                          onChange={handleChange}
+                          value={formData.city}
+                          onChange={(selectedOption) =>
+                            setFormData((prevData) => ({
+                              ...prevData,
+                              city: selectedOption.value,
+                            }))
+                          }
+                          options={cityOptions || []}  // Use cityOptions instead of selectedOption
                         />
+
                       </div>
 
                       {/* listing date */}
