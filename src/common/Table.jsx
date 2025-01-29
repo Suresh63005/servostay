@@ -32,24 +32,39 @@ const Table = ({
     };
 
     const renderImageField = (row, col) => {
-        if (row[col.field]) {
+        const images = row[col.field];
+        if (Array.isArray(images) && images.length > 0) {
+            return (
+                <div className="flex space-x-2">
+                    {images.map((img, index) => (
+                        <img
+                            key={index}
+                            src={img.url || img}
+                            alt={`Image ${index}`}
+                            loading="lazy"
+                            className="w-12 h-12 object-cover rounded-md"
+                            onError={(e) => {
+                                e.target.src = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
+                            }}
+                        />
+                    ))}
+                </div>
+            );
+        } else if (typeof images === 'string' && images.trim() !== '') {
             return (
                 <img
-                    src={row[col.field]}
+                    src={images}
                     alt="Image"
                     loading="lazy"
                     className="w-8 h-8 object-cover rounded-lg"
                     onError={(e) => {
-                        e.target.src = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'; 
+                        e.target.src = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
                     }}
                 />
             );
-        } else {
-            return <span>No Image</span>;
         }
+        return <span>No Image</span>;
     };
-
-    
 
     return (
         <div>
@@ -128,7 +143,7 @@ const Table = ({
                                                                 <FontAwesomeIcon icon={faTrash} />
                                                             </button>
                                                         </div>
-                                                    ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' || col.field==='id_proof_img' || col.field === 'prop_img'  ? (
+                                                    ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' || col.field==='id_proof_img' || col.field === 'images'  ? (
                                                         renderImageField(row, col)
                                                     ) :
                                                     col.field.includes(".") ? (

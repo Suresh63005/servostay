@@ -92,6 +92,8 @@ const CountryAdd = () => {
 
       if (formData.img) {
         form.append("img", formData.img); 
+      }else{
+        form.delete("img")
       }
 
       if (id) {

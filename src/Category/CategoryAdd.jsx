@@ -84,52 +84,46 @@ const CategoryAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setloading(true)
-    if (!formData.img) {
+    setloading(true);
+    if (!formData.img && !id) {
       setError("Image is required.");
       return;
     }
-    const successMessage = id ? 'Category Updated Succesfully!' : 'Category Added Successfully!'
-
+  
+    const successMessage = id ? 'Category Updated Successfully!' : 'Category Added Successfully!';
     try {
-      if (!formData.img) {
-        setError("Please upload an image in SVG format.");
-        setIsLoading(false);
-        return;
-      }
-  
       const data = new FormData();
-      data.append("id", formData.id || "");
       data.append("title", formData.title);
-      data.append("img", formData.img);
       data.append("status", formData.status);
+      if (id) {
+        data.append("id", formData.id); 
+      }
+      if (formData.img) {
+        data.append("img", formData.img);  
+      }
+
+      const response = await api.post("/categories/upsert", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
   
-      const response = await api.post(
-        `/categories/upsert`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(response.data)
+      console.log(response.data);
       NotificationManager.removeAll();
-      NotificationManager.success(id ? "Category updated successfully!" : "Category added successfully!");
-      
+      NotificationManager.success(successMessage);
+  
       setTimeout(() => {
-          navigate("/category-list");
-        }, 2000);
+        navigate("/category-list");
+      }, 2000);
     } catch (error) {
       NotificationManager.removeAll();
       console.error("Error submitting Category:", error);
-      NotificationManager.error("Error submitting Category:", error);
-    }finally{
-      setloading(false)
+      NotificationManager.error("Error submitting Category");
+    } finally {
+      setloading(false);
     }
   };
-
+  
   return (
     <div>
       {isLoading && <Loader />}
@@ -167,11 +161,13 @@ const CategoryAdd = () => {
                       <input
                             type="file"
                             accept=".svg"
+                            id='img'
+                            name='img'
                             onChange={handleFileChange}
                             className="border rounded-lg p-2 mt-1 w-full h-14"
                             style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
-                          />
-                                          {formData.previewUrl && (
+                        />
+                      {formData.previewUrl && (
                       <div className="mt-4">
                         <img
                           src={formData.previewUrl}

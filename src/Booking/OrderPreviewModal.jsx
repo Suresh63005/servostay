@@ -130,8 +130,12 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
                                         <tr className="border-b">
                                             <td className="px-4 py-2 font-medium text-gray-700">Property Image?</td>
                                             <td className="px-4 py-2 text-right">
-                                                <a href={bookingId.properties.image || 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'} target='_blank' rel='noopener noreferrer'>
-                                                {bookingId.properties.image ? (
+                                                <a
+                                                    href={bookingId.properties?.image || 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'}
+                                                    target='_blank'
+                                                    rel='noopener noreferrer'
+                                                >
+                                                    {bookingId.properties?.image ? (
                                                     <img
                                                         src={bookingId.properties.image}
                                                         alt="Property Image"
@@ -139,21 +143,21 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
                                                         width={90}
                                                         className="float-right object-cover rounded"
                                                         onError={(e) => {
-                                                        e.target.src = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
+                                                        e.target.src = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'; // fallback image if error occurs
                                                         }}
                                                     />
                                                     ) : (
                                                     <img
                                                         src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
-                                                        alt="Placeholder Image"
+                                                        alt="Fallback Property Image"
                                                         height={90}
                                                         width={90}
                                                         className="float-right object-cover rounded"
                                                     />
                                                     )}
-
                                                 </a>
                                             </td>
+
                                         </tr>
                                         <tr>
                                             <td className="px-4 py-2 font-medium text-gray-700">Property Check In Date?</td>

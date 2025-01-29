@@ -110,30 +110,14 @@ const PropotiesList = () => {
         }
     }
 
-
-    // useEffect(() => {
-    //     setIsLoading(true);
-        
-    //     const timer = setTimeout(() => {
-    //       setIsLoading(false);
-    //     }, 1000);
-    //     return () => clearTimeout(timer);
-    //   }, [ setIsLoading]);
-
-
     // Pagination calculations
     const indexOfLastItem = currentPage * itemsPerPage;
-    console.log(indexOfLastItem)
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    console.log(indexOfFirstItem)
     const currentProperties = filteredProperties.slice(indexOfFirstItem, indexOfLastItem);
-    console.log(currentProperties)
     const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
-    console.log(totalPages)
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    console.log(paginate)
 
     const handleToggleChange = async (id, currentStatus, field) => {
         console.log(`Toggling ${field} for ID: ${id} with current status: ${currentStatus}`);
@@ -159,7 +143,7 @@ const PropotiesList = () => {
         { label: "Image", field: "image", sortable: true, minWidth: "130px" },
         { label: "title", field: "title", sortable: true, minWidth: "180px" },
         { label: "price", field: "price", sortable: true, minWidth: "120px" },
-        { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "170px" },
+        { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
         { label: "address", field: "address", sortable: true, minWidth: "150px" },
         { label: "facility", field: "facility", sortable: true, minWidth: "150px" },
         { label: "description", field: "description", sortable: true, minWidth: "180px" },
@@ -169,23 +153,22 @@ const PropotiesList = () => {
         { label: "rate", field: "rate", sortable: true, minWidth: "120px" },
         { label: "ptype", field: "ptype", sortable: true, minWidth: "120px" },
         { label: "latitude", field: "latitude", sortable: true, minWidth: "150px" },
-        { label: "longtitude", field: "longtitude", sortable: true, minWidth: "160px" },
+        { label: "longtitude", field: "longtitude", sortable: true, minWidth: "180px" },
         { label: "mobile", field: "mobile", sortable: true, minWidth: "130px" },
-        { label: "city", field: "city", sortable: true, minWidth: "12   0px" },
+        { label: "city", field: "city", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
         { label: "plimit", field: "plimit", sortable: true, minWidth: "120px" },
         { label: "is sell", field: "is_sell", sortable: true, minWidth: "120px" },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
-        { label: "children", field: "children", sortable: true, minWidth: "140px" },
-        { label: "infants", field: "infants", sortable: true, minWidth: "140px" },
+        { label: "children", field: "children", sortable: true, minWidth: "150px" },
+        { label: "infants", field: "infants", sortable: true, minWidth: "150px" },
         { label: "pets", field: "pets", sortable: true, minWidth: "120px" },
         { label: "pets", field: "pets", sortable: true, minWidth: "120px" },
         { label: "Status", field: "status", sortable: false, minWidth: "120px" },
         { label: "Actions", field: "actions", minWidth: "150px", sortable: false },
     ];
     
-
     return (
         <div>
             {/* {isLoading && <Loader />} */}

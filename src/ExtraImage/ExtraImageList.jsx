@@ -107,8 +107,8 @@ const ExtraImageList = () => {
 
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "150px" },
-        { label: "Extra Image", field: "img", sortable: false, minWidth: "100px" },
-        { label: "Property Title", field: "title", sortable: true, minWidth: "180px" },
+        { label: "Extra Image", field: "images", sortable: false, minWidth: "100px" },
+        { label: "Property Title", field: "Property.title", sortable: true, minWidth: "180px" },
         { label: "Status", field: "status", sortable: true, minWidth: "100px" },
         { label: 'Actions', field: 'actions', minWidth: '150px', sortable: false },
       ];
