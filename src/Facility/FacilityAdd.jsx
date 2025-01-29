@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom'
 import ImageUploader from '../common/ImageUploader'
-import axios from 'axios'
 import { useLoading } from '../Context/LoadingContext';
 import { useLocation } from 'react-router-dom';
 import Loader from '../common/Loader';
@@ -12,13 +11,15 @@ import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import api from '../utils/api'
 import { statusoptions } from '../common/data'
 import SelectComponent from '../common/SelectComponent'
+import { Vortex } from 'react-loader-spinner';
 
 const FacilityAdd = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const id = location.state ? location.state.id : null
-  const [formData, setFormData] = useState({ id: id || null, title: "", img: "", status: 0 });
+  const [formData, setFormData] = useState({ id: id || null, title: "", img: null, status: 0 });
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -68,17 +69,28 @@ const FacilityAdd = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-      id: prevData.id
-    }));
-  }
+      const { name, value, files } = e.target;
+      if (files && files.length > 0) {
+        const file = files[0];
+        const previewUrl = URL.createObjectURL(file);
+        setFormData((prevData) => ({
+          ...prevData,
+          img: file, // Save the file
+          imgPreview: previewUrl, 
+        }));
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+          id: prevData.id
+        }));
+      }
+    };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
+    setloading(true)
 
     if (!formData.img) {
       setError("Image is required.");
@@ -86,16 +98,23 @@ const FacilityAdd = () => {
     }
 
     try {
-      const apiEndpoint = id
-        ? `${api}/facilities/upsert`
-        : `${api}/facilities/upsert`;
+      const form=new FormData();
+      form.append("",formData.title)
+      form.append("",formData.status)
 
-      const method = id ? "post" : "post";
-      const response = await api.post('/facilities/upsert', formData);
+      if(id){
+        form.append("id",formData.id)
+      }
+      if (formData.img) {
+        form.append("img", formData.img); 
+      }
 
-      const successMessage = id
-        ? "facility updated successfully!"
-        : "facility added successfully!";
+      const response = await api.post('/facilities/upsert', form,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const successMessage = id ? "facility updated successfully!" : "facility added successfully!";
       if (response.status === 200 || response.status === 201) {
         NotificationManager.removeAll();
         NotificationManager.success(successMessage);
@@ -109,6 +128,8 @@ const FacilityAdd = () => {
       NotificationManager.removeAll();
       console.error("Error submitting facility data:", error);
       NotificationManager.error("An error occurred. Please try again.");
+    }finally{
+      setloading(false)
     }
   }
 
@@ -144,7 +165,7 @@ const FacilityAdd = () => {
                     {/* facility image*/}
                     <div className="flex flex-col">
                       <label htmlFor="img" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Image</label>
-                      <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
+                      <input type="file" name="img" id="img" onChange={handleChange} />
                       {formData.img && (
                         <div className="mt-4">
                           <img
@@ -180,7 +201,24 @@ const FacilityAdd = () => {
 
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
-                    <button type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg   h-10 font-poppins font-medium `} style={{ borderRadius: "8px", }} > {id ? 'Update Facility' : 'Add Facility'} </button>
+                    <button type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg   h-10 font-poppins font-medium `} style={{ borderRadius: "8px", }} >
+                    {
+                        loading ? (
+                          <Vortex
+                            visible={true}
+                            height="25"
+                            width="100%"
+                            ariaLabel="vortex-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="vortex-wrapper"
+                            colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                          />
+                        ):
+                        (
+                          id ? "Update Facility" : "Add Facility"
+                        )
+                      }
+                    </button>
                   </div>
                 </form>
 

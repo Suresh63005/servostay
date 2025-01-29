@@ -15,6 +15,7 @@ import { useLoading } from "../Context/LoadingContext";
 import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
 import Cookies from "js-cookie";
+import { Vortex } from "react-loader-spinner";
 
 const PropertiesAdd = () => {
   const [countries, setCountries] = useState([]);
@@ -28,6 +29,7 @@ const PropertiesAdd = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [currentRule, setCurrentRule] = useState('');
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const [cityOptions, setCityOptions] = useState([]);
   const [formData, setFormData] = useState({
     id: 0 || null,
@@ -239,7 +241,7 @@ const PropertiesAdd = () => {
   // console.log(formData, "from formdata");
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     // Check for required fields like image
     if (!formData.image) {
       NotificationManager.removeAll();
@@ -281,6 +283,8 @@ const PropertiesAdd = () => {
       } else {
         NotificationManager.error('Please fill all the fields.', 'Error');
       }
+    }finally{
+      setloading(false)
     }
   };
 
@@ -940,7 +944,22 @@ const PropertiesAdd = () => {
                   {/* Action Buttons */}
                   <div className="flex justify-start mt-6 gap-3">
                     <button type="submit" className={`px-4 py-2 mt-6 float-start bg-[#045D78] text-white rounded-lg  h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}   >
-                      {id ? 'Update Property' : 'Add  Property'}
+                      {
+                        loading ? (
+                          <Vortex
+                            visible={true}
+                            height="25"
+                            width="100%"
+                            ariaLabel="vortex-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="vortex-wrapper"
+                            colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                          />
+                        ):
+                        (
+                          id ? "Update Property" : "Add Property"
+                        )
+                      }
                     </button>
                   </div>
                 </form>

@@ -10,6 +10,7 @@ import SelectComponent from '../common/SelectComponent';
 import Cookies from "js-cookie";
 import { statusoptions } from '../common/data';
 import api from '../utils/api';
+import { Vortex } from 'react-loader-spinner';
 
 const CityAdd = () => {
   const location = useLocation();
@@ -17,6 +18,7 @@ const CityAdd = () => {
   const id = location.state ? location.state.id : null;
   const [formData, setFormData] = useState({ id: id || null, title: '', img: null, status: 0, country_id: '' });
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const [error, setError] = useState('');
   const [countryOptions, setCountryOptions] = useState([]);
 
@@ -105,14 +107,13 @@ const CityAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setloading(true)
     if (!formData.title || (!id && !formData.img) || !formData.country_id) {
       setError("City Name, Country, and Image are required.");
       return;
     }
 
     try {
-      setIsLoading(true);
       const data = new FormData();
       data.append("id", formData.id || "");
       data.append("title", formData.title);
@@ -152,7 +153,7 @@ const CityAdd = () => {
       console.error('Error submitting city data:', error);
       NotificationManager.error('An error occurred. Please try again.');
     } finally {
-      setIsLoading(false);
+      setloading(false)
     }
   };
 
@@ -241,7 +242,21 @@ const CityAdd = () => {
 
                   <div className="flex justify-start mt-6 gap-3">
                     <button type="submit" className={`py-2 px-4 bg-[#045D78] text-white rounded-lg h-10 font-poppins font-medium `} style={{ borderRadius: '8px' }}>
-                      {id ? 'Update City' : 'Add City'}
+                      {
+                        loading ? (
+                          <Vortex 
+                            visible={true}
+                            height="25"
+                            width="100%"
+                            ariaLabel='vortex-loading'
+                            wrapperStyle={{}}
+                            wrapperClass="vortex-wrapper"
+                            colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                          />
+                        ):(
+                          id ? 'Update City' : 'Add City'
+                        )
+                      }
                     </button>
                   </div>
                 </form>

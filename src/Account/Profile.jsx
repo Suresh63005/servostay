@@ -11,19 +11,16 @@ import 'react-notifications/lib/notifications.css';
 import ArrowBackIosNewIcon  from '@mui/icons-material/ArrowBackIosNew';
 import api from '../utils/api';
 import Cookies from 'js-cookie';
+import { Vortex } from 'react-loader-spinner';
 
 const Profile = () => {
   const navigate = useNavigate()
   const location = useLocation();
   const { isLoading, setIsLoading } = useLoading();
+  const [loading,setloading]=useState(false)
   const [passwordVisible,setPasswordVisible]=useState(false)
   const [passwordType,setPasswordType]=useState('password');
-  const [formData, setFormData] = useState({
-    id:0,
-    username:'',
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({   id:0,   username:'',   email: '',   password: '', });
 
   const getToken = () => {
     const token = Cookies.get("user"); 
@@ -80,6 +77,7 @@ const Profile = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    setloading(true)
     // console.log('Form submitted:', formData);
     try {
         const response = await api.put(
@@ -95,6 +93,8 @@ const Profile = () => {
     } catch (error) {
         NotificationManager.removeAll();
         NotificationManager.error("Error While Updating:", error);
+    }finally{
+      setloading(false)
     }
   };
 
@@ -149,7 +149,24 @@ const Profile = () => {
                         
                 {/* Action Buttons */}
                 <div className="flex justify-start mt-6 gap-3">
-                  <button  type="submit" className="px-4 py-2 bg-[#045D78] text-white rounded-lg   h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >Update Profile </button>
+                  <button  type="submit" className="px-4 py-2 bg-[#045D78] text-white rounded-lg   h-10 font-[Poppins] font-medium" style={{ borderRadius: "8px", }} >
+                  {
+                        loading ? (
+                          <Vortex
+                            visible={true}
+                            height="25"
+                            width="100%"
+                            ariaLabel="vortex-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="vortex-wrapper"
+                            colors={['white', 'white', 'white', 'white', 'white', 'white']}
+                          />
+                        ):
+                        (
+                          `Update Profile`
+                        )
+                      }
+                  </button>
                 </div>
               </form>
             </div>
