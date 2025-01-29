@@ -23,8 +23,8 @@ const CountryAdd = () => {
   const [formData, setFormData] = useState({
     id: id || null,
     title: "",
-    img: null, // For storing the uploaded file
-    imgPreview: null, // For image preview
+    img: null, 
+    imgPreview: null, 
     status: 0,
     currency: "",
     city: "",
@@ -67,8 +67,8 @@ const CountryAdd = () => {
       const previewUrl = URL.createObjectURL(file);
       setFormData((prevData) => ({
         ...prevData,
-        img: file, // Save the file
-        imgPreview: previewUrl, // Save the preview URL
+        img: file, 
+        imgPreview: previewUrl, 
       }));
     } else {
       setFormData((prevData) => ({
@@ -91,7 +91,7 @@ const CountryAdd = () => {
       form.append("city", formData.city);
 
       if (formData.img) {
-        form.append("img", formData.img); // Append the file
+        form.append("img", formData.img); 
       }
 
       if (id) {
@@ -107,6 +107,7 @@ const CountryAdd = () => {
         ? "Country updated successfully!"
         : "Country added successfully!";
       if (response.status === 200 || response.status === 201) {
+        NotificationManager.removeAll()
         NotificationManager.success(successMessage);
         setTimeout(() => {
           navigate("/country-list");
@@ -114,6 +115,7 @@ const CountryAdd = () => {
       }
     } catch (error) {
       console.error("Error submitting country data:", error);
+      NotificationContainer.removeAll()
       NotificationManager.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -242,7 +244,7 @@ const CountryAdd = () => {
                           height="25"
                           width="100%"
                           ariaLabel="vortex-loading"
-                          colors={["white", "white", "white"]}
+                          colors={["white", "white", "white","white", "white", "white"]}
                         />
                       ) : id ? (
                         "Update Country"

@@ -90,9 +90,6 @@ const CategoryAdd = () => {
       setError("Image is required.");
       return;
     }
-
-    // console.log("Form submitted:", formData);
-    const url = `categories/upsert`;
     const successMessage = id ? 'Category Updated Succesfully!' : 'Category Added Successfully!'
 
     try {
@@ -117,14 +114,14 @@ const CategoryAdd = () => {
           },
         }
       );
-      
+      console.log(response.data)
+      NotificationManager.removeAll();
       NotificationManager.success(id ? "Category updated successfully!" : "Category added successfully!");
       
       setTimeout(() => {
           navigate("/category-list");
         }, 2000);
     } catch (error) {
-
       NotificationManager.removeAll();
       console.error("Error submitting Category:", error);
       NotificationManager.error("Error submitting Category:", error);
@@ -132,7 +129,6 @@ const CategoryAdd = () => {
       setloading(false)
     }
   };
-
 
   return (
     <div>

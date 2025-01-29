@@ -56,7 +56,7 @@ const CityList = () => {
                     id: index + 1, 
                     img: city.img,
                     title: city.title,
-                    countryName: city.TblCountry?.countryName || "N/A", 
+                    countryName: city.country?.title || "N/A", 
                     status: city.status,
                     
                 }));
@@ -114,11 +114,6 @@ const CityList = () => {
 
     const handleToggleChange = async (id, currentStatus, field) => {
         console.log(`Toggling ${field} for ID: ${id} with current status: ${currentStatus}`);
-
-        if (!id || currentStatus === undefined) {
-            console.error(`Invalid arguments: ID=${id}, currentStatus=${currentStatus}`);
-            return;
-        }
 
         try {
             await StatusEntity("City", id, currentStatus, setFilteredCities, filteredCities, field);
