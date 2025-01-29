@@ -106,8 +106,7 @@ const CountryList = () => {
         { label: " Image", field: "img", sortable: true, minWidth: "180px" },
         { label: " Country Name", field: "title", sortable: true, minWidth: "180px" },
         { label: " Currency", field: "currency", sortable: true, minWidth: "180px" },
-        { label: " cities", field: "cities", sortable: true, minWidth: "180px" },
-        { label: " Total Properties", field: "d_con", sortable: true, minWidth: "220px" },
+        // { label: " Total Properties", field: "d_con", sortable: true, minWidth: "220px" },
         { label: "Status", field: "status", sortable: true, minWidth: "130px" },
         { label: 'Actions', field: 'actions', minWidth: '150px', sortable: false },
       ];

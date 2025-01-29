@@ -13,14 +13,9 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordType, setPasswordType] = useState('password');
   const navigate = useNavigate();
-
   const [loading, setloading] = useState(false)
   const [formData, setFormData] = useState({ username: "", password: "" });
-
   const location = useLocation();
-
-  
-
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -36,37 +31,30 @@ const Login = () => {
     e.preventDefault();
     setloading(true)
     try {
-
       const res = await api.post('/admin/login', formData);
-
-
-
+      NotificationManager.removeAll()
       NotificationManager.success('Admin logged in successfully!');
       Cookies.set('user', res.data.token, {
         expires: 1, 
         secure: true,
       });
-
-
-      
-      const previousPage = location.state?.from || '/dashboard'; 
-      navigate(previousPage, { replace: true }); 
+     
+      setTimeout(() => {
+        const previousPage = location.state?.from || '/dashboard'; 
+        navigate(previousPage, { replace: true });
+      }, 2000); 
     } catch (err) {
-
       NotificationManager.removeAll()
       NotificationManager.error(err.res?.data?.error || "Something went wrong!");
     } finally {
       setloading(false)
-
     }
   };
+
   return (
     <div className="h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left Side */}
-      <div
-        className="h-full flex flex-col items-center justify-center"
-        style={{ background: '#045D78' }}
-      >
+      <div className="h-full flex flex-col items-center justify-center"  style={{ background: '#045D78' }} >
         <div>
           <img src="/image/Group 2.svg" alt="" className="w-[250px] h-[220px]" />
         </div>
