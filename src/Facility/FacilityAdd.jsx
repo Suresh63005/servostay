@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import { Link, useNavigate } from 'react-router-dom'
-import ImageUploader from '../common/ImageUploader'
 import { useLoading } from '../Context/LoadingContext';
 import { useLocation } from 'react-router-dom';
 import Loader from '../common/Loader';
@@ -54,38 +53,27 @@ const FacilityAdd = () => {
     return () => clearTimeout(timer);
   }, [location, setIsLoading]);
 
-
-  const handleImageUploadSuccess = (imageUrl) => {
-    const extension = imageUrl.split(".").pop().toLowerCase();
-    if (extension !== "svg") {
-      setError("Only SVG files are allowed");
-      return;
-    }
-    setError("");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      img: imageUrl,
+      [name]: value,
     }));
   };
+  
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
 
-  const handleChange = (e) => {
-      const { name, value, files } = e.target;
-      if (files && files.length > 0) {
-        const file = files[0];
-        const previewUrl = URL.createObjectURL(file);
-        setFormData((prevData) => ({
-          ...prevData,
-          img: file, // Save the file
-          imgPreview: previewUrl, 
-        }));
-      } else {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-          id: prevData.id
-        }));
-      }
-    };
+      setFormData((prevData) => ({
+        ...prevData,
+        img: file, 
+        previewUrl: previewUrl 
+      }));
+    }
+    setError('');
+  };
   
 
   const handleSubmit = async (e) => {
@@ -99,8 +87,8 @@ const FacilityAdd = () => {
 
     try {
       const form=new FormData();
-      form.append("",formData.title)
-      form.append("",formData.status)
+      form.append("title",formData.title)
+      form.append("status",formData.status)
 
       if(id){
         form.append("id",formData.id)
@@ -165,7 +153,7 @@ const FacilityAdd = () => {
                     {/* facility image*/}
                     <div className="flex flex-col">
                       <label htmlFor="img" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Image</label>
-                      <input type="file" name="img" id="img" onChange={handleChange} />
+                      <input type="file" name="img" id="img" onChange={handleFileChange} />
                       {formData.img && (
                         <div className="mt-4">
                           <img
