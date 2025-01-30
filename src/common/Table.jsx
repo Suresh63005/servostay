@@ -133,6 +133,7 @@ const Table = ({
                                                     ) : col.field === 'actions' ? (
                                                         <div className="flex items-center space-x-2">
                                                             <NotificationContainer />
+
                                                             {showEditButton && (
                                                                 <button
                                                                     className="bg-[#2dce89] text-white p-[5px] rounded-full hover:bg-green-600 transition"
@@ -141,6 +142,7 @@ const Table = ({
                                                                     <FontAwesomeIcon icon={faPen} />
                                                                 </button>
                                                             )}
+
                                                             <button
                                                                 className="bg-[#f5365c] text-white p-[5px] rounded-full hover:bg-red-600 transition"
                                                                 onClick={() => onDelete(row.id)}
