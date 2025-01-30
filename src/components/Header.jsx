@@ -66,11 +66,11 @@ const Header = () => {
       {/* Icons Section */}
       <div className="flex items-center gap-4">
         {/* Notification Icon */}
-        <div className="relative">
+        {/* <div className="relative">
           <div className="bg-[#f7fbff] rounded-full w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center cursor-pointer">
             <NotificationIcon />
           </div>
-        </div>
+        </div> */}
 
         
         <div
