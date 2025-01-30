@@ -219,9 +219,9 @@ const CityAdd = () => {
                         style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
                         onChange={handleFileChange}
                       />
-                      {formData.previewUrl && (
+                      {formData.imgPreview && (
                         <div className="mt-4">
-                          <img src={formData.previewUrl} alt="Uploaded Preview" className="w-[50px] h-[50px] object-cover rounded" />
+                          <img src={formData.imgPreview} alt="Uploaded Preview" className="w-[50px] h-[50px] object-cover rounded" />
                         </div>
                       )}
                       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

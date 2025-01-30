@@ -25,7 +25,7 @@ export const StatusEntity = async (
       case "Panorama":
         url = `properties/toggle-panorama`;
         break;
-      case "ExtraImage":
+      case "Extra Image":
         url = `extra/toggle-status`;
         break;
       case "Facility":

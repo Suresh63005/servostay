@@ -134,6 +134,7 @@ const PaymentGatewayList = () => {
                         paginate={paginate}
                         filteredData={filteredPaymentGateway}
                         loading={isLoading}
+                        showEditButton={false}
                     />
                     </div>
                 </div>

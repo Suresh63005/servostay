@@ -21,7 +21,7 @@ const CategoryAdd = () => {
   const [loading,setloading]=useState(false)
   const [error, setError] = useState("");
 
-  const [formData, setFormData] = useState({  id: id || null,  title: '',  img: '',  status: 0,});
+  const [formData, setFormData] = useState({  id: id || null,  title: '',  img: '',imgPreview:null,  status: 0,});
 
   useEffect(() => {
     if (id) {
@@ -38,6 +38,7 @@ const CategoryAdd = () => {
         id,
         title: Category.title,
         img: Category.img,
+        imgPreview:Category.img,
         status: Category.status,
       })
     } catch (error) {
@@ -76,7 +77,7 @@ const CategoryAdd = () => {
       setFormData((prevData) => ({
         ...prevData,
         img: file,
-        previewUrl: previewUrl,
+        imgPreview: previewUrl,
       }));
       setError(""); 
     }
@@ -167,10 +168,10 @@ const CategoryAdd = () => {
                             className="border rounded-lg p-2 mt-1 w-full h-14"
                             style={{ borderRadius: "8px", border: "1px solid #EAEAFF" }}
                         />
-                      {formData.previewUrl && (
+                      {formData.imgPreview && (
                       <div className="mt-4">
                         <img
-                          src={formData.previewUrl}
+                          src={formData.imgPreview}
                           alt="Uploaded Preview"
                           className="w-[50px] h-[50px] object-cover rounded"
                         />

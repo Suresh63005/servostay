@@ -16,7 +16,7 @@ const FacilityAdd = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const id = location.state ? location.state.id : null
-  const [formData, setFormData] = useState({ id: id || null, title: "", img: null, status: 0 });
+  const [formData, setFormData] = useState({ id: id || null, title: "", img: null,imgPreview:null, status: 0 });
   const { isLoading, setIsLoading } = useLoading();
   const [loading,setloading]=useState(false)
   const [error, setError] = useState("");
@@ -35,6 +35,7 @@ const FacilityAdd = () => {
         id,
         title: facility.title,
         img: facility.img,
+        imgPreview: facility.img,
         status: facility.status
 
       })
@@ -69,7 +70,7 @@ const FacilityAdd = () => {
       setFormData((prevData) => ({
         ...prevData,
         img: file, 
-        previewUrl: previewUrl 
+        imgPreview: previewUrl 
       }));
     }
     setError('');
@@ -154,10 +155,10 @@ const FacilityAdd = () => {
                     <div className="flex flex-col">
                       <label htmlFor="img" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Image</label>
                       <input type="file" name="img" id="img" onChange={handleFileChange} className="border rounded-lg p-2 mt-1 w-full h-14" />
-                      {formData.img && (
+                      {formData.imgPreview && (
                         <div className="mt-4">
                           <img
-                            src={formData.img}
+                            src={formData.imgPreview}
                             alt="Uploaded Preview"
                             className="w-[50px] h-[50px] object-cover rounded"
                           />

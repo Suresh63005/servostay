@@ -68,7 +68,7 @@ const ExtraImageList = () => {
 
     // for delete
     const handledelete = async (id) => {
-        const success = await DeleteEntity('ExtraImages', id);
+        const success = await DeleteEntity('Extra Image', id);
         if (success) {
             const updatedExtraImage = extraImages.filter((extraImages) => extraImages.id !== id);
             setExtraImages(updatedExtraImage)
@@ -91,7 +91,7 @@ const ExtraImageList = () => {
         }
 
         try {
-            await StatusEntity("ExtraImage", id, currentStatus, setFilteredImages, filteredImages, field);
+            await StatusEntity("Extra Image", id, currentStatus, setFilteredImages, filteredImages, field);
         } catch (error) {
             console.error("Error toggling image status:", error);
         }
