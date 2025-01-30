@@ -128,7 +128,7 @@ const FacilityAdd = () => {
         {/* Sidebar */}
         <main className="flex-grow h-[100vh]">
           <Header />
-          <div className="container mx-auto">
+          <div className="">
             <div className="flex items-center mt-6  mb-4">
               <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
                 <ArrowBackIosNewIcon style={{color:'#045D78'}} />
@@ -137,7 +137,7 @@ const FacilityAdd = () => {
             </div>
 
             {/* Form Container */}
-            <div className="h-full px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
+            <div className="h-full px-6 " style={{ paddingTop: '24px' }}>
               <div className="bg-white  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none" >
                 {/* <p className='text-left font-bold font-[Montserrat]' >Create Service</p> */}
                 <form onSubmit={handleSubmit} className="mt-4">
@@ -153,7 +153,7 @@ const FacilityAdd = () => {
                     {/* facility image*/}
                     <div className="flex flex-col">
                       <label htmlFor="img" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Image</label>
-                      <input type="file" name="img" id="img" onChange={handleFileChange} />
+                      <input type="file" name="img" id="img" onChange={handleFileChange} className="border rounded-lg p-2 mt-1 w-full h-14" />
                       {formData.img && (
                         <div className="mt-4">
                           <img

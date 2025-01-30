@@ -178,7 +178,7 @@ const Settings = () => {
         {/* Sidebar */}
         <main className="flex-grow h-[100vh]">
           <Header />
-          <div className="container mx-auto">
+          <div className="">
             <div className="flex items-center ">
               {/* <Link to="/rolesList" className="cursor-pointer ml-6">
               
@@ -192,7 +192,7 @@ const Settings = () => {
             </div>
 
             {/* Form Container */}
-            <div className="h-full px-6 max-w-5xl" >
+            <div className="h-full px-6 " >
               <div className="bg-white h-[67vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-thin ">
                 <form className="mt-4" onSubmit={handleSubmit}>
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-3 mt-6">

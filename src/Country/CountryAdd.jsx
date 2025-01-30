@@ -130,7 +130,7 @@ const CountryAdd = () => {
       <div className="flex bg-[#f7fbff]">
         <main className="flex-grow h-[100vh]">
           <Header />
-          <div className="container mx-auto">
+          <div className="">
             <div className="flex items-center mt-6 mb-4">
               <Link onClick={() => navigate(-1)} className="cursor-pointer ml-6">
                 <ArrowBackIosNewIcon style={{ color: "#045D78" }} />
@@ -142,7 +142,7 @@ const CountryAdd = () => {
                 Country Management
               </h2>
             </div>
-            <div className="h-full px-6 max-w-5xl" style={{ paddingTop: "24px" }}>
+            <div className="h-full px-6 " style={{ paddingTop: "24px" }}>
               <div
                 className="bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto"
                 style={{ scrollbarWidth: "none" }}
@@ -202,6 +202,7 @@ const CountryAdd = () => {
                         id="img"
                         onChange={handleChange}
                         accept="image/*"
+                        className="border rounded-lg p-2 mt-1 w-full h-14"
                       />
                       {formData.imgPreview && (
                         <div className="mt-4">

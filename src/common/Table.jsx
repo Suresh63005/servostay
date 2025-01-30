@@ -31,6 +31,8 @@ const Table = ({
         setLoadingId(null);
     };
 
+   
+
     const renderImageField = (row, col) => {
         const images = row[col.field];
         if (Array.isArray(images) && images.length > 0) {
@@ -69,8 +71,8 @@ const Table = ({
     return (
         <div>
             <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `max-h-[380px]` : ''}`}>
-                <div className="relative sm:rounded-lg max-h-[380px] scrollbar-thin overflow-y-auto">
-                    <div className="flex-grow max-h-[380px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
+                <div className="relative sm:rounded-lg max-h-[370px] scrollbar-thin overflow-y-auto">
+                    <div className="flex-grow max-h-[370px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
                             {loading ? (<div className="flex flex-col justify-center items-center h-64">
                 {/* <BeatLoader 
@@ -160,8 +162,10 @@ const Table = ({
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan={columns.length + 1} className="text-center">
-                                            No data found
+                                        <td colSpan={columns.length + 1} className="text-[30px] w-[79vw] flex flex-col justify-center align-items-center font-semibold p-10 text-center">
+                                           <img className='w-[10%]' src="image/no-data.png" alt="" />
+      <span className='mt-3'>No data found
+        </span>   
                                         </td>
                                     </tr>
                                 )}
@@ -175,13 +179,13 @@ const Table = ({
                 </div>
             </div>
 
-            <div className="bottom-0 left-0 w-full bg-[#f7fbff] pt-2 flex justify-between items-center">
+            <div className="bottom-0 left-0 w-full bg-[#f7fbff] mb-2 pt-2 flex justify-between items-center">
                 <span className="text-sm font-normal text-gray-500">
                     Showing <span className="font-semibold text-gray-900">{startIndex + 1}</span> to{' '}
                     <span className="font-semibold text-gray-900">{endIndex}</span> of{' '}
                     <span className="font-semibold text-gray-900">{filteredData.length}</span>
                 </span>
-                <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                <ul className="inline-flex gap-2 -space-x-px rtl:space-x-reverse text-sm h-8">
                     <li>
                         <button
                             onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}

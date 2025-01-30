@@ -123,14 +123,14 @@ const ExtraImageAdd = () => {
             <div className="flex bg-[#f7fbff]">
                 <main className="flex-grow h-[100vh]">
                     <Header />
-                    <div className="container mx-auto">
+                    <div className="">
                         <div className="flex items-center mt-6 mb-4">
                             <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
                                 <ArrowBackIosNewIcon style={{ color: '#045D78' }} />
                             </Link>
                             <h2 className="text-lg font-semibold ml-4" style={{ color: '#000000', fontSize: '24px', fontFamily: 'Montserrat' }}>Extra Image Management</h2>
                         </div>
-                        <div className="h-full px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
+                        <div className="h-full px-6 " style={{ paddingTop: '24px' }}>
                             <div className="bg-white w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
                                 <form className="mt-4" onSubmit={handleSubmit}>
                                     <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">

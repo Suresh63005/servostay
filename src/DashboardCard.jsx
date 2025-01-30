@@ -139,13 +139,13 @@ const DashboardCard = () => {
                             {cards.map((card, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white rounded-lg shadow-md p-1 flex items-center gap-4 max-w-xs w-full"
+                                    className="bg-white rounded-lg shadow-md p-1 flex items-center gap-4 w-full"
                                 >
                                     <div className="bg-[#F2F6FE] p-3 rounded-lg flex items-center justify-center w-[40%] h-[100%]">
                                         {card.card_logoIcon}
                                     </div>
-                                    <div>
-                                        <div className="text-[28px] mt-2 font-bold text-[#045D78] ">
+                                    <div className="flex flex-col justify-center align-items-center">
+                                        <div className="text-[28px]  mt-2 font-bold text-[#045D78] ">
                                             {isLoading ? (
                                                 <BeatLoader size={5} color="#045D78" />
                                             ) : (
@@ -157,7 +157,7 @@ const DashboardCard = () => {
                                                 />
                                             )}
                                         </div>
-                                        <h4 className="text-[15px] font-bold uppercase text-[#555456] leading-none">
+                                        <h4 className="text-[15px]  font-bold uppercase text-[#555456] leading-none">
                                             {card.card_title}
                                         </h4>
                                     </div>

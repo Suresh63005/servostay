@@ -226,7 +226,8 @@ textarea:focus-visible {
 }
 
 .css-1wvake5 {
-  min-width: 260px !important;
+  min-width: 20vw !important;
+  border-color: white !important;
 }
 
 .css-13cymwt-control {

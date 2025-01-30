@@ -151,20 +151,18 @@ const PropotiesList = () => {
         { label: "bathroom", field: "bathroom", sortable: true, minWidth: "150px" },
         { label: "sqrft", field: "sqrft", sortable: true, minWidth: "130px" },
         { label: "rate", field: "rate", sortable: true, minWidth: "120px" },
-        { label: "ptype", field: "ptype", sortable: true, minWidth: "120px" },
+        { label: "property type", field: "ptype", sortable: true, minWidth: "200px" },
         { label: "latitude", field: "latitude", sortable: true, minWidth: "150px" },
         { label: "longtitude", field: "longtitude", sortable: true, minWidth: "180px" },
         { label: "mobile", field: "mobile", sortable: true, minWidth: "130px" },
         { label: "city", field: "city", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
-        { label: "plimit", field: "plimit", sortable: true, minWidth: "120px" },
-        { label: "is sell", field: "is_sell", sortable: true, minWidth: "120px" },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
         { label: "children", field: "children", sortable: true, minWidth: "150px" },
         { label: "infants", field: "infants", sortable: true, minWidth: "150px" },
         { label: "pets", field: "pets", sortable: true, minWidth: "120px" },
-        { label: "pets", field: "pets", sortable: true, minWidth: "120px" },
+        
         { label: "Status", field: "status", sortable: false, minWidth: "120px" },
         { label: "Actions", field: "actions", minWidth: "150px", sortable: false },
     ];
@@ -182,7 +180,7 @@ const PropotiesList = () => {
                     {/* Searching, sorting, and main content area */}
                     <PropotiesHeader onSearch={handleSearch} />
                     {/* Card */}
-                    <div className=" px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+                    <div className=" px-6 h-full w-[79vw] overflow-scroll scrollbar-none">
 
                         <Table 
                             columns={columns}
