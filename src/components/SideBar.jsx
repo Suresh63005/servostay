@@ -223,7 +223,7 @@ const SidebarMenu = () => {
               </SubMenu>
 
               {/* cuppon */}
-              <SubMenu label="Coupon" active={location.pathname === "/add-cuppon" || location.pathname === "/cuppon-list"} icon={<TbSquareRoundedPercentage />}>
+              {/* <SubMenu label="Coupon" active={location.pathname === "/add-cuppon" || location.pathname === "/cuppon-list"} icon={<TbSquareRoundedPercentage />}>
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
 
 
@@ -246,10 +246,10 @@ const SidebarMenu = () => {
                 >
                   List Coupons
                 </MenuItem>
-              </SubMenu>
+              </SubMenu> */}
 
               {/* payment gateway */}
-              <MenuItem icon={<RiWallet3Line />}
+              {/* <MenuItem icon={<RiWallet3Line />}
                 active={location.pathname === "/payment-list"}
                 onClick={() => {
                   navigate("/payment-list");
@@ -257,7 +257,7 @@ const SidebarMenu = () => {
                 }}
               >
                 Payment Gateway
-              </MenuItem>
+              </MenuItem> */}
 
               {/* propoties */}
               <SubMenu label="Properties" active={location.pathname === "/create-property" || location.pathname === "/property-list"} icon={<LiaHomeSolid />}>

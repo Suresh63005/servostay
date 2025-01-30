@@ -38,7 +38,7 @@ const ExtraImageAdd = () => {
                 id,
                 pid: ExtraImage.pid,
                 img: ExtraImage.images, 
-                imgPreview:ExtraImage.img, 
+                imgPreview:ExtraImage.images.map(img => img.url), 
                 status: ExtraImage.status
             });
         } catch (error) {
@@ -67,15 +67,18 @@ const ExtraImageAdd = () => {
     };
 
     const handleImageUpload = (e) => {
-        const files = e.target.files; 
+        const files = e.target.files;
         setPImages(Array.from(files));
+    
+        // Create preview URLs for the newly uploaded images
         const previewUrls = Array.from(files).map((file) => URL.createObjectURL(file));
         setFormData((prevData) => ({
             ...prevData,
-            img: files, 
-            imgPreview: previewUrls,
+            img: files,  
+            imgPreview: previewUrls,  
         }));
     };
+    
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -99,10 +102,12 @@ const ExtraImageAdd = () => {
             });
     
             if (response.status === 200 || response.status === 201) {
+                NotificationManager.removeAll()
                 NotificationManager.success(id ? `Extra Image Updated Successfully` : `Extra Image Added Successfully!`);
                 setTimeout(() => navigate("/extra-image-list"), 2000);
             }
         } catch (error) {
+            NotificationManager.removeAll()
             NotificationManager.error('Error adding/updating extra image');
             console.error('Error:', error.response ? error.response.data : error.message);
         } finally {
@@ -151,14 +156,19 @@ const ExtraImageAdd = () => {
                                             <input type="file" name="img" id="img" onChange={handleImageUpload} multiple accept='image/*' className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm" />
                                             {formData.imgPreview && formData.imgPreview.length > 0 && (
                                                 <div className="mt-2 flex gap-3">
-                                                    {formData.imgPreview.map((previewUrl, index) => (
-                                                        <img
-                                                            key={index}
-                                                            src={previewUrl} // Preview the uploaded image
-                                                            alt={`Uploaded Preview ${index}`}
-                                                            className="w-[50px] h-[50px] object-cover rounded"
-                                                        />
-                                                    ))}
+                                                    {formData.imgPreview && formData.imgPreview.length > 0 && (
+                                                        <div className="mt-2 flex gap-3">
+                                                            {formData.imgPreview.map((previewUrl, index) => (
+                                                                <img
+                                                                    key={index}
+                                                                    src={previewUrl} // Preview the uploaded image
+                                                                    alt={`Uploaded Preview ${index}`}
+                                                                    className="w-[50px] h-[50px] object-cover rounded"
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    )}
+
                                                 </div>
                                             )}
                                         </div>

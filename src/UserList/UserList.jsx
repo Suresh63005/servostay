@@ -147,6 +147,7 @@ const UserList = () => {
                         paginate={paginate}
                         filteredData={filtereduser}
                         loading={isLoading}
+                        showEditButton={false}
                     />
                     </div>
                 </div>

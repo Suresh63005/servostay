@@ -151,7 +151,7 @@ const RoleChange = () => {
                 <div className="flex flex-1 flex-col bg-[#f7fbff]">
                     <Header />
                     <RoleHeader onSearch={handleSearch} />
-                    <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+                    <div className="px-6 h-full w-[79vw] overflow-scroll scrollbar-none">
                         <div className="bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto scrollbar-thin">
                             <div className="relative sm:rounded-lg">
                                 <table className="min-w-full text-sm text-left text-gray-700">
@@ -280,9 +280,11 @@ const RoleChange = () => {
                                             </tr>
                                         ))
                                         ) : (
-                                        <tr>
-                                            <td colSpan="7" className="text-center py-4">
-                                            No roles found.
+                                            <tr>
+                                            <td  className="text-[30px] w-[79vw] flex flex-col justify-center align-items-center font-semibold p-10 text-center">
+                                               <img className='w-[10%]' src="image/no-data.png" alt="" />
+          <span className='mt-3'>No data found
+            </span>   
                                             </td>
                                         </tr>
                                         )}

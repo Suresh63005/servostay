@@ -17,7 +17,8 @@ const Table = ({
     totalPages,
     paginate,
     filteredData,
-    loading
+    loading,
+    showEditButton=true
 }) => {
     const [loadingId, setLoadingId] = useState(null);
     const rowsPerPage = 10;
@@ -44,7 +45,7 @@ const Table = ({
                             src={img.url || img}
                             alt={`Image ${index}`}
                             loading="lazy"
-                            className="w-12 h-12 object-cover rounded-md"
+                            className="w-8 h-8 object-cover rounded-md "
                             onError={(e) => {
                                 e.target.src = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
                             }}
@@ -132,12 +133,16 @@ const Table = ({
                                                     ) : col.field === 'actions' ? (
                                                         <div className="flex items-center space-x-2">
                                                             <NotificationContainer />
-                                                            <button
-                                                                className="bg-[#2dce89] text-white p-[5px] rounded-full hover:bg-green-600 transition"
-                                                                onClick={() => onUpdate(row.id)}
-                                                            >
-                                                                <FontAwesomeIcon icon={faPen} />
-                                                            </button>
+
+                                                            {showEditButton && (
+                                                                <button
+                                                                    className="bg-[#2dce89] text-white p-[5px] rounded-full hover:bg-green-600 transition"
+                                                                    onClick={() => onUpdate(row.id)}
+                                                                >
+                                                                    <FontAwesomeIcon icon={faPen} />
+                                                                </button>
+                                                            )}
+
                                                             <button
                                                                 className="bg-[#f5365c] text-white p-[5px] rounded-full hover:bg-red-600 transition"
                                                                 onClick={() => onDelete(row.id)}

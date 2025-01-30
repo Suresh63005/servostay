@@ -46,7 +46,7 @@ export const DeleteEntity = async (entity, id) => {
           await api.delete(`properties/delete/${id}`);
           break;
 
-        case "ExtraImages":
+        case "Extra Image":
           await api.delete(`extra/delete/${id}`);
           break;
 
