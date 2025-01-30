@@ -205,7 +205,7 @@ const CountryAdd = () => {
                         className="border rounded-lg p-2 mt-1 w-full h-14"
                       />
                       {formData.imgPreview && (
-                        <div className="mt-4">
+                        <div className="mt-2">
                           <img
                             src={formData.imgPreview}
                             alt="Uploaded Preview"
