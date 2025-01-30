@@ -105,7 +105,6 @@ const PropertiesAdd = () => {
           }
         })(),
         country_id: Property.country_id,
-
         is_sell: Property.is_sell,
         adults: Property.adults,
         children: Property.children,
@@ -125,6 +124,7 @@ const PropertiesAdd = () => {
         setIsLoading(true);
         const token = Cookies.get("user");
         if (!token) {
+          NotificationManager.removeAll()
           NotificationManager.error("No authentication token found!");
           return;
         }
@@ -143,11 +143,13 @@ const PropertiesAdd = () => {
           setCityOptions(formattedCities);
         } else {
           console.error("Unexpected response:", response);
+          NotificationManager.removeAll()
           NotificationManager.error("Unexpected response format. Please try again.");
         }
       } catch (error) {
         console.error("Error fetching cities:", error);
         if (error.response) {
+          NotificationManager.removeAll()
           NotificationManager.error(`Error: ${error.response.status} - ${error.response.data.message || 'Failed to fetch cities'}`);
         } else {
           NotificationManager.removeAll();
@@ -249,7 +251,6 @@ const PropertiesAdd = () => {
       setError2('Please upload an image');
       return;
     }
-
     // Prepare the data to submit
     const formDataToSubmit = {
       ...formData,
@@ -257,7 +258,7 @@ const PropertiesAdd = () => {
     };
     const successMessage = id ? 'Property Updated Successfully!' : 'Property Added Successfully!';
     try {
-      const response = await api.post('/properties/upsert', formDataToSubmit, { withCredentials: true });
+      const response = await api.post('/properties/upsert', formDataToSubmit);
       console.log(response)
       // Check for success response
       if (response?.status === 200 || response?.status === 201) {
@@ -279,8 +280,10 @@ const PropertiesAdd = () => {
       // Handle different error scenarios
       NotificationManager.removeAll();
       if (error?.response?.data?.message) {
+        NotificationManager.removeAll()
         NotificationManager.error(error.response.data.message, 'Error');
       } else {
+        NotificationManager.removeAll()
         NotificationManager.error('Please fill all the fields.', 'Error');
       }
     }finally{

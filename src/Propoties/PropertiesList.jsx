@@ -17,7 +17,6 @@ import Table from '../common/Table';
 
 const PropotiesList = () => {
     const [properties, setProperties] = useState([]);
-
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [currentPage, setCurrentPage] = useState(1);
@@ -155,7 +154,7 @@ const PropotiesList = () => {
         { label: "latitude", field: "latitude", sortable: true, minWidth: "150px" },
         { label: "longtitude", field: "longtitude", sortable: true, minWidth: "180px" },
         { label: "mobile", field: "mobile", sortable: true, minWidth: "130px" },
-        { label: "city", field: "city", sortable: true, minWidth: "120px" },
+        { label: "city", field: "cities.title", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
