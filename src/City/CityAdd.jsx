@@ -16,7 +16,7 @@ const CityAdd = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const id = location.state ? location.state.id : null;
-  const [formData, setFormData] = useState({ id: id || null, title: '', img: null, status: 0, country_id: '' });
+  const [formData, setFormData] = useState({ id: id || null, title: '', img: null,imgPreview:null, status: 0, country_id: '' });
   const { isLoading, setIsLoading } = useLoading();
   const [loading,setloading]=useState(false)
   const [error, setError] = useState('');
@@ -37,6 +37,7 @@ const CityAdd = () => {
         id,
         title: City.title,
         img: City.img,
+        imgPreview:City.img,
         country_id: City.country_id,
         status: City.status
       })
@@ -99,7 +100,7 @@ const CityAdd = () => {
       setFormData((prevData) => ({
         ...prevData,
         img: file, 
-        previewUrl: previewUrl 
+        imgPreview: previewUrl 
       }));
     }
     setError('');

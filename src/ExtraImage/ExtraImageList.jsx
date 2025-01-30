@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import ExtraImageHeader from "./ExtraImageHeader";
-import { GoArrowDown, GoArrowUp } from "react-icons/go";
-import { FaPen, FaTrash } from "react-icons/fa";
-import Loader from "../common/Loader";
-import axios from "axios";
 import { handleSort } from "../utils/sorting";
 import { DeleteEntity } from "../utils/Delete";
 import { useNavigate } from "react-router-dom";
-import { NotificationContainer } from "react-notifications";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import api from "../utils/api";
 import { StatusEntity } from "../utils/Status";
 import { useLoading } from "../Context/LoadingContext";
 import Table from "../common/Table";
-
 
 const ExtraImageList = () => {
     const navigate = useNavigate()

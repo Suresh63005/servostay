@@ -204,7 +204,7 @@ const CountryAdd = () => {
                         accept="image/*"
                       />
                       {formData.imgPreview && (
-                        <div className="mt-4">
+                        <div className="mt-2">
                           <img
                             src={formData.imgPreview}
                             alt="Uploaded Preview"
