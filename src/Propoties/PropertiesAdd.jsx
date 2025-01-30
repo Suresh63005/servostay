@@ -296,7 +296,7 @@ const PropertiesAdd = () => {
 
         <main className="flex-grow">
           <Header />
-          <div className="container mx-auto">
+          <div className="">
             <div className="flex items-center mt-6  mb-4">
               <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
                 <ArrowBackIosNewIcon style={{ color: '#045D78' }} />
@@ -315,7 +315,7 @@ const PropertiesAdd = () => {
 
             {/* Form Container */}
             <div
-              className="h-full px-6 max-w-5xl"
+              className="h-full px-6 "
               style={{ paddingTop: "24px" }}
             >
               <div

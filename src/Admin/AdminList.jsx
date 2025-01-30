@@ -162,13 +162,13 @@ const AdminList = () => {
                 <div className="flex flex-1 flex-col bg-[#f7fbff]">
                     <Header />
                     <AdminHeader setShowAddModal={setShowAddModal} onSearch={handleSearch} />
-                    <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+                    <div className="px-6 h-full w-[79vw] overflow-scroll scrollbar-none">
                         <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  h-full overflow-x-auto scrollbar-thin  table-container ${filteredAdmins.length > 0 ? 'max-h-[380px]' : ''}`}>
                             <div className="relative sm:rounded-lg">
                                 <table className="min-w-full text-sm text-left text-gray-700 ">
                                     <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white">
                                         <tr>
-                                            <th className="px-2 py-2 min-w-[100px]">
+                                            <th className="px-6 py-2 min-w-[180px]">
                                                 Sr. No
                                                 <div className="inline-flex items-center ml-2">
 
@@ -177,7 +177,7 @@ const AdminList = () => {
 
                                                 </div>
                                             </th>
-                                            <th className="px-2 py-2 min-w-[100px]">
+                                            <th className="px-2 py-2 min-w-[180px]">
                                                 Username
                                                 <div className="inline-flex items-center ml-2">
 
@@ -186,7 +186,7 @@ const AdminList = () => {
 
                                                 </div>
                                             </th>
-                                            <th className="px-2 py-2 min-w-[100px]">
+                                            <th className="px-2 py-2 min-w-[180px]">
                                                 Password
                                                 <div className="inline-flex items-center ml-2">
                                                     <GoArrowUp className='cursor-pointer' onClick={() => sortData('password')} />
@@ -194,7 +194,7 @@ const AdminList = () => {
                                                 </div>
                                             </th>
 
-                                            <th className="px-2 py-2 min-w-[100px]">
+                                            <th className="px-2 py-2 min-w-[180px]">
                                                 User Type
                                                 <div className="inline-flex items-center ml-2">
 
@@ -212,9 +212,9 @@ const AdminList = () => {
                                         {currentAdmins.length > 0 ? (
                                             currentAdmins.map((admin, index) => (
                                                 <tr key={admin.id} className='h-[50px]'>
-                                                    <td className="px-2 py-1">{indexOfFirstAdmin + index + 1}</td>
+                                                    <td className="px-8  py-1">{indexOfFirstAdmin + index + 1}</td>
                                                     <td className="px-2 py-1">{admin?.username || "N/A"}</td>
-                                                    <td className="px-2 py-1">{"●●●●●●●" || "N/A"}</td>
+                                                    <td className="px-2 py-1">{"●●●●●●●"}</td>
                                                     <td className="px-2 py-1">{admin?.userType || "N/A"}</td>
                                                     <td className="px-2 py-1">
                                                         <NotificationContainer />
@@ -246,7 +246,7 @@ const AdminList = () => {
                             <span className="text-sm font-normal text-gray-500">
                                 Showing <span className="font-semibold text-gray-900">{indexOfFirstAdmin + 1}</span> to <span className="font-semibold text-gray-900">{Math.min(indexOfLastAdmin, admins.length)}</span> of <span className="font-semibold text-gray-900">{admins.length}</span>
                             </span>
-                            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                            <ul className="inline-flex gap-2 -space-x-px rtl:space-x-reverse text-sm h-8">
                                 <li>
                                     <button onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)} className="previous-button" disabled={currentPage === 1}>
                                         <img src="/image/action/Left Arrow.svg" alt="Left" /> Previous

@@ -109,7 +109,7 @@ const GalleryCategoryAdd = () => {
 
         <main className="flex-grow">
           <Header />
-          <div className="container mx-auto">
+          <div className="">
             <div className="flex items-center mt-6 mb-4">
               <h2
                 className="text-lg font-semibold ml-4"
@@ -125,7 +125,7 @@ const GalleryCategoryAdd = () => {
 
             {/* Form Container */}
             <div
-              className="h-full px-6 max-w-5xl"
+              className="h-full px-6 "
               style={{ paddingTop: '24px' }}
             >
               <div

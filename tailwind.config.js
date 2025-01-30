@@ -70,8 +70,8 @@ module.exports = {
           padding: '0.5rem 1rem', // 8px (top/bottom) and 16px (left/right)
           borderBottom: '1px solid #EAE5FF',
           textAlign: 'left',
-          fontSize: '0.75rem', // text-xs
-          fontWeight: '500', // font-medium
+          fontSize: '0.75rem', 
+          fontWeight: '500', 
           fontFamily: 'Montserrat, sans-serif',
           color: '#090713',
           letterSpacing: '0.05em',
