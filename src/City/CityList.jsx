@@ -53,7 +53,7 @@ const CityList = () => {
             console.log(response.data)
             if (response?.data?.cities && Array.isArray(response.data.cities)) {
                 const citiesWithCountry = response.data.cities.map((city, index) => ({
-                    id: index + 1, 
+                    id: city.id, 
                     img: city.img,
                     title: city.title,
                     countryName: city.country?.title || "N/A", 
@@ -138,7 +138,7 @@ const CityList = () => {
                 <div className="flex flex-1 flex-col bg-[#f7fbff]">
                     <Header />
                     <CityHeader onSearch={handleSearch} />
-                    <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+                    <div className="px-6 h-full w-[79vw] overflow-scroll scrollbar-none">
                         <Table 
                             columns={columns}
                             onSort={sortData}

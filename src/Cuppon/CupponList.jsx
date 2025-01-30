@@ -115,7 +115,7 @@ const CupponList = () => {
                     <Header />
                     <CupponHeader onSearch={handleSearch} />
                     {/* card */}
-                    <div className='px-6 h-full w-[1000px] overflow-scroll scrollbar-none'>
+                    <div className='px-6 h-full w-[79vw] overflow-scroll scrollbar-none'>
                         <Table 
                             columns={columns}
                             data={currentcouppons}

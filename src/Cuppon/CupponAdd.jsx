@@ -145,7 +145,7 @@ const CupponAdd = () => {
         {/* Sidebar */}
         <main className="flex-grow h-[100vh]">
           <Header />
-          <div className="container mx-auto">
+          <div className="">
             <div className="flex items-center mt-6  mb-4">
               <Link onClick={() => { navigate(-1) }} className="cursor-pointer ml-6">
                 <ArrowBackIosNewIcon style={{color:'#045D78'}} />
@@ -154,14 +154,14 @@ const CupponAdd = () => {
             </div>
 
             {/* Form Container */}
-            <div className="px-6 max-w-5xl" style={{ paddingTop: '24px' }}>
+            <div className="px-6 " style={{ paddingTop: '24px' }}>
               <div className="bg-white h-[380px]  w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto scrollbar-none">
                 <form onSubmit={handleSubmit} className="mt-4">
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-4 mt-6">
                     {/* couppon image*/}
                     <div className="flex flex-col">
                       <label htmlFor="cupponimage" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Coupon Image</label>
-                      <input type="file" name="c_img" id="c_img" onChange={handleChange} accept='image/*' />
+                      <input type="file" name="c_img" id="c_img" onChange={handleChange} accept='image/*' className="border rounded-lg p-2 mt-1 w-full h-14" />
                       {formData.c_img && (
                         <div className="mt-2">
                           <img

@@ -124,7 +124,7 @@ const GalleryAdd = () => {
       
       <main className="flex-grow">
         <Header />
-        <div className="container mx-auto">
+        <div className="">
           <div className="flex items-center mt-6  mb-4">
             {/* <Link to="/rolesList" className="cursor-pointer ml-6">
               
@@ -133,7 +133,7 @@ const GalleryAdd = () => {
           </div>
 
           {/* Form Container */}
-          <div className="h-full px-6 max-w-5xl" style={{paddingTop:'24px'}}> 
+          <div className="h-full px-6 " style={{paddingTop:'24px'}}> 
             <div className="bg-white h-[70vh] w-full rounded-xl border border-[#EAE5FF] py-4 px-6 overflow-y-auto " style={{scrollbarWidth:'none'}} >
               <form className="mt-4" onSubmit={handleSubmit}>
                 <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-1  mt-6">

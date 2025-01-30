@@ -95,7 +95,7 @@ const CheckInBook = () => {
                 <div className="flex flex-1 flex-col bg-[#f7fbff]">
                     <Header />
                     <PendingBookHeader onSearch={handleSearch} />
-                    <div className="px-6 h-full w-[1000px] overflow-scroll scrollbar-none">
+                    <div className="px-6 h-full w-[79vw] overflow-scroll scrollbar-none">
 
                         <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto ${filteredcheckIn.length > 0 ? 'max-h-[380px]' : ''}`}>
                             <div className="relative sm:rounded-lg scrollbar-thin overflow-y-auto">
@@ -164,10 +164,12 @@ const CheckInBook = () => {
                                             ))
                                         ) : (
                                             <tr>
-                                                <td className="px-4 py-1 text-center" colSpan="6">
-                                                    No data available
-                                                </td>
-                                            </tr>
+                                        <td  className="text-[30px] w-[79vw] flex flex-col justify-center align-items-center font-semibold p-10 text-center">
+                                           <img className='w-[10%]' src="image/no-data.png" alt="" />
+      <span className='mt-3'>No data found
+        </span>   
+                                        </td>
+                                    </tr>
                                         )}
                                     </tbody>
                                 </table>
@@ -177,7 +179,7 @@ const CheckInBook = () => {
                             <span className="text-sm font-normal text-gray-500">
                                 Showing <span className="font-semibold text-gray-900">{indexOfFirst + 1}</span> to <span className="font-semibold text-gray-900">{Math.min(indexOfLast, filteredcheckIn.length)}</span> of <span className="font-semibold text-gray-900">{filteredcheckIn.length}</span>
                             </span>
-                            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                            <ul className="inline-flex gap-2  -space-x-px rtl:space-x-reverse text-sm h-8">
                                 <li>
                                     <button onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)} className={`previous-button ${filteredcheckIn.length === 0 ? 'cursor-not-allowed' : ''}`}
                                         disabled={currentPage === 1 || filteredcheckIn.length === 0}
