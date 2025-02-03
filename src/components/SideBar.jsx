@@ -283,6 +283,16 @@ const SidebarMenu = () => {
                 >
                   List Properties
                 </MenuItem>
+                <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
+
+                  onClick={() => {
+                    navigate("/property-ical");
+                    toggleSidebar1();
+                  }}
+
+                >
+                  Sync Ical Prop
+                </MenuItem>
               </SubMenu>
 
               {/* Extra Images */}

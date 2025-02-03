@@ -50,6 +50,7 @@ import ProductTable from "./common/ProductTable.js";
 import UserTable from "./common/UserTable.js";
 import CityAdd from "./City/CityAdd.jsx";
 import CityList from "./City/CityList.jsx";
+import PropotiesIcal from "./Propoties/PropertiesIcal.jsx";
 
 
 const LayoutWithSidebar = ({ children }) => (
@@ -195,6 +196,15 @@ function App() {
                 element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PropertiesList />
+                  </LayoutWithSidebar>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/property-ical"
+                element={<ProtectedRoute>
+                  <LayoutWithSidebar>
+                    <PropotiesIcal />
                   </LayoutWithSidebar>
                   </ProtectedRoute>
                 }
