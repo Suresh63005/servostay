@@ -34,7 +34,8 @@ const PropertiesAdd = () => {
   const [formData, setFormData] = useState({
     id: 0 || null,
     title: '',
-    image: '',
+    image: null,
+    imgPreview:null,
     is_panorama: 0,
     price: null,
     status: null,
@@ -80,6 +81,7 @@ const PropertiesAdd = () => {
         id,
         title: Property.title,
         image: Property.image,
+        imgPreview: Property.image,
         is_panorama: Property.is_panorama,
         price: Property.price,
         status: Property.status,
@@ -202,7 +204,7 @@ const PropertiesAdd = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
 
     // Fields that require positive integers
     if (['adults', 'children', 'infants', 'pets', 'price'].includes(name)) {
@@ -210,18 +212,26 @@ const PropertiesAdd = () => {
 
       // Validate input
       if (!positiveNumberRegex.test(value)) {
-        // alert("Please enter a positive number.");
         return; // Stop further execution if invalid input
       }
     }
 
-    // Update the form data
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-      id: prevData.id,
-    }));
-  };
+    if (files && files.length > 0) {
+      const file = files[0];
+      const previewUrl = URL.createObjectURL(file);
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file,  
+        imgPreview: previewUrl,  
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+};
+
 
 
   useEffect(() => {
@@ -244,6 +254,7 @@ const PropertiesAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true)
+
     // Check for required fields like image
     if (!formData.image) {
       NotificationManager.removeAll();
@@ -251,16 +262,49 @@ const PropertiesAdd = () => {
       setError2('Please upload an image');
       return;
     }
-    // Prepare the data to submit
-    const formDataToSubmit = {
-      ...formData,
-      rules: JSON.stringify(formData.rules),
-    };
+
+    // Create FormData object for file upload
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('title', formData.title);
+    if(image){
+      formDataToSubmit.append('image', formData.image);
+    } 
+    if(id){
+      formDataToSubmit.append('id', id); 
+    }
+    formDataToSubmit.append('is_panorama', formData.is_panorama);
+    formDataToSubmit.append('price', formData.price);
+    formDataToSubmit.append('status', formData.status);
+    formDataToSubmit.append('address', formData.address);
+    formDataToSubmit.append('facility', formData.facility);
+    formDataToSubmit.append('description', formData.description);
+    formDataToSubmit.append('beds', formData.beds);
+    formDataToSubmit.append('bathroom', formData.bathroom);
+    formDataToSubmit.append('sqrft', formData.sqrft);
+    formDataToSubmit.append('rate', formData.rate);
+    formDataToSubmit.append('ptype', formData.ptype);
+    formDataToSubmit.append('latitude', formData.latitude);
+    formDataToSubmit.append('longtitude', formData.longtitude);
+    formDataToSubmit.append('mobile', formData.mobile);
+    formDataToSubmit.append('city', formData.city);
+    formDataToSubmit.append('listing_date', formData.listing_date);
+    formDataToSubmit.append('add_user_id', formData.add_user_id);
+    formDataToSubmit.append('rules', JSON.stringify(formData.rules));
+    formDataToSubmit.append('country_id', formData.country_id);
+    formDataToSubmit.append('is_sell', formData.is_sell);
+    formDataToSubmit.append('adults', formData.adults);
+    formDataToSubmit.append('children', formData.children);
+    formDataToSubmit.append('infants', formData.infants);
+    formDataToSubmit.append('pets', formData.pets);
+    formDataToSubmit.append('setting_id', formData.setting_id);
+    formDataToSubmit.append('extra_guest_charges', formData.extra_guest_charges);
+
     const successMessage = id ? 'Property Updated Successfully!' : 'Property Added Successfully!';
     try {
-      const response = await api.post('/properties/upsert', formDataToSubmit);
-      console.log(response)
-      // Check for success response
+      const response = await api.post('/properties/upsert', formDataToSubmit, {
+        headers: { 'Content-Type': 'multipart/form-data' },  
+      });
+
       if (response?.status === 200 || response?.status === 201) {
         NotificationManager.removeAll();
         NotificationManager.success(successMessage);
@@ -270,26 +314,25 @@ const PropertiesAdd = () => {
           navigate('/property-list');
         }, 2000);
       } else {
-        // Handle unexpected response
         NotificationManager.removeAll();
         NotificationManager.error(response?.data?.message || 'An unexpected error occurred', 'Error');
       }
     } catch (error) {
       console.error('Error:', error);
 
-      // Handle different error scenarios
       NotificationManager.removeAll();
       if (error?.response?.data?.message) {
-        NotificationManager.removeAll()
+        NotificationManager.removeAll();
         NotificationManager.error(error.response.data.message, 'Error');
       } else {
-        NotificationManager.removeAll()
+        NotificationManager.removeAll();
         NotificationManager.error('Please fill all the fields.', 'Error');
       }
-    }finally{
-      setloading(false)
+    } finally {
+      setloading(false);
     }
-  };
+};
+
 
   return (
     <div>
@@ -364,14 +407,15 @@ const PropertiesAdd = () => {
                       >
                         Property Image
                       </label>
-                      <ImageUploader
+                      {/* <ImageUploader
                         onUploadSuccess={handleImageUploadSuccess}
-                      />
+                      /> */}
+                      <input type="file" name="image" id="image" onChange={handleChange} />
                     {
                       formData.image && 
                      <div className="mt-4">
                           <img
-                            src={formData.image}
+                            src={formData.imgPreview}
                             alt="Uploaded Preview"
                             className="w-[50px] h-[50px] object-cover rounded"
                           />
