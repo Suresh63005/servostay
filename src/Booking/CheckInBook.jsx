@@ -132,7 +132,7 @@ const CheckInBook = () => {
                                                 </div>
                                             </th>
 
-                                            <th className="px-4 py-2 min-w-[250px]">Action</th>
+                                            <th className="px-4 flex justify-center py-2 min-w-[250px]">Action</th>
 
                                         </tr>
                                     </thead>
