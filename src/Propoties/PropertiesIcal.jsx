@@ -32,6 +32,7 @@ const PropotiesIcal = () => {
     propertyId: null,
   });
   const [copied, setCopied] = useState(false);
+  const [formError, setFormError] = useState(false);
   const itemsPerPage = 10;
   const navigate = useNavigate();
 
@@ -82,6 +83,12 @@ const PropotiesIcal = () => {
     setCurrentPage(1);
   };
 
+  const handleCopy=()=>{
+    setCopied(true)
+    NotificationManager.listNotify = [];
+    NotificationManager.success("Copied to clipboard!", "", 2000); 
+  }
+
   // Sorting functionality
   const handleSort = (key) => {
     let direction = "asc";
@@ -119,27 +126,48 @@ const PropotiesIcal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    alert(e)
-
+    setFormError(false); 
+  
     try {
       const url = `bookings/import-ical`;
       const successMessage = "URL Imported successfully!";
+      
+      // Making the API request
       const response = await api.post(url, formData, { withCredentials: true });
+      
       if (response.status === 200 || response.status === 201) {
+        // Success: Show success notification
         NotificationManager.removeAll();
         NotificationManager.success(successMessage);
+  
+        // Close the modal after successful submission
+        const modal = new window.bootstrap.Modal(document.getElementById('exampleModal'));
+        console.log(modal)
+        modal.hide(); // Hide the modal
+        // Optionally, reset the form data
+        setFormData({
+          calendarUrl: '',
+          calendarName: '',
+          propertyId: null,
+        });
       } else {
-        NotificationManager.success("Something went wrong. Please try again.");
+        // Failure: Show error notification if status is not 200 or 201
+        NotificationManager.removeAll();
+        NotificationManager.error("Something went wrong. Please try again.");
       }
     } catch (error) {
+      // Catch any unexpected errors and show an error notification
       NotificationManager.removeAll();
-      console.error("Error submitting FAQ:", error);
-      NotificationManager.error(
-        "An error occurred while submitting the FAQ. Please check your inputs or try again later."
-      );
+      console.error("Error submitting:", error);
+      NotificationManager.error("An error occurred while submitting. Please check your inputs or try again later.");
+    }
+    finally{
+      setFormData({calendarUrl: "",
+        calendarName: "",
+        propertyId: null,});
     }
   };
+  
 
   useEffect(() => {
     setIsLoading(true);
@@ -151,10 +179,7 @@ const PropotiesIcal = () => {
   }, [setIsLoading]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
-  console.log(indexOfLastItem);
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  console.log(indexOfFirstItem);
-  const currentProperties = filteredProperties.slice(
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;  const currentProperties = filteredProperties.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
@@ -283,17 +308,18 @@ const PropotiesIcal = () => {
                           <td className=" py-2">
                             <NotificationContainer />
                             <CopyToClipboard
-                              text={`https://property-rental-backend-two.vercel.app/bookings/export-ical/${property?.id}`}
-                              onCopy={() => setCopied(true)}
+                              text={`https://property-rental-backend-two.vercel.app/bookings/export-ical/${property?.id}.ics`}
+                              onCopy={handleCopy}
                             >
                               <button className="bg-blue-100 text-blue-500  px-6 py-2 rounded-full hover:bg-blue-200 font-semibold transition mr-2">
                                 Export Ical
                               </button>
                             </CopyToClipboard>
-                            {copied &&
+                           
+                            {/* {copied &&
                               NotificationManager.success(
                                 "Copied to clipboard!"
-                              )}
+                              )} */}
                           </td>
 
                           <div
@@ -375,12 +401,13 @@ const PropotiesIcal = () => {
                                       />
                                     </div>
                                     <button
-                                    type="submit"
-                                    
-                                    className="px-6 mt-3 py-2 text-[white] rounded bg-[#045D78]"
-                                  >
-                                    Save changes
-                                  </button>
+                                      type="submit"
+                                      data-bs-dismiss="modal"
+                                      class="px-6 mt-3 py-2 text-white rounded bg-[#045D78] hover:bg-[#034D61] focus:outline-none focus:ring-2 focus:ring-[#045D78] focus:ring-opacity-50"
+                                    >
+                                      Save changes
+                                    </button>
+
                                   </form>
                                 </div>
                                 <div class="modal-footer">

@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { useNavigate, useLocation } from "react-router-dom";
-import { RiHome6Line } from "react-icons/ri";
+import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
 import { FaUser, FaLayerGroup } from "react-icons/fa";
 import { MdOutlineBluetooth } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
-import { MdOutlineLocationOn } from "react-icons/md";
+import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoMdHome } from "react-icons/io";
-import { PiUsersBold } from "react-icons/pi";
+import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { FaRegFolder } from "react-icons/fa";
 import { TiUserOutline } from "react-icons/ti";
-import { FaRegUser } from "react-icons/fa6";
-import { LuSettings2 } from "react-icons/lu";
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import MultipleStopOutlinedIcon from '@mui/icons-material/MultipleStopOutlined';
 import { CiLogout } from "react-icons/ci";
-import { TbLogout2 } from "react-icons/tb";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { CiWallet } from "react-icons/ci";
 import { RiWallet3Line } from "react-icons/ri";
 import { TbSquareRoundedPercentage } from "react-icons/tb";
 import { CiImageOn } from "react-icons/ci";
-import { LuImage } from "react-icons/lu";
-import { CgCalendarDates } from "react-icons/cg";
+import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import { BsFileEarmarkPlus } from "react-icons/bs";
 import { IoCheckboxOutline } from "react-icons/io5";
-import { GrCheckboxSelected } from "react-icons/gr";
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import { GoHome } from "react-icons/go";
-import { LiaHomeSolid } from "react-icons/lia";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { IoLayersOutline } from "react-icons/io5";
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import { MdAdminPanelSettings } from "react-icons/md";
-import { IoSettingsOutline } from "react-icons/io5";
-import { MdManageAccounts } from "react-icons/md";import axios from "axios";
-import { FaCity } from "react-icons/fa";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import axios from "axios";
+import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
 import Loader from "../common/Loader";
 import api from "../utils/api"
 
@@ -136,7 +137,7 @@ const SidebarMenu = () => {
           <div style={{ overflowY: 'auto', height: 'calc(100vh - 80px)', scrollbarWidth: 'none' }}>
             <Menu iconShape="circle">
               {/* dashBoard */}
-              <MenuItem icon={<RiHome6Line />}
+              <MenuItem icon={<DashboardCustomizeOutlinedIcon fontSize="small" />}
                 active={location.pathname === "/dashboard"}
                 onClick={() => {
                   navigate("/dashboard");
@@ -149,7 +150,7 @@ const SidebarMenu = () => {
               </MenuItem>
 
               {/* country */}
-              <SubMenu label="Country" active={location.pathname === "/add-country" || location.pathname === "/country-list"} icon={<MdOutlineLocationOn />}>
+              <SubMenu label="Country" active={location.pathname === "/add-country" || location.pathname === "/country-list"} icon={<RoomOutlinedIcon fontSize="small" />}>
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
 
 
@@ -175,7 +176,7 @@ const SidebarMenu = () => {
               </SubMenu>
 
         {/* City */}
-        <SubMenu label="City" active={location.pathname === "/add-city" || location.pathname === "/city-list"} icon={<FaCity  />}>
+        <SubMenu label="City" active={location.pathname === "/add-city" || location.pathname === "/city-list"} icon={<LocationCityOutlinedIcon fontSize="small"  />}>
                   <MenuItem icon={<KeyboardArrowRightOutlinedIcon/>} className="sub-menu-item"
                     onClick={()=>{
                       navigate("/add-city");
@@ -192,12 +193,12 @@ const SidebarMenu = () => {
                     toggleSidebar1();
                   }}
                 >
-                City List
+                Cities List
                 </MenuItem>
         </SubMenu>
 
               {/* category */}
-              <SubMenu label="Category" active={location.pathname === "/add-category" || location.pathname === "/category-list"} icon={<RxHamburgerMenu />}>
+              <SubMenu label="Category" active={location.pathname === "/add-category" || location.pathname === "/category-list"} icon={<CategoryOutlinedIcon fontSize="small" />}>
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
 
 
@@ -260,7 +261,7 @@ const SidebarMenu = () => {
               </MenuItem> */}
 
               {/* propoties */}
-              <SubMenu label="Properties" active={location.pathname === "/create-property" || location.pathname === "/property-list"} icon={<LiaHomeSolid />}>
+              <SubMenu label="Properties" active={location.pathname === "/create-property" || location.pathname === "/property-list"} icon={<HomeOutlinedIcon fontSize="small" />}>
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
 
 
@@ -296,7 +297,7 @@ const SidebarMenu = () => {
               </SubMenu>
 
               {/* Extra Images */}
-              <SubMenu label="Extra Images" active={location.pathname === "/create-extra-image" || location.pathname === "/extra-image-list"} icon={<LuImage />}>
+              <SubMenu label="Extra Images" active={location.pathname === "/create-extra-image" || location.pathname === "/extra-image-list"} icon={<AddPhotoAlternateOutlinedIcon fontSize="small" />}>
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
 
 
@@ -323,7 +324,7 @@ const SidebarMenu = () => {
 
               {/* Facility */}
 
-              <SubMenu label="Facilities" active={location.pathname === "/create-facility" || location.pathname === "/facility-list"} icon={<MdManageAccounts />}>
+              <SubMenu label="Facilities" active={location.pathname === "/create-facility" || location.pathname === "/facility-list"} icon={<ManageAccountsOutlinedIcon fontSize="small"/>}>
 
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
 
@@ -350,19 +351,9 @@ const SidebarMenu = () => {
               </SubMenu>
 
               {/* Booking */}
-              <SubMenu label="Booking " active={location.pathname === "/pending-book-list" || location.pathname === "/approved-book-list" || location.pathname === "/check-in-list" || location.pathname === "/completed-list" || location.pathname === "/cancelled-list"} icon={<CgCalendarDates />}>
+              <SubMenu label="Booking " active={location.pathname === "/pending-book-list" || location.pathname === "/approved-book-list" || location.pathname === "/check-in-list" || location.pathname === "/completed-list" || location.pathname === "/cancelled-list"} icon={<CalendarMonthOutlinedIcon fontSize="small" />}>
                 {/* Pending Booking */}
-                <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
-
-
-                  onClick={() => {
-                    navigate("/pending-book-list");
-                    toggleSidebar1();
-                  }}
-
-                >
-                  Pending 
-                </MenuItem>
+             
 
                 {/*  Approved Booking */}
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
@@ -435,7 +426,7 @@ const SidebarMenu = () => {
 
               {/* faq */}
 
-              <SubMenu label="FAQ's " active={location.pathname === "/create-faq" || location.pathname === "/faq-list"} icon={<GrCheckboxSelected />}>
+              <SubMenu label="FAQ's " active={location.pathname === "/create-faq" || location.pathname === "/faq-list"} icon={<CheckBoxOutlinedIcon fontSize="small" />}>
 
                 <MenuItem icon={<KeyboardArrowRightOutlinedIcon />} className="sub-menu-item"
                   // active={location.pathname === "/create-faq"}
@@ -459,7 +450,7 @@ const SidebarMenu = () => {
 
               {/* userlist */}
               <MenuItem
-                active={location.pathname === "/user-list"} icon={<PiUsersBold />}
+                active={location.pathname === "/user-list"} icon={<GroupAddOutlinedIcon fontSize="small" />}
                 onClick={() => {
                   navigate("/user-list");
                   toggleSidebar1();
@@ -470,7 +461,7 @@ const SidebarMenu = () => {
 
               {/* account */}
               <MenuItem
-                active={location.pathname === "/profile"} icon={<FaRegUser />}
+                active={location.pathname === "/profile"} icon={<PersonOutlineOutlinedIcon  fontSize="small"/>}
                 onClick={() => {
                   navigate("/profile");
                   toggleSidebar1();
@@ -481,7 +472,7 @@ const SidebarMenu = () => {
 
               {/* admin */}
               <MenuItem
-                active={location.pathname === "/admin"} icon={<MdAdminPanelSettings />}
+                active={location.pathname === "/admin"} icon={<AdminPanelSettingsOutlinedIcon fontSize="small" />}
                 onClick={() => {
                   navigate("/admin");
                   toggleSidebar1();
@@ -492,7 +483,7 @@ const SidebarMenu = () => {
 
               {/* settings */}
               <MenuItem
-                active={location.pathname === "/settings"} icon={<IoSettingsOutline />}
+                active={location.pathname === "/settings"} icon={<SettingsOutlinedIcon fontSize="small" />}
                 onClick={() => {
                   navigate("/settings");
                   toggleSidebar1();
@@ -503,7 +494,7 @@ const SidebarMenu = () => {
 
               {/*  role change */}
               <MenuItem
-                active={location.pathname === "/role"} icon={<LuSettings2 />}
+                active={location.pathname === "/role"} icon={<MultipleStopOutlinedIcon fontSize="small" />}
                 onClick={() => {
                   navigate("/role");
                   toggleSidebar1();
@@ -514,7 +505,7 @@ const SidebarMenu = () => {
 
               {/* logout */}
               <MenuItem
-                active={location.pathname === "/"} icon={<TbLogout2 />}
+                active={location.pathname === "/"} icon={<LogoutOutlinedIcon fontSize="small" />}
                 onClick={logout}
               >
                 Logout
