@@ -88,22 +88,22 @@ const CancelledBook = () => {
                                                     <GoArrowDown className='cursor-pointer' onClick={() => sortData('id')} />
                                                 </div>
                                             </th>
-                                            <th className="px-4 py-2 min-w-[180px]">
+                                            <th className="pl-4 py-2 min-w-[150px]">
                                                 Property Title
                                                 <div className="inline-flex items-center ml-2">
                                                     <GoArrowUp className='cursor-pointer' onClick={() => sortData('prop_title')} />
                                                     <GoArrowDown className='cursor-pointer' onClick={() => sortData('prop_title')} />
                                                 </div>
                                             </th>
-                                            <th className="px-4 py-2 min-w-[200px]">Property Image</th>
-                                            <th className="px-4 py-2 min-w-[180px]">
+                                            <th className="pl-4 py-2 min-w-[150px]">Property Image</th>
+                                            <th className="pl-4 py-2 min-w-[150px]">
                                             Booking Price
                                                 <div className="inline-flex items-center ml-2">
                                                     <GoArrowUp className='cursor-pointer' onClick={() => sortData('prop_price')} />
                                                     <GoArrowDown className='cursor-pointer' onClick={() => sortData('prop_price')} />
                                                 </div>
                                             </th>
-                                            <th className="px-4 py-2 min-w-[250px]">
+                                            <th className="pl-4 py-2 min-w-[150px]">
                                                 Total Booking Days
                                                 <div className="inline-flex items-center ml-2">
                                                     <GoArrowUp className='cursor-pointer' onClick={() => sortData('total_day')} />
@@ -111,15 +111,15 @@ const CancelledBook = () => {
                                                 </div>
                                             </th>
 
-                                            <th className=" py-2 min-w-[150px]">Action </th>
+                                            <th className=" py-2 min-w-[80px]">Action </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200">
                                         {currentcancelled.length > 0 ? (
                                             currentcancelled.map((cancellList, index) => (
                                                 <tr key={index + 1} className=''>
-                                                    <td className="text-center py-1">{index + 1 + indexOfFirst}</td>
-                                                    <td className="text-center py-1">{cancellList.prop_title || 'N/A'}</td>
+                                                    <td className="px-4 py-1">{index + 1 + indexOfFirst}</td>
+                                                    <td className="px-4 py-1">{cancellList.prop_title || 'N/A'}</td>
                                                     <td className="flex justify-center py-1">
                                                         {cancellList.prop_img ? (
                                                             <img src={cancellList.prop_img} className="w-10 h-10 object-cover rounded-full" alt="Coupon"
@@ -131,9 +131,9 @@ const CancelledBook = () => {
                                                             <img src="https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg" className="w-16 h-16 object-cover rounded-full" alt="Placeholder" />
                                                         )}
                                                     </td>
-                                                    <td className="text-center py-1">{cancellList?.prop_price || 'N/A'}</td>
-                                                    <td className="text-center py-1">{cancellList?.total_day || 'N/A'}</td>
-                                                    <td className="text-center py-1">
+                                                    <td className="px-4 py-1">{cancellList?.prop_price || 'N/A'}</td>
+                                                    <td className="px-4  py-1">{cancellList?.total_day || 'N/A'}</td>
+                                                    <td className=" py-1">
                                                         <span className='px-2 py-1 font-medium text-[12px] rounded-full bg-[#d3ffec] cursor-pointer text-[#2dce89] mr-2' onClick={() => openModal(cancellList,cancellList.id)}>View</span>
                                                     </td>
                                                 </tr>

@@ -110,7 +110,7 @@ const Table = ({
                                                     {col.field === 'id' ? (
                                                         <span>{startIndex + index + 1}</span>
                                                     ) : col.field === 'status'  || col.field === 'is_panorama'? (
-                                                        <div className="relative">
+                                                        <div className="">
                                                             {loadingId === row.id ? (
                                                                 <ColorRing
                                                                     visible={true}

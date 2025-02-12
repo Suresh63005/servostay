@@ -121,6 +121,7 @@ const UserList = () => {
         { label: "Email", field: "email", sortable: true, minWidth: "180px" },
         { label: "Mobile", field: "mobile", sortable: true, minWidth: "180px" },
         { label: "Gender", field: "gender", sortable: true, minWidth: "180px" },
+        { label: "Role", field: "role", sortable: true, minWidth: "180px" },
         { label: "Join Date", field: "reg_date", sortable: true, minWidth: "180px" },
         { label: "Status", field: "status", sortable: true, minWidth: "130px" },
         { label: 'Actions', field: 'actions', minWidth: '150px', sortable: false },
