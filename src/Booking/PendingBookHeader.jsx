@@ -9,15 +9,15 @@ const PendingBookHeader = ({ onSearch }) => {
     const getTitle = () => {
         let title = '';
         if (location.pathname === '/pending-book-list') {
-            title = 'Pending Book List';
+            title = 'Pending Bookings';
         } else if (location.pathname === '/approved-book-list') {
-            title = 'Approved Book List';
+            title = 'Approved Bookings';
         } else if (location.pathname === '/check-in-list') {
             title = 'Check-In List';
         } else if (location.pathname === '/completed-list') {
-            title = 'Completed List';
+            title = 'Completed Bookings';
         } else if (location.pathname === '/cancelled-list') {
-            title = 'Cancelled List';
+            title = 'Cancelled Bookings';
         }
         return title;
     };

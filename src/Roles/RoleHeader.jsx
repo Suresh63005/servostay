@@ -15,7 +15,7 @@ const RoleHeader =  ({ onSearch }) => {
                     <Link onClick={()=>{navigate(-1)}}  className="cursor-pointer ml-6">
                     <ArrowBackIosNewIcon style={{color:'#045D78'}} />
                     </Link>
-                    <h2 className="text-lg font-semibold ml-4 header">Role Request</h2>
+                    <h2 className="text-lg font-semibold ml-4 header">Roles Requests</h2>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="hidden sm:flex items-center relative">
