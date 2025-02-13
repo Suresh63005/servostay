@@ -131,6 +131,10 @@ const AdminList = () => {
                 console.error('Error adding admin:', error);
             }
         }
+        finally{
+            setAddForm({username: '',    password: '', userType: 'admin'});
+        }
+
     };
 
     // Search functionality

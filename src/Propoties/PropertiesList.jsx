@@ -145,7 +145,7 @@ const PropotiesList = () => {
         { label: "price", field: "price", sortable: true, minWidth: "120px" },
         { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
         { label: "address", field: "address", sortable: true, minWidth: "150px" },
-        { label: "facility", field: "facility", sortable: true, minWidth: "150px" },
+        { label: "facilities", field: "facilities", sortable: true, minWidth: "150px" },
         { label: "description", field: "description", sortable: true, minWidth: "180px" },
         { label: "beds", field: "beds", sortable: true, minWidth: "120px" },
         { label: "bathroom", field: "bathroom", sortable: true, minWidth: "150px" },

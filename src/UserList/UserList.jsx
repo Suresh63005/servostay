@@ -86,7 +86,7 @@ const UserList = () => {
     // for delete
     const handledelete = async (id) => {
         try {
-            const success = await DeleteEntity('UserList', id);
+            const success = await DeleteEntity('User', id);
             if (success) {
                 setuser((prevUserList) => {
                     const updatedUserList = prevUserList.filter((user) => user.id !== id);
@@ -104,7 +104,7 @@ const UserList = () => {
 
     const handleToggleChange = async (id, currentStatus, field) => {
         try {
-            await StatusEntity("UserList", id, currentStatus, setFiltereduser, filtereduser, field);
+            await StatusEntity("User", id, currentStatus, setFiltereduser, filtereduser, field);
         } catch (error) {
             console.error(error);
         }
