@@ -103,7 +103,7 @@ const ApprovedBook = () => {
                         <div className={`bg-white w-full rounded-xl border border-[#EAE5FF]  overflow-x-auto scrollbar-thin ${filteredApprove.length > 0 ? 'max-h-[380px]' : ''}`}>
                             <div className="relative sm:rounded-lg overflow-y-auto max-h-[375px] scrollbar-none scrollbar-thin ">
                                 <table className="min-w-full text-sm text-left text-gray-700">
-                                    <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white">
+                                    <thead className="bg-[#045D78]  text-xs uppercase sticky top-0 font-medium text-white">
                                         <tr>
                                             <th className="px-4 py-2 min-w-[130px]">
                                                 Sr. No

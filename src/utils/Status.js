@@ -37,7 +37,7 @@ export const StatusEntity = async (
       case "Coupon":
         url = `coupons/toggle-status`;
         break;
-      case "UserList":
+      case "User":
         url = `users/user/toggle-update`;
         break;
       case "Payment":

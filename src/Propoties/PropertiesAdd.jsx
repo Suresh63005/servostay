@@ -560,6 +560,7 @@ const PropertiesAdd = () => {
                         name="extra_guest_charges"
                         value={formData.extra_guest_charges}
                         required
+                        min={0}
                         className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
@@ -678,6 +679,7 @@ const PropertiesAdd = () => {
                           id="beds"
                           name="beds"
                           min={0}
+                          required
                           value={formData.beds}
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Beds Count"
@@ -697,6 +699,7 @@ const PropertiesAdd = () => {
                           type="number"
                           id="bathroom"
                           name="bathroom"
+                          required
                           min={0}
                           value={formData.bathroom}
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
@@ -719,6 +722,7 @@ const PropertiesAdd = () => {
                           min={0}
 
                           value={formData.sqrft}
+                          required
                           name="sqrft"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Property SQFT"
@@ -799,6 +803,7 @@ const PropertiesAdd = () => {
                           id="latitude"
                           value={formData.latitude}
                           name="latitude"
+                          required
                           className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Latitude"
                           onChange={handleChange}
@@ -817,6 +822,7 @@ const PropertiesAdd = () => {
                           type="text"
                           id="longitude"
                           value={formData.longtitude}
+                          required
                           name="longtitude"
                           className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Longitude"
@@ -826,22 +832,31 @@ const PropertiesAdd = () => {
 
                       {/* Mobile Number */}
                       <div>
-                        <label
-                          htmlFor="mobile"
-                          className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
-                        >
-                          Mobile Number
-                        </label>
-                        <input
-                          type="number"
-                          id="mobile"
-                          name="mobile"
-                          value={formData.mobile}
-                          className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Enter Mobile Number"
-                          onChange={handleChange}
-                        />
-                      </div>
+  <label
+    htmlFor="mobile"
+    className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
+  >
+    Mobile Number
+  </label>
+  <input
+    type="text" 
+    id="mobile"
+    name="mobile"
+    required
+    value={formData.mobile}
+    maxLength={10} 
+    pattern="[0-9]{10}" 
+    className="border rounded-lg p-3 mt-1 w-full h-[40px] focus:ring-blue-500 focus:border-blue-500"
+    placeholder="Enter Mobile Number"
+    onChange={(e) => {
+      const value = e.target.value;
+      if (/^\d{0,10}$/.test(value)) {
+        handleChange(e); // Only update state if input is valid
+      }
+    }}
+  />
+</div>
+
 
                       {/* City, Country */}
                       <div className=" ">
@@ -876,6 +891,7 @@ const PropertiesAdd = () => {
                         <input
                           type="date"
                           id="listing_date"
+                          required
                           value={formData.listing_date}
                           name="listing_date"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
