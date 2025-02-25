@@ -19,6 +19,7 @@ const CountryAdd = () => {
   const id = location.state ? location.state.id : null;
   const { isLoading, setIsLoading } = useLoading();
   const [loading, setLoading] = useState(false);
+  const [errors,setErrors]=useState({})
 
   const [formData, setFormData] = useState({
     id: id || null,
@@ -76,11 +77,27 @@ const CountryAdd = () => {
         [name]: value,
       }));
     }
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+    if (!formData.title.trim()) newErrors.title = "Country Name is required";
+    if (!formData.currency.trim()) newErrors.currency = "Currency is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!formData.img) newErrors.img = "Country Image is required"; 
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     console.log(formData)
     e.preventDefault();
+    if (!validateForm()) return;
     setLoading(true);
 
     try {
@@ -105,6 +122,8 @@ const CountryAdd = () => {
         withCredentials: true,
       });
 
+      console.log("API Response:", response.data);
+
       const successMessage = id
         ? "Country updated successfully!"
         : "Country added successfully!";
@@ -115,6 +134,7 @@ const CountryAdd = () => {
           navigate("/country-list");
         }, 2000);
       }
+      console.log("Form Submitted Successfully!")
     } catch (error) {
       console.error("Error submitting country data:", error);
       NotificationContainer.removeAll()
@@ -162,10 +182,11 @@ const CountryAdd = () => {
                         onChange={handleChange}
                         name="title"
                         type="text"
-                        required
+                        // required
                         className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         placeholder="Enter Country name"
                       />
+                      {errors.title && <span className="text-red-500 text-sm">* {errors.title}</span>}
                     </div>
                     <div className="flex flex-col">
                       <label
@@ -185,6 +206,7 @@ const CountryAdd = () => {
                         }
                         options={CountryCodeOptions}
                       />
+                    {errors.currency && <span className="text-red-500 text-sm"> * {errors.currency}</span>}
                     </div>
                   </div>
 
@@ -213,6 +235,7 @@ const CountryAdd = () => {
                           />
                         </div>
                       )}
+                      {errors.img && <span className="text-red-500">* {errors.img}</span>}
                     </div>
                     <div className="flex flex-col">
                       <label

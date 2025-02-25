@@ -16,6 +16,7 @@ const Login = () => {
   const [loading, setloading] = useState(false)
   const [formData, setFormData] = useState({ username: "", password: "" });
   const location = useLocation();
+  const [errors,setErrors]=useState({})
 
   const handlePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -26,9 +27,19 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () =>{
+    let newErrors = {}
+    if(!formData.username) newErrors.username="Username is required";
+    if(!formData.password) newErrors.password="Password is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleSubmit = async (e) => {
     console.log(formData,"from datraaaaaaaaaaa")
     e.preventDefault();
+    if(!validateForm()) return
     setloading(true)
     try {
       const res = await api.post('/admin/login', formData);
@@ -85,11 +96,11 @@ const Login = () => {
                 type="text"
                 id="username"
                 name="username"
-                required
                 value={formData.username }
                 className="w-full px-3 py-2 border border-[#B0B0B0] rounded-md focus:outline-none focus:ring-2 focus:ring-[#045D78] placeholder:font-[poppins] placeholder:text-[14px] placeholder:text-[#25064C]"
                 placeholder="UserName"
               />
+              {errors.username && <span className='text-red-500 text-sm'>* {errors.username}</span>}
             </div>
 
             <div className="flex relative">
@@ -98,7 +109,6 @@ const Login = () => {
                 onChange={handleChange}
                 id="password"
                 name="password"
-                required
                 value={formData.password}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#045D78] placeholder:font-[poppins] placeholder:text-[14px] placeholder:text-[#25064C]"
                 placeholder="Password"
@@ -114,6 +124,7 @@ const Login = () => {
                 )}
               </span>
             </div>
+              {errors.password && <span className='text-red-500 text-sm'>* {errors.password}</span>}
             <div>
               <button
                 type="submit"

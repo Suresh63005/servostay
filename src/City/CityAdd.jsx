@@ -106,11 +106,42 @@ const CityAdd = () => {
     setError('');
   };
 
+  const validateForm = () => {
+    let errors = {};
+  
+    if (!formData.title.trim()) {
+      errors.title = "City Name is required.";
+    } else if (formData.title.length < 3) {
+      errors.title = "City Name must be at least 3 characters long.";
+    }
+  
+    if (!formData.country_id) {
+      errors.country_id = "Country selection is required.";
+    }
+  
+    if (!id && !formData.img) {
+      errors.img = "City Image is required.";
+    } else if (formData.img && typeof formData.img === "object") {
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (!allowedTypes.includes(formData.img.type)) {
+        errors.img = "Only JPG, PNG, or JPEG files are allowed.";
+      }
+    }
+  
+    if (formData.status === "" || formData.status === null) {
+      errors.status = "City Status is required.";
+    }
+  
+    setError(errors);
+    return Object.keys(errors).length === 0;
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true)
-    if (!formData.title || (!id && !formData.img) || !formData.country_id) {
-      setError("City Name, Country, and Image are required.");
+    if (!validateForm()) {
+      setloading(false);
       return;
     }
 
@@ -190,7 +221,7 @@ const CityAdd = () => {
                         options={countryOptions}
                         isLoading={isLoading}
                       />
-
+                      {error.country_id && <p className="text-red-500 text-sm mt-1">{error.country_id}</p>}
                     </div>
 
                     <div className="flex flex-col">
@@ -200,12 +231,13 @@ const CityAdd = () => {
                         name="title"
                         value={formData.title}
                         type="text"
-                        required
+                        // required
                         className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                         placeholder='Enter City Name'
                       />
+                      {error.title && <p className="text-red-500 text-sm mt-1">{error.title}</p>}
                     </div>
 
                     <div className="flex flex-col">
@@ -224,7 +256,7 @@ const CityAdd = () => {
                           <img src={formData.imgPreview} alt="Uploaded Preview" className="w-[50px] h-[50px] object-cover rounded" />
                         </div>
                       )}
-                      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                      {error.img && <p className="text-red-500 text-sm mt-1">{error.img}</p>}
                     </div>
 
                     <div className="flex flex-col">
