@@ -24,12 +24,12 @@ const PropertiesAdd = () => {
   const navigate = useNavigate();
   const location = useLocation()
   const id = location.state ? location.state.id : null;
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const [error2, setError2] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [currentRule, setCurrentRule] = useState('');
   const { isLoading, setIsLoading } = useLoading();
-  const [loading,setloading]=useState(false)
+  const [loading, setloading] = useState(false)
   const [cityOptions, setCityOptions] = useState([]);
   const [formData, setFormData] = useState({
     id: 0 || null,
@@ -60,9 +60,14 @@ const PropertiesAdd = () => {
     infants: null,
     pets: null,
     setting_id: 1,
-    extra_guest_charges: null
+    extra_guest_charges: '',
+    standard_rules: {
+      checkIn: '',
+      checkOut: '',
+      smokingAllowed: false,
+    },
   });
-  // console.log(formData)
+  console.log(formData, "Form Data")
 
   useEffect(() => {
     if (id) {
@@ -112,7 +117,12 @@ const PropertiesAdd = () => {
         infants: Property.infants,
         pets: Property.pets,
         setting_id: 1,
-        extra_guest_charges: Property.extra_guest_charges
+        extra_guest_charges: Property.extra_guest_charges,
+        standard_rules: Property.standard_rules || {
+          checkIn: '',
+          checkOut: '',
+          smokingAllowed: false,
+        },
       })
     } catch (error) {
       console.error("Error fetching Property:", error);
@@ -139,7 +149,7 @@ const PropertiesAdd = () => {
           const formattedCities = response.data.cities.map((city) => ({
             value: city.id,
             label: `${city.title} ${city.TblCountry ? `(${city.TblCountry.countryName})` : ''}`.trim()
-          }));          
+          }));
           setCityOptions(formattedCities);
         } else {
           console.error("Unexpected response:", response);
@@ -171,6 +181,10 @@ const PropertiesAdd = () => {
         rules: [...prevData.rules, currentRule.trim()],
       }));
       setCurrentRule('');
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        rules: "",
+      }));
     }
   };
 
@@ -211,6 +225,13 @@ const PropertiesAdd = () => {
         // alert("Please enter a positive number.");
         return; // Stop further execution if invalid input
       }
+      const formattedValue = value.replace(/^0+/, "") || "0";
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: formattedValue,
+      }));
+      return;
     }
 
     // Update the form data
@@ -239,21 +260,142 @@ const PropertiesAdd = () => {
 
   };
   // console.log(formData, "from formdata");
+
+  const validateForm = (formData) => {
+    let errors = {};
+    const standard_rules=formData.standard_rules;
+    // Required fields validation
+    if (!formData.title.trim()) errors.title = "Title is required";
+    if (!formData.address.trim()) errors.address = "Address is required";
+    if (!formData.description.trim()) errors.description = "Description is required";
+    if (!formData.city || formData.city.toString().trim() === "") {
+      errors.city = "City is required";
+    }
+    if (!formData.country_id) errors.country_id = "Country is required";
+    if (!formData.ptype) errors.ptype = "Property type is required";
+    if (!formData.facility || formData.facility.toString().trim() === "") {
+      errors.facility = "Facilities are required";
+    }
+
+    if (!standard_rules?.checkIn) {
+      errors.checkIn = "Check-In time is required.";
+    }
+    if (!standard_rules?.checkOut) {
+      errors.checkOut = "Check-Out time is required.";
+    }
+  
+    // Ensure checkOut is later than checkIn
+    if (standard_rules?.checkIn && standard_rules?.checkOut) {
+      const checkInTime = new Date(`2000-01-01T${standard_rules.checkIn}`);
+      const checkOutTime = new Date(`2000-01-01T${standard_rules.checkOut}`);
+  
+      if (checkOutTime <= checkInTime) {
+        errors.checkOut = "Check-Out time must be later than Check-In time.";
+      }
+    }
+  
+    if (standard_rules?.smokingAllowed === undefined || standard_rules.smokingAllowed === "") {
+      errors.smokingAllowed = "Please select Smoking Allowed option.";
+    }
+  
+    const parseNumber = (value) => (value === null || value === "" ? 0 : parseFloat(value));
+
+    if (isNaN(parseNumber(formData.price)) || parseNumber(formData.price) <= 0) {
+      errors.price = "Price must be a positive number";
+    }
+
+    if (isNaN(parseNumber(formData.adults)) || parseNumber(formData.adults) < 1) {
+      errors.adults = "Adults must be at least 1";
+    }
+
+    if (isNaN(parseNumber(formData.children)) || parseNumber(formData.children) < 0) {
+      errors.children = "Children must be 0 or more";
+    }
+
+    if (isNaN(parseNumber(formData.infants)) || parseNumber(formData.infants) < 0) {
+      errors.infants = "Infants must be 0 or more";
+    }
+
+    if (isNaN(parseNumber(formData.pets)) || parseNumber(formData.pets) < 0) {
+      errors.pets = "Pets must be 0 or more";
+    }
+
+    if (isNaN(parseNumber(formData.beds)) || parseNumber(formData.beds) < 0) {
+      errors.beds = "Beds must be 0 or more";
+    }
+
+    if (isNaN(parseNumber(formData.bathroom)) || parseNumber(formData.bathroom) < 0) {
+      errors.bathroom = "Bathrooms must be 0 or more";
+    }
+
+    if (isNaN(parseNumber(formData.sqrft)) || parseNumber(formData.sqrft) <= 0) {
+      errors.sqrft = "Square foot must be a positive number";
+    }
+
+    if (!formData.latitude) {
+      errors.latitude = "Latitude is required";
+    } else if (isNaN(parseFloat(formData.latitude))) {
+      errors.latitude = "Latitude must be a valid number";
+    }
+
+    if (!formData.longtitude) {
+      errors.longtitude = "Longitude is required";
+    } else if (isNaN(parseFloat(formData.longtitude))) {
+      errors.longtitude = "Longitude must be a valid number";
+    }
+
+    // Extra Guest Charges Validation
+    if (!formData.extra_guest_charges) {
+      errors.extra_guest_charges = "Extra Guest Charges are required";
+    } else if (isNaN(parseFloat(formData.extra_guest_charges)) || parseFloat(formData.extra_guest_charges) < 0) {
+      errors.extra_guest_charges = "Extra Guest Charges must be a valid number";
+    }
+
+    // Image URL validation
+    if (!formData.image.trim()) {
+      errors.image = "Image is required";
+    } else if (!/^https?:\/\/.*\.(jpg|jpeg|png|gif)$/i.test(formData.image.trim())) {
+      errors.image = "Invalid image URL (must be .jpg, .jpeg, .png, or .gif)";
+    }
+
+    // Mobile number validation (10 digits only)
+    if (!formData.mobile.trim()) {
+      errors.mobile = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(formData.mobile.trim())) {
+      errors.mobile = "Mobile number must be exactly 10 digits";
+    }
+
+    // Ensure rules array is not empty
+    if (!Array.isArray(formData.rules) || formData.rules.length === 0) {
+      errors.rules = "At least one rule is required.";
+    }
+    console.log("Children:", formData.children, "Parsed:", parseNumber(formData.children));
+    console.log("Infants:", formData.infants, "Parsed:", parseNumber(formData.infants));
+    console.log("Pets:", formData.pets, "Parsed:", parseNumber(formData.pets));
+    console.log("Beds:", formData.beds, "Parsed:", parseNumber(formData.beds));
+    console.log("Bathroom:", formData.bathroom, "Parsed:", parseNumber(formData.bathroom));
+
+    return errors;
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true)
-    // Check for required fields like image
-    if (!formData.image) {
-      NotificationManager.removeAll();
-      NotificationManager.error('Please upload an image', 'Error');
-      setError2('Please upload an image');
+    console.log(errors)
+    const validationErrors = validateForm(formData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setIsLoading(false);
       return;
     }
+    console.log("Form Submitted Successfully", formData);
 
-    // Prepare the data to submit
     const formDataToSubmit = {
       ...formData,
       rules: JSON.stringify(formData.rules),
+      standard_rules: JSON.stringify(formData.standard_rules),
     };
     const successMessage = id ? 'Property Updated Successfully!' : 'Property Added Successfully!';
     try {
@@ -283,7 +425,7 @@ const PropertiesAdd = () => {
       } else {
         NotificationManager.error('Please fill all the fields.', 'Error');
       }
-    }finally{
+    } finally {
       setloading(false)
     }
   };
@@ -342,7 +484,6 @@ const PropertiesAdd = () => {
                         name="title"
                         type="text"
                         value={formData.title}
-                        required
                         className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
@@ -351,9 +492,11 @@ const PropertiesAdd = () => {
                         onChange={handleChange}
                         placeholder="Enter property title"
                       />
+                      {errors?.title && <p className="error-text text-red-500 text-sm"> * {errors.title}</p>}
+
                     </div>
 
-                    {/* property image*/}
+                    {/* Property Image */}
                     <div className="flex flex-col">
                       <label
                         htmlFor="image"
@@ -361,20 +504,21 @@ const PropertiesAdd = () => {
                       >
                         Property Image
                       </label>
-                      <ImageUploader
-                        onUploadSuccess={handleImageUploadSuccess}
-                      />
-                    {
-                      formData.image && 
-                     <div className="mt-4">
+                      <ImageUploader onUploadSuccess={handleImageUploadSuccess} />
+
+                      {formData.image && (
+                        <div className="mt-4">
                           <img
-                            src={formData.image}
+                            src={typeof formData.image === "string" ? formData.image : URL.createObjectURL(formData.image)}
                             alt="Uploaded Preview"
                             className="w-[50px] h-[50px] object-cover rounded"
                           />
-                        </div>}
-                      {error2 && (<p className="text-red-500 text-sm mt-2">{error2}</p>)}
+                        </div>
+                      )}
+
+                      {errors.image && <p className="error-text text-red-500 text-sm"> * {errors.image}</p>}
                     </div>
+
 
                     {/* property panorama */}
                     <div className="flex flex-col">
@@ -415,7 +559,6 @@ const PropertiesAdd = () => {
                         name="price"
                         type="number"
                         min={0}
-                        required
                         className="border rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
@@ -424,6 +567,7 @@ const PropertiesAdd = () => {
                         onChange={handleChange}
                         placeholder="Enter  Price Per Night"
                       />
+                      {errors.price && <span className="text-red-500 text-sm">* {errors.price}</span>}
                     </div>
                   </div>
 
@@ -442,7 +586,6 @@ const PropertiesAdd = () => {
                         name="adults"
                         type="number"
                         min={0}
-                        required
                         value={formData.adults}
                         onChange={handleChange}
                         className="border rounded-lg p-3 mt-1 w-full h-14"
@@ -452,7 +595,7 @@ const PropertiesAdd = () => {
                         }}
                         placeholder="Enter Adults"
                       />
-                      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                      {errors.adults && <span className="text-red-500 text-sm">* {errors.adults}</span>}
                     </div>
                     {/* children */}
                     <div className="flex flex-col">
@@ -463,8 +606,9 @@ const PropertiesAdd = () => {
                         {" "}
                         Children{" "}
                       </label>
-                      <input id="children" name="children" type="number" min={0} required value={formData.children} onChange={handleChange} className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: "8px", border: "1px solid #EAEAFF", }} placeholder="Enter Children" />
-                      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                      <input id="children" name="children" type="number" min={0} value={formData.children} onChange={handleChange} className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: "8px", border: "1px solid #EAEAFF", }} placeholder="Enter Children" />
+                      {errors.children && <span className="text-red-500 text-sm">* {errors.children}</span>}
+
                     </div>
                     {/* infants */}
                     <div className="flex flex-col">
@@ -475,8 +619,8 @@ const PropertiesAdd = () => {
                         {" "}
                         Infants{" "}
                       </label>
-                      <input id="infants" name="infants" type="number" min={0} required value={formData.infants} onChange={handleChange} className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: "8px", border: "1px solid #EAEAFF", }} placeholder="Enter Infants" />
-                      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                      <input id="infants" name="infants" type="number" min={0} value={formData.infants} onChange={handleChange} className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: "8px", border: "1px solid #EAEAFF", }} placeholder="Enter Infants" />
+                      {errors.infants && <span className="text-red-500 text-sm">* {errors.infants}</span>}
                     </div>
                     {/* pets */}
                     <div className="flex flex-col">
@@ -487,8 +631,8 @@ const PropertiesAdd = () => {
                         {" "}
                         Pets{" "}
                       </label>
-                      <input id="pets" name="pets" type="number" min={0} required value={formData.pets} onChange={handleChange} className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: "8px", border: "1px solid #EAEAFF", }} placeholder="Enter Pets" />
-                      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                      <input id="pets" name="pets" type="number" min={0} value={formData.pets} onChange={handleChange} className="border rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: "8px", border: "1px solid #EAEAFF", }} placeholder="Enter Pets" />
+                      {errors.pets && <span className="text-red-500 text-sm">* {errors.pets}</span>}
                     </div>
                   </div>
 
@@ -516,9 +660,8 @@ const PropertiesAdd = () => {
                           value: item.id,
                           label: item.title,
                         }))}
-
                       />
-
+                      {errors.country_id && <span className="text-red-500 text-sm">* {errors.country_id}</span>}
                     </div>
 
                     {/* propert status */}
@@ -528,7 +671,7 @@ const PropertiesAdd = () => {
                         className="text-sm font-medium text-start text-[12px] font-[Montserrat]"
                       >
                         {" "}
-                        property Status
+                        Property Status
                       </label>
 
 
@@ -559,7 +702,7 @@ const PropertiesAdd = () => {
                         id="extra_guest_charges"
                         name="extra_guest_charges"
                         value={formData.extra_guest_charges}
-                        required
+
                         min={0}
                         className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
@@ -568,6 +711,77 @@ const PropertiesAdd = () => {
                         }}
                         onChange={handleChange}
                         placeholder="Enter Extra Guest Charges"
+                      />
+                      {errors.extra_guest_charges && <span className="text-red-500 text-sm">* {errors.extra_guest_charges}</span>}
+                    </div>
+
+                    {/* Standard Rules */}
+                    <div>
+                      <label className="text-sm font-medium float-left text-[12px] font-[Montserrat]">
+                        Check-In Time
+                      </label>
+                      <input
+                        type="time"
+                        name="checkIn"
+                        value={formData.standard_rules?.checkIn || ""}
+                        className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+                        onChange={(e) =>
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            standard_rules: { ...prevData.standard_rules, checkIn: e.target.value },
+                          }))
+                        }
+                      />
+                      {errors.checkIn && <span className="text-red-500 text-sm">* {errors.checkIn}</span>}
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium float-left text-[12px] font-[Montserrat]">
+                        Check-Out Time
+                      </label>
+                      <input
+                        type="time"
+                        name="checkOut"
+                        value={formData.standard_rules?.checkOut || ""}
+                        className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+                        onChange={(e) =>
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            standard_rules: { ...prevData.standard_rules, checkOut: e.target.value },
+                          }))
+                        }
+                      />
+                      {errors.checkOut && <span className="text-red-500 text-sm">* {errors.checkOut}</span>}
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-start text-[12px] font-[Montserrat]">
+                        Smoking Allowed
+                      </label>
+
+                      <SelectComponent
+                        style={{ height: "55px" }}
+                        name="smokingAllowed"
+                        value={
+                          formData.standard_rules?.smokingAllowed !== undefined
+                            ? formData.standard_rules.smokingAllowed.toString()
+                            : ""
+                        }
+                        onChange={(selectedOption) => {
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            standard_rules: {
+                              ...prevData.standard_rules,
+                              smokingAllowed: selectedOption.value === "true",
+                            },
+                          }));
+                        }}
+                        options={[
+                          { value: "", label: "Select" },
+                          { value: "true", label: "Yes" },
+                          { value: "false", label: "No" },
+                        ]}
+
                       />
                     </div>
                   </div>
@@ -586,7 +800,7 @@ const PropertiesAdd = () => {
                         name="address"
                         type="text"
                         value={formData.address}
-                        required
+
                         className="border input-tex rounded-lg p-3 mt-1 w-full h-14"
                         style={{
                           borderRadius: "8px",
@@ -596,6 +810,7 @@ const PropertiesAdd = () => {
                         onChange={handleChange}
                         placeholder="Enter Property Address "
                       />
+                      {errors.address && <span className="text-red-500 text-sm">* {errors.address}</span>}
                     </div>
 
                     {/* Select Property Facility */}
@@ -658,6 +873,7 @@ const PropertiesAdd = () => {
                           border: "1px solid #045D78"
                         }}
                       />
+                      {errors.facility && <span className="text-red-500 text-sm">* {errors.facility}</span>}
                     </div>
 
                   </div>
@@ -679,12 +895,13 @@ const PropertiesAdd = () => {
                           id="beds"
                           name="beds"
                           min={0}
-                          required
+
                           value={formData.beds}
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Beds Count"
                           onChange={handleChange}
                         />
+                        {errors.beds && <span className="text-red-500 text-sm">* {errors.beds}</span>}
                       </div>
 
                       {/* Total bathrooms */}
@@ -699,13 +916,14 @@ const PropertiesAdd = () => {
                           type="number"
                           id="bathroom"
                           name="bathroom"
-                          required
+
                           min={0}
                           value={formData.bathroom}
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Bathroom Count"
                           onChange={handleChange}
                         />
+                        {errors.bathroom && <span className="text-red-500 text-sm">* {errors.bathroom}</span>}
                       </div>
 
                       {/* Property SQFT */}
@@ -722,12 +940,13 @@ const PropertiesAdd = () => {
                           min={0}
 
                           value={formData.sqrft}
-                          required
+
                           name="sqrft"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Property SQFT"
                           onChange={handleChange}
                         />
+                        {errors.sqrft && <span className="text-red-500 text-sm">* {errors.sqrft}</span>}
                       </div>
 
                       <div>
@@ -784,10 +1003,7 @@ const PropertiesAdd = () => {
                           ))}
 
                         />
-
-
-
-
+                        {errors.ptype && <span className="text-red-500 text-sm">* {errors.ptype}</span>}
                       </div>
 
                       {/* Latitude */}
@@ -803,11 +1019,12 @@ const PropertiesAdd = () => {
                           id="latitude"
                           value={formData.latitude}
                           name="latitude"
-                          required
+
                           className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Latitude"
                           onChange={handleChange}
                         />
+                        {errors.latitude && <span className="text-red-500 text-sm">* {errors.latitude}</span>}
                       </div>
 
                       {/* Longitude */}
@@ -822,45 +1039,47 @@ const PropertiesAdd = () => {
                           type="text"
                           id="longitude"
                           value={formData.longtitude}
-                          required
+
                           name="longtitude"
                           className="border input-tex rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Longitude"
                           onChange={handleChange}
                         />
+                        {errors.longtitude && <span className="text-red-500 text-sm">* {errors.longtitude}</span>}
                       </div>
 
                       {/* Mobile Number */}
                       <div>
-  <label
-    htmlFor="mobile"
-    className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
-  >
-    Mobile Number
-  </label>
-  <input
-    type="text" 
-    id="mobile"
-    name="mobile"
-    required
-    value={formData.mobile}
-    maxLength={10} 
-    pattern="[0-9]{10}" 
-    className="border rounded-lg p-3 mt-1 w-full h-[40px] focus:ring-blue-500 focus:border-blue-500"
-    placeholder="Enter Mobile Number"
-    onChange={(e) => {
-      const value = e.target.value;
-      if (/^\d{0,10}$/.test(value)) {
-        handleChange(e); // Only update state if input is valid
-      }
-    }}
-  />
-</div>
+                        <label
+                          htmlFor="mobile"
+                          className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
+                        >
+                          Mobile Number
+                        </label>
+                        <input
+                          type="text"
+                          id="mobile"
+                          name="mobile"
+
+                          value={formData.mobile}
+                          maxLength={10}
+                          pattern="[0-9]{10}"
+                          className="border rounded-lg p-3 mt-1 w-full h-[40px] focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Enter Mobile Number"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d{0,10}$/.test(value)) {
+                              handleChange(e); // Only update state if input is valid
+                            }
+                          }}
+                        />
+                        {errors.mobile && <span className="text-red-500 text-sm">* {errors.mobile}</span>}
+                      </div>
 
 
                       {/* City, Country */}
                       <div className=" ">
-                      <label
+                        <label
                           htmlFor="city"
                           className="text-sm  font-medium  text-[12px] font-[Montserrat]"
                         >
@@ -877,7 +1096,7 @@ const PropertiesAdd = () => {
                           }
                           options={cityOptions || []}  // Use cityOptions instead of selectedOption
                         />
-
+                        {errors.city && <span className="text-red-500 text-sm">* {errors.city}</span>}
                       </div>
 
                       {/* listing date */}
@@ -891,7 +1110,6 @@ const PropertiesAdd = () => {
                         <input
                           type="date"
                           id="listing_date"
-                          required
                           value={formData.listing_date}
                           name="listing_date"
                           className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
@@ -914,7 +1132,9 @@ const PropertiesAdd = () => {
                           className="border rounded-lg p-3 mt-1 w-full resize-none h-64 focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Enter Property Description"
                           onChange={handleChange}
-                        ></textarea>
+                        >
+                        </textarea>
+                        {errors.description && <span className="text-red-500 text-sm">* {errors.description}</span>}
                       </div>
                       <div className="md:col-span-1 mb-7">
                         <label
@@ -952,6 +1172,7 @@ const PropertiesAdd = () => {
                             className="focus:outline-none input-tex text-sm border-t border-gray-300 pt-2 w-full"
                             onKeyDown={handleKeyPress}
                           />
+                          {errors.rules && <span className="text-red-500 text-sm">* {errors.rules}</span>}
                         </div>
                       </div>
                     </div>
@@ -971,10 +1192,10 @@ const PropertiesAdd = () => {
                             wrapperClass="vortex-wrapper"
                             colors={['white', 'white', 'white', 'white', 'white', 'white']}
                           />
-                        ):
-                        (
-                          id ? "Update Property" : "Add Property"
-                        )
+                        ) :
+                          (
+                            id ? "Update Property" : "Add Property"
+                          )
                       }
                     </button>
                   </div>

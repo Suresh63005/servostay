@@ -83,13 +83,22 @@ const CategoryAdd = () => {
     }
   };
 
+  const validateForm = ()=>{
+    let newErrors = {};
+    if(!formData.title.trim()) newErrors.title = "Category title is required";
+    if(!formData.img) newErrors.img = "Category Image is required";
+    setError(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true);
-    if (!formData.img && !id) {
-      setError("Image is required.");
-      return;
-    }
+    if(!validateForm()) return;
+    // if (!formData.img && !id) {
+    //   setError("Image is required.");
+    //   return;
+    // }
   
     const successMessage = id ? 'Category Updated Successfully!' : 'Category Added Successfully!';
     try {
@@ -148,10 +157,11 @@ const CategoryAdd = () => {
                     {/* category name */}
                     <div className="flex flex-col">
                       <label htmlFor="category_name" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> Category name </label>
-                      <input id="category_name" name="title" value={formData.title} type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="category_name" name="title" value={formData.title} type="text" className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                         placeholder="Enter Category Title"
                       />
+                      {error.title && <span className='text-red-500 text-sm'>* {error.title}</span>}
                     </div>
 
                     {/* category image*/}
@@ -177,8 +187,7 @@ const CategoryAdd = () => {
                         />
                       </div>
                     )}
-
-                      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                      {error.img && <span className='text-red-500 text-sm'>* {error.img}</span>}
                     </div>
                   </div>
 

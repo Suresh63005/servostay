@@ -16,6 +16,7 @@ const FaqAdd = () => {
   const navigate = useNavigate();
   const [loading, setloading] = useState(false)
   const [formData, setFormData] = useState({ id: id || null, question: '', answer: '', status: 0, });
+  const [errors,setErrors]=useState({})
 
   useEffect(() => {
     if (id) {
@@ -47,9 +48,19 @@ const FaqAdd = () => {
     }));
   };
 
+  const validateForm = () =>{
+    let newErrors = {};
+    if(!formData.question) newErrors.question = "Question is required";
+    if(!formData.answer) newErrors.answer = "Answer is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log("Form submitted:", formData);
+    if(!validateForm()) return
     setloading(true)
     try {
       const url = `faqs/upsert`;
@@ -95,15 +106,16 @@ const FaqAdd = () => {
                     {/* faq question */}
                     <div className="flex flex-col">
                       <label htmlFor="question" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ Question </label>
-                      <input id="question" value={formData.question} onChange={handleChange} name="question" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }} placeholder="Enter question " />
+                      <input id="question" value={formData.question} onChange={handleChange} name="question" type="text" className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }} placeholder="Enter question " />
+                      {errors.question && <span className='text-red-500 text-sm'>* {errors.question}</span>}
                     </div>
 
                     {/* faq answer */}
                     <div className="flex flex-col">
                       <label htmlFor="answer" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> FAQ Answer </label>
-                      <input id="answer" value={formData.answer} onChange={handleChange} name="answer" type="text" required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }} placeholder="Enter Anwer " />
+                      <input id="answer" value={formData.answer} onChange={handleChange} name="answer" type="text" className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }} placeholder="Enter Anwer " />
+                      {errors.answer && <span className='text-red-500 text-sm'>* {errors.answer}</span>}
                     </div>
-
                   </div>
 
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-6">
@@ -121,7 +133,6 @@ const FaqAdd = () => {
                           }));
                         }}
                         options={statusoptions}
-
                       />
                     </div>
                   </div>

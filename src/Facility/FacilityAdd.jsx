@@ -76,9 +76,30 @@ const FacilityAdd = () => {
     setError('');
   };
   
+  const validateForm = () => {
+    let newErrors = {};
+    
+    if (!formData.title.trim()) {
+      newErrors.title = "Facility Name is required.";
+    } else if (formData.title.length < 3) {
+      newErrors.title = "Facility Name must be at least 3 characters long.";
+    }
+
+    if (!formData.img) {
+      newErrors.img = "Facility Image is required.";
+    }
+
+    if (!formData.status) {
+      newErrors.status = "Facility Status is required.";
+    }
+
+    setError  (newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setloading(true)
 
     if (!formData.img) {
@@ -146,15 +167,16 @@ const FacilityAdd = () => {
                     {/* facility name */}
                     <div className="flex flex-col">
                       <label htmlFor="title" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Name</label>
-                      <input id="title" name="title" type="text" value={formData.title} placeholder='Enter Facility Name' required className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
+                      <input id="title" name="title" type="text" value={formData.title} placeholder='Enter Facility Name' className="border input-tex rounded-lg p-3 mt-1 w-full h-14" style={{ borderRadius: '8px', border: '1px solid #EAEAFF' }}
                         onChange={handleChange}
                       />
+                      {error.title && <p className="text-red-500 text-sm mt-1">{error.title}</p>}
                     </div>
 
                     {/* facility image*/}
                     <div className="flex flex-col">
                       <label htmlFor="img" className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Facility Image</label>
-                      <input type="file" name="img" id="img" onChange={handleFileChange} className="border rounded-lg p-2 mt-1 w-full h-14" />
+                      <input type="file" accept='.svg' name="img" id="img" onChange={handleFileChange} className="border rounded-lg p-2 mt-1 w-full h-14" />
                       {formData.imgPreview && (
                         <div className="mt-4">
                           <img
@@ -164,8 +186,8 @@ const FacilityAdd = () => {
                           />
                         </div>
                       )}
-                      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    </div>
+                      {error.img && <p className="text-red-500 text-sm mt-1">{error.img}</p>}
+                      </div>
 
                   </div>
 
