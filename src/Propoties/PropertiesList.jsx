@@ -35,6 +35,7 @@ const PropotiesList = () => {
                 const fetchedProperties = response.data.map((property) => {
                     return {
                         ...property,
+                        city:property.cities?.title || "",
                         rules: (() => {
                             try {
                                 return JSON.parse(property.rules);
@@ -42,7 +43,7 @@ const PropotiesList = () => {
                                 return property.rules ? [property.rules] : [];
                             }
                         })(),
-                        standard_rules: property.standard_rules
+                        // standard_rules: property.standard_rules
                     }
                 })
                 // console.log(response.data);
@@ -156,7 +157,8 @@ const PropotiesList = () => {
         { label: "latitude", field: "latitude", sortable: true, minWidth: "150px" },
         { label: "longtitude", field: "longtitude", sortable: true, minWidth: "180px" },
         { label: "mobile", field: "mobile", sortable: true, minWidth: "130px" },
-        { label: "city", field: "city", sortable: true, minWidth: "120px" },
+        // { label: "city", field: "city", sortable: true, minWidth: "120px" },
+        { label: "City", field: "cities.title", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
         {
             label: "Standard Rules",
@@ -164,31 +166,30 @@ const PropotiesList = () => {
             sortable: true,
             minWidth: "180px",
             render: (row) => {
-              console.log("Standard Rules Data:", row.standard_rules);
-              
+              console.log("Raw standard_rules data:", row.standard_rules);
+          
               let standardRules = row.standard_rules;
           
-              // Ensure it's parsed correctly
               if (typeof standardRules === "string") {
                 try {
                   standardRules = JSON.parse(standardRules);
                 } catch (error) {
                   console.error("Error parsing standard_rules:", error);
-                  standardRules = {};
+                  return "N/A";
                 }
               }
           
+              console.log("Parsed standard_rules object:", standardRules);
+          
               return standardRules && typeof standardRules === "object" ? (
-                <>
-                  Check-In: {standardRules.checkIn || "N/A"}, Check-Out: {standardRules.checkOut || "N/A"}, Smoking:{" "}
-                  {standardRules.smokingAllowed ? "Allowed" : "Not Allowed"}
-                </>
+                `Check-In: ${standardRules.checkIn || "N/A"}, Check-Out: ${standardRules.checkOut || "N/A"}, Smoking: ${standardRules.smokingAllowed ? "Allowed" : "Not Allowed"}`
               ) : (
                 "N/A"
               );
-            }
-          },
-                      
+            },
+          }
+          ,
+                           
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
         { label: "children", field: "children", sortable: true, minWidth: "150px" },

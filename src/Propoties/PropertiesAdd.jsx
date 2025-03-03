@@ -49,7 +49,7 @@ const PropertiesAdd = () => {
     latitude: '',
     longtitude: '',
     mobile: '',
-    city: '',
+    city: null,
     listing_date: '',
     add_user_id: 1,
     rules: [],
@@ -79,8 +79,15 @@ const PropertiesAdd = () => {
     try {
       const response = await api.get(`properties/${id}`)
       const Property = response.data;
-      // console.log("Property Data: ", Property);
+      console.log("Property Data: ", Property);
       const rate = Math.min(Math.max(Property.rate, 0), 5);
+      const convertToTimeFormat = (time) => {
+        const [hour, minute, period] = time.match(/(\d+):(\d+) (AM|PM)/).slice(1);
+        let hours = parseInt(hour);
+        if (period === "PM" && hours !== 12) hours += 12;
+        if (period === "AM" && hours === 12) hours = 0;
+        return `${hours.toString().padStart(2, "0")}:${minute}`;
+      };
       setFormData({
         id,
         title: Property.title,
@@ -99,7 +106,7 @@ const PropertiesAdd = () => {
         latitude: Property.latitude,
         longtitude: Property.longtitude,
         mobile: Property.mobile,
-        city: Property.city,
+        city: cityOptions.find((opt) => opt.value === Property.city) || null,
         listing_date: new Date(Property.listing_date).toISOString().split("T")[0],
         add_user_id: Property.add_user_id,
         rules: (() => {
@@ -110,7 +117,6 @@ const PropertiesAdd = () => {
           }
         })(),
         country_id: Property.country_id,
-
         is_sell: Property.is_sell,
         adults: Property.adults,
         children: Property.children,
@@ -118,12 +124,43 @@ const PropertiesAdd = () => {
         pets: Property.pets,
         setting_id: 1,
         extra_guest_charges: Property.extra_guest_charges,
-        standard_rules: Property.standard_rules || {
-          checkIn: '',
-          checkOut: '',
-          smokingAllowed: false,
-        },
-      })
+      
+        standard_rules: (() => {
+          try {
+            let rules = Property.standard_rules;
+        
+            // Parse first level (removes outer quotes)
+            if (typeof rules === "string") {
+              rules = JSON.parse(rules);
+            }
+        
+            // Parse second level (removes escaped JSON)
+            if (typeof rules === "string") {
+              rules = JSON.parse(rules);
+            }
+        
+            // Ensure `rules` is an object
+            if (!rules || typeof rules !== "object") {
+              rules = {};
+            }
+        
+            return {
+              checkIn: rules.checkIn || "",
+              checkOut: rules.checkOut || "",
+              smokingAllowed: rules.smokingAllowed ?? false,
+            };
+          } catch (error) {
+            console.error("Error parsing standard_rules:", error);
+            return { checkIn: "", checkOut: "", smokingAllowed: false };
+          }
+        })(),
+        
+        
+      });
+      
+      console.log("Property.city:", Property.city);
+      console.log("cityOptions:", cityOptions);
+
     } catch (error) {
       console.error("Error fetching Property:", error);
     }
@@ -144,13 +181,14 @@ const PropertiesAdd = () => {
             Authorization: `Bearer ${token}`,
           }
         });
-
+        console.log("API Response:", response.data);
         if (response.status === 200 && response.data && response.data.cities) {
           const formattedCities = response.data.cities.map((city) => ({
             value: city.id,
             label: `${city.title} ${city.TblCountry ? `(${city.TblCountry.countryName})` : ''}`.trim()
           }));
           setCityOptions(formattedCities);
+          console.log("Formatted Cities:", formattedCities);
         } else {
           console.error("Unexpected response:", response);
           NotificationManager.error("Unexpected response format. Please try again.");
@@ -170,7 +208,7 @@ const PropertiesAdd = () => {
 
 
     fetchActiveCities();
-  }, [setIsLoading])
+  }, [])
 
 
   const handleKeyPress = (e) => {
@@ -263,7 +301,7 @@ const PropertiesAdd = () => {
 
   const validateForm = (formData) => {
     let errors = {};
-    const standard_rules=formData.standard_rules;
+    const standard_rules = formData.standard_rules;
     // Required fields validation
     if (!formData.title.trim()) errors.title = "Title is required";
     if (!formData.address.trim()) errors.address = "Address is required";
@@ -283,21 +321,21 @@ const PropertiesAdd = () => {
     if (!standard_rules?.checkOut) {
       errors.checkOut = "Check-Out time is required.";
     }
-  
+
     // Ensure checkOut is later than checkIn
     if (standard_rules?.checkIn && standard_rules?.checkOut) {
       const checkInTime = new Date(`2000-01-01T${standard_rules.checkIn}`);
       const checkOutTime = new Date(`2000-01-01T${standard_rules.checkOut}`);
-  
-      if (checkOutTime <= checkInTime) {
-        errors.checkOut = "Check-Out time must be later than Check-In time.";
-      }
+
+      // if (checkOutTime <= checkInTime) {
+      //   errors.checkOut = "Check-Out time must be later than Check-In time.";
+      // }
     }
-  
+
     if (standard_rules?.smokingAllowed === undefined || standard_rules.smokingAllowed === "") {
       errors.smokingAllowed = "Please select Smoking Allowed option.";
     }
-  
+
     const parseNumber = (value) => (value === null || value === "" ? 0 : parseFloat(value));
 
     if (isNaN(parseNumber(formData.price)) || parseNumber(formData.price) <= 0) {
@@ -369,11 +407,11 @@ const PropertiesAdd = () => {
     if (!Array.isArray(formData.rules) || formData.rules.length === 0) {
       errors.rules = "At least one rule is required.";
     }
-    console.log("Children:", formData.children, "Parsed:", parseNumber(formData.children));
-    console.log("Infants:", formData.infants, "Parsed:", parseNumber(formData.infants));
-    console.log("Pets:", formData.pets, "Parsed:", parseNumber(formData.pets));
-    console.log("Beds:", formData.beds, "Parsed:", parseNumber(formData.beds));
-    console.log("Bathroom:", formData.bathroom, "Parsed:", parseNumber(formData.bathroom));
+    // console.log("Children:", formData.children, "Parsed:", parseNumber(formData.children));
+    // console.log("Infants:", formData.infants, "Parsed:", parseNumber(formData.infants));
+    // console.log("Pets:", formData.pets, "Parsed:", parseNumber(formData.pets));
+    // console.log("Beds:", formData.beds, "Parsed:", parseNumber(formData.beds));
+    // console.log("Bathroom:", formData.bathroom, "Parsed:", parseNumber(formData.bathroom));
 
     return errors;
   };
@@ -382,7 +420,7 @@ const PropertiesAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloading(true)
-    console.log(errors)
+    // console.log(errors)
     const validationErrors = validateForm(formData);
     setErrors(validationErrors);
 
@@ -397,6 +435,7 @@ const PropertiesAdd = () => {
       rules: JSON.stringify(formData.rules),
       standard_rules: JSON.stringify(formData.standard_rules),
     };
+    console.log(formDataToSubmit)
     const successMessage = id ? 'Property Updated Successfully!' : 'Property Added Successfully!';
     try {
       const response = await api.post('/properties/upsert', formDataToSubmit, { withCredentials: true });
@@ -422,7 +461,8 @@ const PropertiesAdd = () => {
       NotificationManager.removeAll();
       if (error?.response?.data?.message) {
         NotificationManager.error(error.response.data.message, 'Error');
-      } else {
+      } 
+      else {
         NotificationManager.error('Please fill all the fields.', 'Error');
       }
     } finally {
@@ -742,7 +782,7 @@ const PropertiesAdd = () => {
                       <input
                         type="time"
                         name="checkOut"
-                        value={formData.standard_rules?.checkOut || ""}
+                        value={formData.standard_rules?.checkOut}
                         className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
                         onChange={(e) =>
                           setFormData((prevData) => ({
@@ -1087,16 +1127,16 @@ const PropertiesAdd = () => {
                         </label>
                         <SelectComponent
                           name="city"
-                          value={formData.city}
+                          value={formData.city} // Ensure it's an object { value, label }
                           onChange={(selectedOption) =>
                             setFormData((prevData) => ({
                               ...prevData,
-                              city: selectedOption.value,
+                              city: selectedOption, // Store full object { value, label }
                             }))
                           }
-                          options={cityOptions || []}  // Use cityOptions instead of selectedOption
+                          options={cityOptions || []}
                         />
-                        {errors.city && <span className="text-red-500 text-sm">* {errors.city}</span>}
+  
                       </div>
 
                       {/* listing date */}
