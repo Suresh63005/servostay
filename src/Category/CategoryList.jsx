@@ -63,14 +63,23 @@ const CategoryList = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
 
+  // const handledelete = async (id) => {
+  //   const success = await DeleteEntity('Category', id);
+  //   if (success) {
+  //     const updatedCategories = categories.filter((category) => category.id !== id);
+  //     setCategories(updatedCategories);
+  //     setFilteredCategories(updatedCategories);
+  //   }
+  // };
+
   const handledelete = async (id) => {
-    const success = await DeleteEntity('Category', id);
+    const success = await DeleteEntity("Category", id);
     if (success) {
-      const updatedCategories = categories.filter((category) => category.id !== id);
-      setCategories(updatedCategories);
-      setFilteredCategories(updatedCategories);
+      setCategories((prev) => prev.filter((category) => category.id !== id));
+      setFilteredCategories((prev) => prev.filter((category) => category.id !== id));
     }
   };
+  
 
   // for update 
   const updateCategory = (id) => {

@@ -17,6 +17,7 @@ const ExtraImageAdd = () => {
     const [PImages, setPImages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [loading, setloading] = useState(false);
+    const [errors , setErrors]=useState({})
     const [formData, setFormData] = useState({ id: id || null, pid: '', status: '', img: null,imgPreview:null });
 
     useEffect(() => {
@@ -79,10 +80,23 @@ const ExtraImageAdd = () => {
         }));
     };
     
+    const validateForm = () => {
+        let newErrors = {};
+        if (!formData.pid) newErrors.pid = 'Property is required.';
+        if (!formData.status) newErrors.status = 'Status is required.';
+        if (!PImages.length && !formData.img) newErrors.img = 'Please upload at least one image.';
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
     
     const handleSubmit = async (e) => {
         e.preventDefault();
         setloading(true);
+
+        if (!validateForm()) {
+            setIsLoading(false);
+            return;
+        }
     
         const form = new FormData();
         form.append('pid', formData.pid);
@@ -149,6 +163,7 @@ const ExtraImageAdd = () => {
                                                     value: property.id, label: property.title
                                                 }))}
                                             />
+                                        {errors.pid && <span className="text-red-500 text-sm">* {errors.pid}</span>}
                                         </div>
                                         {/* Property Image */}
                                         <div className="flex flex-col">
@@ -171,6 +186,7 @@ const ExtraImageAdd = () => {
 
                                                 </div>
                                             )}
+                                            {errors.img && <span className='text-red-500 text-sm'>* {errors.img}</span>}
                                         </div>
                                     </div>
                                     <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2 mt-4">

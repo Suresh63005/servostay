@@ -12,7 +12,7 @@ const SelectComponent = ({ options, value, onChange, label, name,defaultplacehol
   value={
     options.find((option) => option.value === value)   
   }
-  required
+  // required
   onChange={onChange}
   options={options}
   getOptionLabel={(e) => <div>{e.label}</div>}

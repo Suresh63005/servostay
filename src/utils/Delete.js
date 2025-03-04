@@ -23,7 +23,7 @@ export const DeleteEntity = async (entity, id) => {
           break;
 
         case "Category":
-          await api.delete(`categories/delete/${id}`);
+          await api.delete(`categories/delete/${id}`, { params: { forceDelete: true } });
           break;
 
         case "Coupon":
@@ -42,16 +42,16 @@ export const DeleteEntity = async (entity, id) => {
           await api.delete(`payout-settings/delete/${id}`);
           break;
 
-        case "Property":
-          await api.delete(`properties/delete/${id}`);
-          break;
+        // case "Property":
+        //   await api.delete(`properties/delete/${id}`);
+        //   break;
 
         case "Extra Image":
-          await api.delete(`extra/delete/${id}`);
+          await api.delete(`extra/delete/${id}`,{params:{forceDelete:true}});
           break;
 
         case "Facility":
-          await api.delete(`facilities/delete/${id}`);
+          await api.delete(`facilities/delete/${id}`, { params: { forceDelete: true } });
           break;
 
         case "Gallery":
@@ -71,7 +71,7 @@ export const DeleteEntity = async (entity, id) => {
           break;
 
         case "FAQ":
-          await api.delete(`faqs/delete/${id}`);
+          await api.delete(`faqs/delete/${id}`, { params: { forceDelete: true} });
           break;
 
         case "User":
@@ -88,7 +88,8 @@ export const DeleteEntity = async (entity, id) => {
           break;
 
         case "Property":
-          await api.delete(`properties/delete/${id}?forceDelete=true`);
+          // await api.delete(`properties/delete/${id}`, { params: { forceDelete: true} });
+          await api.delete(`properties/delete/${id}`, { params: { forceDelete: "true" } });
           break;
         
         case "City":
@@ -98,6 +99,9 @@ export const DeleteEntity = async (entity, id) => {
         default:
           throw new Error(`Unknown entity: ${entity}`);
       }
+      console.log(`Deleting ${entity} with ID: ${id}`);
+console.log(`API URL:`, `/${entity.toLowerCase()}s/delete/${id}`);
+
       NotificationManager.removeAll();
       NotificationManager.success(`${entity} deleted successfully!`);
       return true;
@@ -106,7 +110,11 @@ export const DeleteEntity = async (entity, id) => {
       NotificationManager.info(`${entity} deletion was cancelled.`);
       return false;
     }
+    
   } catch (error) {
+    console.error("Delete Error:", error.response?.data || error.message);
+  NotificationManager.error(`Failed to delete ${entity}. ${error.response?.data?.message || ''}`);
+
     NotificationManager.removeAll();
     console.error(error);
     NotificationManager.error(`Failed to delete ${entity}.`);
