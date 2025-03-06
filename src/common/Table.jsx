@@ -83,7 +83,21 @@ const Table = ({
             .join(', ');
     };
     
+    const formatRules = (rules) => {
+        if (!rules) return "N/A"; // Handle empty cases
     
+        if (typeof rules === "string") {
+            try {
+                rules = JSON.parse(rules); // Ensure JSON string is converted to an object
+            } catch (error) {
+                console.error("Error parsing rules:", error);
+                return "Invalid format";
+            }
+        }
+    
+        return `checkIn: ${rules.checkIn || "N/A"}, checkOut: ${rules.checkOut || "N/A"}, smokingAllowed: ${rules.smokingAllowed ? "Yes" : "No"}`;
+    };
+      
 
     return (
         <div>
@@ -92,7 +106,11 @@ const Table = ({
                     <div className="flex-grow max-h-[370px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
                             {loading ? (<div className="flex flex-col justify-center items-center h-64">
-                
+                {/* <BeatLoader 
+                    
+                    
+                    size={15} color="#045D78"
+                /> */}
 
                 <img width={100} src="image/Hotels Search.gif" alt="loading" />
                 
@@ -170,11 +188,10 @@ const Table = ({
                                 .split(".")
                                 .reduce((obj, key) => obj?.[key], row) || "N/A"
                         ) : (
-                            // Check if it's an object and format it
-                            typeof row[col.field] === "object" && row[col.field] !== null ? (
-                                <span>{formatObject(row[col.field])}</span>
+                            col.field === "formatted_standard_rules" ? (
+                                <span>{formatRules(row[col.field])}</span> // ✅ Correctly formats standard_rules
                             ) : (
-                                row[col.field] || 'N/A'
+                                row[col.field] || "N/A"
                             )
                         )}
                     </td>

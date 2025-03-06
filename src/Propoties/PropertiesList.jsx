@@ -134,11 +134,10 @@ const PropotiesList = () => {
         }
     };
     const formatRules = (rules) => {
-        if (!rules) return '';
-        return Object.entries(rules)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(', ');
-    };
+        if (!rules || typeof rules !== 'object') return 'N/A';
+    
+        return `checkIn: ${rules.checkIn}, checkOut: ${rules.checkOut}, smokingAllowed: ${rules.smokingAllowed ? 'Yes' : 'No'}`;
+    };   
     
     
     const columns = [
@@ -147,10 +146,9 @@ const PropotiesList = () => {
             label: "Standard Rules",
             field: "formatted_standard_rules",
             sortable: true,
-            minWidth: "150px",
-            render: (row) => formatRules(row.formatted_standard_rules),  // Use formatRules here
-        }
-,                { label: "Image", field: "image", sortable: true, minWidth: "130px" },
+            minWidth: "200px",
+            render: (row) => formatRules(row.formatted_standard_rules),  // ✅ Use formatted function
+        },          { label: "Image", field: "image", sortable: true, minWidth: "130px" },
         { label: "title", field: "title", sortable: true, minWidth: "180px" },
         { label: "price", field: "price", sortable: true, minWidth: "120px" },
         { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
