@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { json, Link, useLocation, useNavigate } from "react-router-dom";
 import SidebarMenu from "../components/SideBar";
@@ -16,6 +16,8 @@ import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
 import Cookies from "js-cookie";
 import { Vortex } from "react-loader-spinner";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 const PropertiesAdd = () => {
   const [countries, setCountries] = useState([]);
@@ -31,6 +33,7 @@ const PropertiesAdd = () => {
   const { isLoading, setIsLoading } = useLoading();
   const [loading, setloading] = useState(false)
   const [cityOptions, setCityOptions] = useState([]);
+  const timePickerRef = useRef(null);
   const [formData, setFormData] = useState({
     id: 0 || null,
     title: '',
@@ -68,6 +71,53 @@ const PropertiesAdd = () => {
     },
   });
   console.log(formData, "Form Data")
+  const handleTimeChange = (selectedDates) => {
+    if (selectedDates.length > 0) {
+      const selectedTime = selectedDates[0];
+      const formattedTime = selectedTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true, // Ensures 12-hour format with AM/PM
+      });
+
+      setFormData((prevData) => ({
+        ...prevData,
+        standard_rules: { ...prevData.standard_rules, checkIn: formattedTime },
+      }));
+    }
+  };
+  const checkInRef = useRef(null);
+  const handleClickOutside = (event) => {
+    if (checkInRef.current && checkInRef.current.input && !checkInRef.current.input.contains(event.target)) {
+      if (checkInRef.current._flatpickr) {
+        checkInRef.current._flatpickr.close();
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   function handleScroll() {
+  //     alert(1)
+  //     if (checkInRef.current && checkInRef.current._flatpickr) {
+  //       checkInRef.current._flatpickr.close(); // Close Flatpickr on scroll
+  //     }
+  //   }
+
+  //   window.addEventListener("scroll", handleScroll, true);
+  //   document.addEventListener("scroll", handleScroll, true);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll, true);
+  //     document.removeEventListener("scroll", handleScroll, true);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (id) {
@@ -124,26 +174,26 @@ const PropertiesAdd = () => {
         pets: Property.pets,
         setting_id: 1,
         extra_guest_charges: Property.extra_guest_charges,
-      
+
         standard_rules: (() => {
           try {
             let rules = Property.standard_rules;
-        
+
             // Parse first level (removes outer quotes)
             if (typeof rules === "string") {
               rules = JSON.parse(rules);
             }
-        
+
             // Parse second level (removes escaped JSON)
             if (typeof rules === "string") {
               rules = JSON.parse(rules);
             }
-        
+
             // Ensure `rules` is an object
             if (!rules || typeof rules !== "object") {
               rules = {};
             }
-        
+
             return {
               checkIn: rules.checkIn || "",
               checkOut: rules.checkOut || "",
@@ -154,10 +204,10 @@ const PropertiesAdd = () => {
             return { checkIn: "", checkOut: "", smokingAllowed: false };
           }
         })(),
-        
-        
+
+
       });
-      
+
       console.log("Property.city:", Property.city);
       console.log("cityOptions:", cityOptions);
 
@@ -461,7 +511,7 @@ const PropertiesAdd = () => {
       NotificationManager.removeAll();
       if (error?.response?.data?.message) {
         NotificationManager.error(error.response.data.message, 'Error');
-      } 
+      }
       else {
         NotificationManager.error('Please fill all the fields.', 'Error');
       }
@@ -760,17 +810,39 @@ const PropertiesAdd = () => {
                       <label className="text-sm font-medium float-left text-[12px] font-[Montserrat]">
                         Check-In Time
                       </label>
-                      <input
-                        type="time"
-                        name="checkIn"
+                      <Flatpickr
+                        ref={checkInRef}
+                        options={{
+                          enableTime: true,
+                          noCalendar: true,
+                          dateFormat: "h:i K",
+                          time_24hr: false,
+                        }}
                         value={formData.standard_rules?.checkIn || ""}
+                        onChange={handleTimeChange}
+                        // onClose={handleClose}
+                        onOpen={(selectedDates, dateStr, instance) => {
+                          const handleClickOutside = (e) => {
+                            // If the click is outside the .flatpickr-calendar or the input, close
+                            const calendarContainer = instance.calendarContainer;
+                            if (calendarContainer && !calendarContainer.contains(e.target)) {
+                              instance.close();
+                            }
+                          };
+
+                          document.addEventListener("mousedown", handleClickOutside);
+                          instance._handleClickOutside = handleClickOutside;
+                        }}
+                        onClose={(selectedDates, dateStr, instance) => {
+                          // Remove the click listener
+                          if (instance._handleClickOutside) {
+                            document.removeEventListener("mousedown", instance._handleClickOutside);
+                            delete instance._handleClickOutside;
+                          }
+                        }}
+
                         className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
-                        onChange={(e) =>
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            standard_rules: { ...prevData.standard_rules, checkIn: e.target.value },
-                          }))
-                        }
+                        placeholder="12:00 PM"
                       />
                       {errors.checkIn && <span className="text-red-500 text-sm">* {errors.checkIn}</span>}
                     </div>
@@ -779,17 +851,22 @@ const PropertiesAdd = () => {
                       <label className="text-sm font-medium float-left text-[12px] font-[Montserrat]">
                         Check-Out Time
                       </label>
-                      <input
-                        type="time"
-                        name="checkOut"
-                        value={formData.standard_rules?.checkOut}
-                        className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
-                        onChange={(e) =>
+                      <Flatpickr
+                        options={{
+                          enableTime: true,
+                          noCalendar: true,
+                          dateFormat: "h:i K",
+                          time_24hr: false,
+                        }}
+                        value={formData.standard_rules?.checkOut || ""}
+                        onChange={([date]) => {
                           setFormData((prevData) => ({
                             ...prevData,
-                            standard_rules: { ...prevData.standard_rules, checkOut: e.target.value },
-                          }))
-                        }
+                            standard_rules: { ...prevData.standard_rules, checkOut: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true }) },
+                          }));
+                        }}
+                        className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="12:00 PM"
                       />
                       {errors.checkOut && <span className="text-red-500 text-sm">* {errors.checkOut}</span>}
                     </div>
@@ -1136,7 +1213,7 @@ const PropertiesAdd = () => {
                           }
                           options={cityOptions || []}
                         />
-  
+
                       </div>
 
                       {/* listing date */}

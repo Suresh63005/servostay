@@ -27,8 +27,8 @@ const AdminList = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [adminToEdit, setAdminToEdit] = useState(null);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
-    const [editForm, setEditForm] = useState({ username: '', password: '',rType: ''});
-    const [addForm, setAddForm] = useState({    username: '',    password: '',    userType: 'admin'});
+    const [editForm, setEditForm] = useState({ username: '', password: '', rType: '' });
+    const [addForm, setAddForm] = useState({ username: '', password: '', userType: 'admin' });
 
     useEffect(() => {
         fetchAdmins();
@@ -131,8 +131,8 @@ const AdminList = () => {
                 console.error('Error adding admin:', error);
             }
         }
-        finally{
-            setAddForm({username: '',    password: '', userType: 'admin'});
+        finally {
+            setAddForm({ username: '', password: '', userType: 'admin' });
         }
 
     };
@@ -152,6 +152,11 @@ const AdminList = () => {
         setFilteredAdmins(filteredData);
         setCurrentPage(1);
 
+    };
+
+    const handleCloseAddModal = () => {
+        setShowAddModal(false);
+        setAddForm({ username: '', password: '', userType: 'admin' });
     };
 
     const indexOfLastAdmin = currentPage * adminsPerPage;
@@ -262,7 +267,7 @@ const AdminList = () => {
                                     </span>
                                 </li>
                                 <li>
-                                    <button style={{background:'#045D78'}} onClick={() => paginate(currentPage < Math.ceil(admins.length / adminsPerPage) ? currentPage + 1 : Math.ceil(admins.length / adminsPerPage))} className="next-button" disabled={currentPage === Math.ceil(admins.length / adminsPerPage)}>
+                                    <button style={{ background: '#045D78' }} onClick={() => paginate(currentPage < Math.ceil(admins.length / adminsPerPage) ? currentPage + 1 : Math.ceil(admins.length / adminsPerPage))} className="next-button" disabled={currentPage === Math.ceil(admins.length / adminsPerPage)}>
                                         Next <img src="/image/action/Right Arrow (1).svg" alt="Right" />
                                     </button>
                                 </li>
@@ -300,7 +305,7 @@ const AdminList = () => {
                                         type="text"
                                         name="userType"
                                         value={editForm.userType}
-                                        onChange={handleEditChange}/>
+                                        onChange={handleEditChange} />
                                 </Form.Group>
                             </Form>
                         </Modal.Body>
@@ -315,7 +320,7 @@ const AdminList = () => {
                     </Modal>
 
                     {/* Add Admin Modal */}
-                    <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
+                    <Modal show={showAddModal} onHide={handleCloseAddModal}>
                         <Modal.Header closeButton>
                             <Modal.Title>Add Admin</Modal.Title>
                         </Modal.Header>
@@ -327,7 +332,8 @@ const AdminList = () => {
                                         type="text"
                                         name="username"
                                         value={addForm.username}
-                                        onChange={handleAddChange} />
+                                        onChange={handleAddChange}
+                                    />
                                 </Form.Group>
                                 <Form.Group controlId="formAddPassword">
                                     <Form.Label>Password</Form.Label>
@@ -335,7 +341,8 @@ const AdminList = () => {
                                         type="password"
                                         name="password"
                                         value={addForm.password}
-                                        onChange={handleAddChange} />
+                                        onChange={handleAddChange}
+                                    />
                                 </Form.Group>
                                 <Form.Group controlId="formAddUserType">
                                     <Form.Label>User Type</Form.Label>
@@ -343,12 +350,13 @@ const AdminList = () => {
                                         type="text"
                                         name="userType"
                                         value={addForm.userType}
-                                        onChange={handleAddChange} />
+                                        onChange={handleAddChange}
+                                    />
                                 </Form.Group>
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowAddModal(false)}>
+                            <Button variant="secondary" onClick={handleCloseAddModal}>
                                 Cancel
                             </Button>
                             <Button variant="primary" onClick={handleAdd}>
@@ -356,6 +364,7 @@ const AdminList = () => {
                             </Button>
                         </Modal.Footer>
                     </Modal>
+
                 </div>
             </div>
         </div>
