@@ -17,7 +17,6 @@ import Table from '../common/Table';
 
 const PropotiesList = () => {
     const [properties, setProperties] = useState([]);
-
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,37 +30,32 @@ const PropotiesList = () => {
             try {
                 const response = await api.get('/properties');
                 console.log("Property data:", response.data);
-
+    
                 const fetchedProperties = response.data.map((property) => {
                     return {
                         ...property,
-                        city:property.cities?.title || "",
-                        rules: (() => {
+                        formatted_standard_rules: (() => {
                             try {
-                                return JSON.parse(property.rules);
+                                const parsedRules = JSON.parse(property.standard_rules);
+                                return parsedRules;  // Ensure it's an object
                             } catch (error) {
-                                return property.rules ? [property.rules] : [];
+                                return {};  // Return empty object if parsing fails
                             }
                         })(),
-                        // standard_rules: property.standard_rules
                     }
-                })
-                // console.log(response.data);
-                // setProperties(response.data);
-                // setFilteredProperties(response.data);
+                });
                 setProperties(fetchedProperties);
                 setFilteredProperties(fetchedProperties);
                 setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching properties:', error.response ? error.response.data : error.message);
-            }
-            finally{
+            } finally {
                 setIsLoading(false);
             }
         };
         fetchProperties();
     }, []);
-
+    
     // Search functionality
     const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
@@ -139,15 +133,27 @@ const PropotiesList = () => {
             console.error(`Error toggling ${field} status:`, error);
         }
     };
+    const formatRules = (rules) => {
+        if (!rules || typeof rules !== 'object') return 'N/A';
+    
+        return `checkIn: ${rules.checkIn}, checkOut: ${rules.checkOut}, smokingAllowed: ${rules.smokingAllowed ? 'Yes' : 'No'}`;
+    };   
+    
     
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "130px" },
-        { label: "Image", field: "image", sortable: true, minWidth: "130px" },
+        {
+            label: "Standard Rules",
+            field: "formatted_standard_rules",
+            sortable: true,
+            minWidth: "200px",
+            render: (row) => formatRules(row.formatted_standard_rules),  // ✅ Use formatted function
+        },          { label: "Image", field: "image", sortable: true, minWidth: "130px" },
         { label: "title", field: "title", sortable: true, minWidth: "180px" },
         { label: "price", field: "price", sortable: true, minWidth: "120px" },
         { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
         { label: "address", field: "address", sortable: true, minWidth: "150px" },
-        { label: "facilities", field: "facilities", sortable: true, minWidth: "150px" },
+        { label: "facility", field: "facility", sortable: true, minWidth: "150px" },
         { label: "description", field: "description", sortable: true, minWidth: "180px" },
         { label: "beds", field: "beds", sortable: true, minWidth: "120px" },
         { label: "bathroom", field: "bathroom", sortable: true, minWidth: "150px" },
@@ -157,39 +163,8 @@ const PropotiesList = () => {
         { label: "latitude", field: "latitude", sortable: true, minWidth: "150px" },
         { label: "longtitude", field: "longtitude", sortable: true, minWidth: "180px" },
         { label: "mobile", field: "mobile", sortable: true, minWidth: "130px" },
-        // { label: "city", field: "city", sortable: true, minWidth: "120px" },
-        { label: "City", field: "cities.title", sortable: true, minWidth: "120px" },
+        { label: "city", field: "cities.title", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
-        {
-            label: "Standard Rules",
-            field: "standard_rules",
-            sortable: true,
-            minWidth: "180px",
-            render: (row) => {
-              console.log("Raw standard_rules data:", row.standard_rules);
-          
-              let standardRules = row.standard_rules;
-          
-              if (typeof standardRules === "string") {
-                try {
-                  standardRules = JSON.parse(standardRules);
-                } catch (error) {
-                  console.error("Error parsing standard_rules:", error);
-                  return "N/A";
-                }
-              }
-          
-              console.log("Parsed standard_rules object:", standardRules);
-          
-              return standardRules && typeof standardRules === "object" ? (
-                `Check-In: ${standardRules.checkIn || "N/A"}, Check-Out: ${standardRules.checkOut || "N/A"}, Smoking: ${standardRules.smokingAllowed ? "Allowed" : "Not Allowed"}`
-              ) : (
-                "N/A"
-              );
-            },
-          }
-          ,
-                           
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
         { label: "children", field: "children", sortable: true, minWidth: "150px" },
