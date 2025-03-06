@@ -92,11 +92,7 @@ const Table = ({
                     <div className="flex-grow max-h-[370px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
                             {loading ? (<div className="flex flex-col justify-center items-center h-64">
-                {/* <BeatLoader 
-                    
-                    
-                    size={15} color="#045D78"
-                /> */}
+                
 
                 <img width={100} src="image/Hotels Search.gif" alt="loading" />
                 

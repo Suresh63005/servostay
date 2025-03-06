@@ -18,15 +18,21 @@ const CompletedBook = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
     const status = 'Completed'
+    const[loading,setLoading] = useState(false);
     useEffect(() => {
         const fetchBookings = async () => {
+            setLoading(true);
             try {
                 const response = await api.get(`bookings/status/${status}`,);
                 console.log(response.data)
                 setcompleted(response.data);
                 setFilteredcompleted(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching bookings:', error.message);
+            }
+            finally{
+                setLoading(false);
             }
         };
         fetchBookings();
@@ -83,7 +89,14 @@ const CompletedBook = () => {
 
                             <div className="relative sm:rounded-lg scrollbar-thin overflow-y-auto">
                                 <table className="min-w-full text-sm text-left text-gray-700">
-                                    <thead className="bg-[#045D78] sticky top-0 text-xs uppercase font-medium text-white">
+                                {loading ? (<div className="flex flex-col justify-center items-center h-64">
+                
+
+                <img width={100} src="image/Hotels Search.gif" alt="loading" />
+                
+            </div>):(<>
+            
+            <thead className="bg-[#045D78] sticky top-0 text-xs uppercase font-medium text-white">
                                         <tr>
                                             <th className="px-4 py-2 min-w-[130px]">
                                                 Sr. No
@@ -162,6 +175,9 @@ const CompletedBook = () => {
                                         )
                                         }
                                     </tbody>
+
+            </>)}
+                                    
                                 </table>
                             </div>
                         </div>
