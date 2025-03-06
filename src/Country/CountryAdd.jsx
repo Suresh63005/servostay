@@ -28,7 +28,7 @@ const CountryAdd = () => {
     imgPreview: null, 
     status: 0,
     currency: "",
-    city: "",
+    // city: "",
   });
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const CountryAdd = () => {
     let newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Country Name is required";
     if (!formData.currency.trim()) newErrors.currency = "Currency is required";
-    if (!formData.city.trim()) newErrors.city = "City is required";
+    // if (!formData.city.trim()) newErrors.city = "City is required";
     if (!formData.img) newErrors.img = "Country Image is required"; 
 
     setErrors(newErrors);
@@ -105,7 +105,7 @@ const CountryAdd = () => {
       form.append("title", formData.title);
       form.append("status", formData.status);
       form.append("currency", formData.currency);
-      form.append("city", formData.city);
+      // form.append("city", formData.city);
 
       if (formData.img) {
         form.append("img", formData.img); 

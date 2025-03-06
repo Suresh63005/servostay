@@ -68,6 +68,22 @@ const Table = ({
         }
         return <span>No Image</span>;
     };
+    const formatObject = (obj) => {
+        if (!obj || typeof obj !== 'object') return ''; // Handle null/undefined or non-object fields
+    
+        return Object.entries(obj)
+            .map(([key, value]) => {
+                // Handle specific keys for boolean values (e.g., smokingAllowed)
+                if (key === 'smokingAllowed') {
+                    return `${key}: ${value ? 'Yes' : 'No'}`;
+                }
+                // Default behavior for other fields
+                return `${key}: ${value}`;
+            })
+            .join(', ');
+    };
+    
+    
 
     return (
         <div>
@@ -86,7 +102,7 @@ const Table = ({
                 
             </div>):(
                 <>
-                <thead className="bg-[#045D78]  text-xs uppercase font-medium text-white sticky top-0">
+                <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0">
                                 <tr>
                                     {columns.map((col, index) => (
                                         <th key={index} className={`px-4 py-2 ${col.minWidth ? `min-w-[${col.minWidth}]` : 'min-w-[120px]'}`}>
@@ -117,6 +133,7 @@ const Table = ({
                                         height="30"
                                         width="60"
                                         ariaLabel="color-ring-loading"
+                                        wrapperStyle={{}}
                                         wrapperClass="color-ring-wrapper"
                                         colors={['#045D78', '#045D78', '#045D78', '#045D78', '#045D78']}
                                     />
@@ -132,6 +149,7 @@ const Table = ({
                         ) : col.field === 'actions' ? (
                             <div className="flex items-center space-x-2">
                                 <NotificationContainer />
+
                                 {showEditButton && (
                                     <button
                                         className="bg-[#2dce89] text-white p-[5px] rounded-full hover:bg-green-600 transition"
@@ -140,6 +158,7 @@ const Table = ({
                                         <FontAwesomeIcon icon={faPen} />
                                     </button>
                                 )}
+
                                 <button
                                     className="bg-[#f5365c] text-white p-[5px] rounded-full hover:bg-red-600 transition"
                                     onClick={() => onDelete(row.id)}
@@ -149,29 +168,18 @@ const Table = ({
                             </div>
                         ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' || col.field === 'id_proof_img' || col.field === 'images' ? (
                             renderImageField(row, col)
-                        ) : col.field === 'facilities' ? (
-                            // Handling Facilities as an Array
-                            Array.isArray(row[col.field]) && row[col.field].length > 0 ? (
-                                <div className="flex flex-wrap gap-2">
-                                    {row[col.field].map((facility, index) => (
-                                        <span 
-                                            key={index} 
-                                            className="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-md"
-                                        >
-                                            {facility?.title}
-                                        </span>
-                                    ))}
-                                </div>
-                            ) : (
-                                "No Facilities"
-                            )
                         ) : col.field.includes(".") ? (
-                            // Handling Nested Fields (e.g., "user.name")
+                            // Dynamically access nested fields
                             col.field
                                 .split(".")
                                 .reduce((obj, key) => obj?.[key], row) || "N/A"
                         ) : (
-                            row[col.field] || 'N/A'
+                            // Check if it's an object and format it
+                            typeof row[col.field] === "object" && row[col.field] !== null ? (
+                                <span>{formatObject(row[col.field])}</span>
+                            ) : (
+                                row[col.field] || 'N/A'
+                            )
                         )}
                     </td>
                 ))}
@@ -181,7 +189,7 @@ const Table = ({
         <tr>
             <td colSpan={columns.length + 1} className="text-[30px] w-[79vw] flex flex-col justify-center align-items-center font-semibold p-10 text-center">
                 <img className='w-[10%]' src="image/no-data.png" alt="" />
-                <span className='mt-3'>No data found</span>   
+                <span className='mt-3'>No data found</span>
             </td>
         </tr>
     )}

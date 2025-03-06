@@ -370,17 +370,36 @@ const PropertiesAdd = () => {
       errors.sqrft = "Square foot must be a positive number";
     }
 
-    if (!formData.latitude) {
+    if (formData.latitude === "" || formData.latitude === null) {
       errors.latitude = "Latitude is required";
-    } else if (isNaN(parseFloat(formData.latitude))) {
-      errors.latitude = "Latitude must be a valid number";
+    } else {
+      // Regular expression to match a valid number (with optional minus and decimals)
+      const latRegex = /^-?\d+(\.\d+)?$/;
+      if (!latRegex.test(formData.latitude)) {
+        errors.latitude = "Latitude must be a valid number";
+      } else {
+        const lat = parseFloat(formData.latitude);
+        if (lat < -90 || lat > 90) {
+          errors.latitude = "Latitude must be between -90 and 90";
+        }
+      }
     }
-
-    if (!formData.longtitude) {
-      errors.longtitude = "Longitude is required";
-    } else if (isNaN(parseFloat(formData.longtitude))) {
-      errors.longtitude = "Longitude must be a valid number";
+    
+    if (formData.longitude === "" || formData.longitude === null) {
+      errors.longitude = "Longitude is required";
+    } else {
+      // Regular expression to match a valid number (with optional minus and decimals)
+      const lonRegex = /^-?\d+(\.\d+)?$/;
+      if (!lonRegex.test(formData.longitude)) {
+        errors.longitude = "Longitude must be a valid number";
+      } else {
+        const lon = parseFloat(formData.longitude);
+        if (lon < -180 || lon > 180) {
+          errors.longitude = "Longitude must be between -180 and 180";
+        }
+      }
     }
+       
 
     // Extra Guest Charges Validation
     if (!formData.extra_guest_charges) {
@@ -1055,7 +1074,7 @@ const PropertiesAdd = () => {
                           Latitude
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           id="latitude"
                           value={formData.latitude}
                           name="latitude"
@@ -1076,7 +1095,7 @@ const PropertiesAdd = () => {
                           Longitude
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           id="longitude"
                           value={formData.longtitude}
 
