@@ -32,7 +32,6 @@ const Table = ({
         setLoadingId(null);
     };
 
-   
 
     const renderImageField = (row, col) => {
         const images = row[col.field];
