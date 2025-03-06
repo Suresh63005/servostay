@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { json, Link, useLocation, useNavigate } from "react-router-dom";
 import SidebarMenu from "../components/SideBar";
@@ -16,6 +16,8 @@ import { statusoptions } from "../common/data";
 import SelectComponent from "../common/SelectComponent";
 import Cookies from "js-cookie";
 import { Vortex } from "react-loader-spinner";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 const PropertiesAdd = () => {
   const [countries, setCountries] = useState([]);
@@ -31,6 +33,7 @@ const PropertiesAdd = () => {
   const { isLoading, setIsLoading } = useLoading();
   const [loading, setloading] = useState(false)
   const [cityOptions, setCityOptions] = useState([]);
+  const timePickerRef = useRef(null);
   const [formData, setFormData] = useState({
     id: 0 || null,
     title: '',
@@ -68,6 +71,21 @@ const PropertiesAdd = () => {
     },
   });
   console.log(formData, "Form Data")
+  const handleTimeChange = (selectedDates) => {
+    if (selectedDates.length > 0) {
+      const selectedTime = selectedDates[0];
+      const formattedTime = selectedTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true, // Ensures 12-hour format with AM/PM
+      });
+
+      setFormData((prevData) => ({
+        ...prevData,
+        standard_rules: { ...prevData.standard_rules, checkIn: formattedTime },
+      }));
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -760,17 +778,17 @@ const PropertiesAdd = () => {
                       <label className="text-sm font-medium float-left text-[12px] font-[Montserrat]">
                         Check-In Time
                       </label>
-                      <input
-                        type="time"
-                        name="checkIn"
-                        value={formData.standard_rules?.checkIn || ""}
+                      <Flatpickr
+                        options={{
+                          enableTime: true,
+                          noCalendar: true,
+                          dateFormat: "h:i K", 
+                          time_24hr: false,
+                        }}
+                        value={formData.standard_rules?.checkIn}
                         className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
-                        onChange={(e) =>
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            standard_rules: { ...prevData.standard_rules, checkIn: e.target.value },
-                          }))
-                        }
+                        placeholder="12:00 PM"
+                        onChange={handleTimeChange}
                       />
                       {errors.checkIn && <span className="text-red-500 text-sm">* {errors.checkIn}</span>}
                     </div>
@@ -779,18 +797,23 @@ const PropertiesAdd = () => {
                       <label className="text-sm font-medium float-left text-[12px] font-[Montserrat]">
                         Check-Out Time
                       </label>
-                      <input
-                        type="time"
-                        name="checkOut"
-                        value={formData.standard_rules?.checkOut}
-                        className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
-                        onChange={(e) =>
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            standard_rules: { ...prevData.standard_rules, checkOut: e.target.value },
-                          }))
-                        }
-                      />
+                      <Flatpickr
+        options={{
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: "h:i K",
+          time_24hr: false,
+        }}
+        value={formData.standard_rules?.checkOut || ""}
+        onChange={([date]) => {
+          setFormData((prevData) => ({
+            ...prevData,
+            standard_rules: { ...prevData.standard_rules, checkOut: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true }) },
+          }));
+        }}
+        className="border rounded-lg p-3 h-11 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+        placeholder="12:00 PM"
+      />
                       {errors.checkOut && <span className="text-red-500 text-sm">* {errors.checkOut}</span>}
                     </div>
 

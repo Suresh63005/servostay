@@ -157,6 +157,7 @@ const PropotiesList = () => {
         { label: "latitude", field: "latitude", sortable: true, minWidth: "150px" },
         { label: "longtitude", field: "longtitude", sortable: true, minWidth: "180px" },
         { label: "mobile", field: "mobile", sortable: true, minWidth: "130px" },
+        // { label: "city", field: "city", sortable: true, minWidth: "120px" },
         { label: "City", field: "cities.title", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
         {
@@ -165,42 +166,39 @@ const PropotiesList = () => {
             sortable: true,
             minWidth: "180px",
             render: (row) => {
-                if (!row.standard_rules) {
-                    return "N/A"; // Return 'N/A' if standard_rules is null or undefined
-                }
-        
+              console.log("Raw standard_rules data:", row.standard_rules);
+          
+              let standardRules = row.standard_rules;
+          
+              if (typeof standardRules === "string") {
                 try {
-                    // Parse JSON if `standard_rules` is a string
-                    const rules = typeof row.standard_rules === 'string'
-                        ? JSON.parse(row.standard_rules)
-                        : row.standard_rules;
-        
-                    // Extract values with optional chaining to avoid undefined errors
-                    const checkIn = rules?.checkIn || "N/A";
-                    const checkOut = rules?.checkOut || "N/A";
-                    const smokingAllowed = rules?.smokingAllowed !== undefined 
-                        ? (rules.smokingAllowed ? "Yes" : "No") 
-                        : "N/A";
-        
-                    return `Check-In: ${checkIn}, Check-Out: ${checkOut}, Smoking Allowed: ${smokingAllowed}`;
+                  standardRules = JSON.parse(standardRules);
                 } catch (error) {
-                    console.error("Error parsing standard_rules:", error);
-                    return "Invalid Data"; // Handle cases where JSON parsing fails
+                  console.error("Error parsing standard_rules:", error);
+                  return "N/A";
                 }
-            }
-        }
-        ,
+              }
+          
+              console.log("Parsed standard_rules object:", standardRules);
+          
+              return standardRules && typeof standardRules === "object" ? (
+                `Check-In: ${standardRules.checkIn || "N/A"}, Check-Out: ${standardRules.checkOut || "N/A"}, Smoking: ${standardRules.smokingAllowed ? "Allowed" : "Not Allowed"}`
+              ) : (
+                "N/A"
+              );
+            },
+          }
+          ,
+                           
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
         { label: "children", field: "children", sortable: true, minWidth: "150px" },
         { label: "infants", field: "infants", sortable: true, minWidth: "150px" },
         { label: "pets", field: "pets", sortable: true, minWidth: "120px" },
+        
         { label: "Status", field: "status", sortable: false, minWidth: "120px" },
         { label: "Actions", field: "actions", minWidth: "150px", sortable: false },
     ];
-    
-    
-    
     
     return (
         <div>
