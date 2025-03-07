@@ -457,11 +457,6 @@ const PropertiesAdd = () => {
     if (!Array.isArray(formData.rules) || formData.rules.length === 0) {
       errors.rules = "At least one rule is required.";
     }
-    // console.log("Children:", formData.children, "Parsed:", parseNumber(formData.children));
-    // console.log("Infants:", formData.infants, "Parsed:", parseNumber(formData.infants));
-    // console.log("Pets:", formData.pets, "Parsed:", parseNumber(formData.pets));
-    // console.log("Beds:", formData.beds, "Parsed:", parseNumber(formData.beds));
-    // console.log("Bathroom:", formData.bathroom, "Parsed:", parseNumber(formData.bathroom));
 
     return errors;
   };

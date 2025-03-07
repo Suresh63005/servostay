@@ -31,19 +31,28 @@ const PropotiesList = () => {
                 const response = await api.get('/properties');
                 console.log("Property data:", response.data);
     
+                // const fetchedProperties = response.data.map((property) => {
+                //     return {
+                //         ...property,
+                //         formatted_standard_rules: (() => {
+                //             try {
+                //                 const parsedRules = JSON.parse(property.standard_rules);
+                //                 return parsedRules;  // Ensure it's an object
+                //             } catch (error) {
+                //                 return {};  // Return empty object if parsing fails
+                //             }
+                //         })(),
+                //     }
+                // });
                 const fetchedProperties = response.data.map((property) => {
                     return {
                         ...property,
-                        formatted_standard_rules: (() => {
-                            try {
-                                const parsedRules = JSON.parse(property.standard_rules);
-                                return parsedRules;  // Ensure it's an object
-                            } catch (error) {
-                                return {};  // Return empty object if parsing fails
-                            }
-                        })(),
-                    }
+                        formatted_standard_rules: typeof property.standard_rules === "string" 
+                            ? JSON.parse(property.standard_rules) 
+                            : property.standard_rules
+                    };
                 });
+                
                 setProperties(fetchedProperties);
                 setFilteredProperties(fetchedProperties);
                 setIsLoading(false);
@@ -137,18 +146,11 @@ const PropotiesList = () => {
         if (!rules || typeof rules !== 'object') return 'N/A';
     
         return `checkIn: ${rules.checkIn}, checkOut: ${rules.checkOut}, smokingAllowed: ${rules.smokingAllowed ? 'Yes' : 'No'}`;
-    };   
-    
+    };       
     
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "130px" },
-        {
-            label: "Standard Rules",
-            field: "formatted_standard_rules",
-            sortable: true,
-            minWidth: "200px",
-            render: (row) => formatRules(row.formatted_standard_rules),  // ✅ Use formatted function
-        },          { label: "Image", field: "image", sortable: true, minWidth: "130px" },
+         { label: "Image", field: "image", sortable: true, minWidth: "130px" },
         { label: "title", field: "title", sortable: true, minWidth: "180px" },
         { label: "price", field: "price", sortable: true, minWidth: "120px" },
         { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
@@ -166,6 +168,13 @@ const PropotiesList = () => {
         { label: "city", field: "cities.title", sortable: true, minWidth: "120px" },
         { label: "listing date", field: "listing_date", sortable: true, minWidth: "180px" },
         { label: "rules", field: "rules", sortable: true, minWidth: "150px" },
+        {
+            label: "Standard Rules",
+            field: "formatted_standard_rules",
+            sortable: true,
+            minWidth: "200px",
+            render: (row) => formatRules(row.formatted_standard_rules),
+        }, 
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
         { label: "children", field: "children", sortable: true, minWidth: "150px" },
         { label: "infants", field: "infants", sortable: true, minWidth: "150px" },
