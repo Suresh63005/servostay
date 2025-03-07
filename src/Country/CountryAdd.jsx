@@ -136,8 +136,8 @@ const CountryAdd = () => {
       }
       console.log("Form Submitted Successfully!")
     } catch (error) {
-      console.error("Error submitting country data:", error);
-      NotificationContainer.removeAll()
+      console.error("Error Response:", error.response?.data || error.message);
+      NotificationManager.removeAll()
       NotificationManager.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
