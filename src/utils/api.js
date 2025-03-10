@@ -10,7 +10,6 @@ const api = axios.create({
   baseURL: 'https://property-rental-backend-two.vercel.app/',
   // baseURL:"https://property-rental-backend-9oha.vercel.app/",
  
-
   withCredentials: true, 
 });
 
