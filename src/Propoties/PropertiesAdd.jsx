@@ -42,7 +42,7 @@ const PropertiesAdd = () => {
     price: null,
     status: null,
     address: '',
-    facility: '',
+    facility: [],
     description: '',
     beds: null,
     bathroom: null,
@@ -146,7 +146,20 @@ const PropertiesAdd = () => {
         price: Property.price,
         status: Property.status,
         address: Property.address,
-        facility: Property.facility,
+        // facility: Property.facility,
+        facility: (() => {
+          if (Array.isArray(Property.facility)) {
+            return Property.facility;
+          }
+          try {
+            // Try to parse as JSON
+            const parsed = JSON.parse(Property.facility);
+            return Array.isArray(parsed) ? parsed : [];
+          } catch (e) {
+            // Fallback: if it's a comma-separated string
+            return Property.facility ? Property.facility.split(",").map(item => Number(item.trim())) : [];
+          }
+        })(),
         description: Property.description,
         beds: Property.beds,
         bathroom: Property.bathroom,
@@ -929,7 +942,7 @@ const PropertiesAdd = () => {
                     <div className="flex flex-col">
                       <label
                         htmlFor="facility"
-                        className="text-sm font-medium text-start  text-[12px] font-[Montserrat]"
+                        className="text-sm font-medium text-start text-[12px] font-[Montserrat]"
                       >
                         Select Property Facility
                       </label>
@@ -937,37 +950,33 @@ const PropertiesAdd = () => {
                       <Select
                         isMulti
                         name="facility"
-                        value={facilities.filter((facility) =>
-                          formData.facility.split(",").includes(facility.id.toString())
-                        ).map(facility => ({ value: facility.id, label: facility.title }))}
-                        options={facilities.map((facility) => ({
-                          value: facility.id,
-                          label: facility.title,
+                        value={facilities
+                          .filter((fac) => formData.facility.includes(fac.id))
+                          .map((fac) => ({ value: fac.id, label: fac.title }))}
+                        options={facilities.map((fac) => ({
+                          value: fac.id,
+                          label: fac.title,
                         }))}
                         onChange={(selectedOptions) => {
                           const selectedIds = selectedOptions.map((option) => option.value);
                           setFormData((prevData) => ({
                             ...prevData,
-                            facility: selectedIds.join(","),
+                            facility: selectedIds, // Store as an array
                           }));
                         }}
-                        className="block w-full text-sm border-color border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#045D78] focus:border-[#045D78]"
+                        className="block w-full text-sm border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#045D78] focus:border-[#045D78]"
                         classNamePrefix="select"
                         placeholder="Select Facilities"
                         styles={{
                           control: (provided, { isFocused }) => ({
                             ...provided,
-                            border: isFocused ? "2px solid #045D78" : " 1px solid #EAEAFF",
-                            boxShadow: isFocused ? 'none' : 'none',
+                            border: isFocused ? "2px solid #045D78" : "1px solid #EAEAFF",
+                            boxShadow: isFocused ? "none" : "none",
                             borderRadius: "8px",
-
                             fontSize: "12px",
                             maxHeight: "40px",
-                            overflowY: 'scroll',
+                            overflowY: "scroll",
                             color: "#757575",
-                            "&:hover": {
-
-                            }
                           }),
                           placeholder: (provided) => ({
                             ...provided,
@@ -982,11 +991,13 @@ const PropertiesAdd = () => {
                             height: "40px",
                             padding: "0 8px",
                           }),
-                          border: "1px solid #045D78"
                         }}
                       />
-                      {errors.facility && <span className="text-red-500 text-sm">* {errors.facility}</span>}
+                      {errors.facility && (
+                        <span className="text-red-500 text-sm">* {errors.facility}</span>
+                      )}
                     </div>
+
 
                   </div>
 
