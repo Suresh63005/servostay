@@ -116,7 +116,7 @@ const Table = ({
                 
             </div>):(
                 <>
-                <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0">
+                <thead className="bg-[#045d78] bg-opacity-100 text-xs uppercase font-medium text-white sticky top-0">
                                 <tr>
                                     {columns.map((col, index) => (
                                         <th key={index} className={`px-4 py-2 ${col.minWidth ? `min-w-[${col.minWidth}]` : 'min-w-[120px]'}`}>

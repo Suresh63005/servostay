@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import { Vortex } from "react-loader-spinner";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { TextareaAutosize } from "@mui/material";
 
 const PropertiesAdd = () => {
   const [countries, setCountries] = useState([]);
@@ -125,154 +126,311 @@ const PropertiesAdd = () => {
     }
   }, [id]);
 
-  const getProperty = async () => {
+  // const getProperty = async () => {
+  //   try {
+  //     const response = await api.get(`properties/${id}`)
+  //     const Property = response.data;
+  //     console.log("Property Data: ", Property);
+  //     const rate = Math.min(Math.max(Property.rate, 0), 5);
+  //     const convertToTimeFormat = (time) => {
+  //       const [hour, minute, period] = time.match(/(\d+):(\d+) (AM|PM)/).slice(1);
+  //       let hours = parseInt(hour);
+  //       if (period === "PM" && hours !== 12) hours += 12;
+  //       if (period === "AM" && hours === 12) hours = 0;
+  //       return `${hours.toString().padStart(2, "0")}:${minute}`;
+  //     };
+  //     setFormData({
+  //       id,
+  //       title: Property.title,
+  //       image: Property.image,
+  //       is_panorama: Property.is_panorama,
+  //       price: Property.price,
+  //       status: Property.status,
+  //       address: Property.address,
+  //       // facility: Property.facility,
+  //       facility: (() => {
+  //         if (Array.isArray(Property.facility)) {
+  //           return Property.facility;
+  //         }
+  //         try {
+  //           // Try to parse as JSON
+  //           const parsed = JSON.parse(Property.facility);
+  //           return Array.isArray(parsed) ? parsed : [];
+  //         } catch (e) {
+  //           // Fallback: if it's a comma-separated string
+  //           return Property.facility ? Property.facility.split(",").map(item => Number(item.trim())) : [];
+  //         }
+  //       })(),
+  //       description: Property.description,
+  //       beds: Property.beds,
+  //       bathroom: Property.bathroom,
+  //       sqrft: Property.sqrft,
+  //       rate: Property.rate,
+  //       ptype: Property.ptype,
+  //       latitude: Property.latitude,
+  //       longtitude: Property.longtitude,
+  //       mobile: Property.mobile,
+  //       // city: cityOptions.find((opt) => opt.value === Property.city) || null,
+  //       city: cityOptions.find((opt) => String(opt.value) === String(Property.city)) || null,
+  //       listing_date: new Date(Property.listing_date).toISOString().split("T")[0],
+  //       add_user_id: Property.add_user_id,
+  //       rules: (() => {
+  //         try {
+  //           return JSON.parse(Property.rules);
+  //         } catch (error) {
+  //           return Property.rules ? [Property.rules] : [];
+  //         }
+  //       })(),
+  //       country_id: Property.country_id,
+  //       is_sell: Property.is_sell,
+  //       adults: Property.adults,
+  //       children: Property.children,
+  //       infants: Property.infants,
+  //       pets: Property.pets,
+  //       setting_id: 1,
+  //       extra_guest_charges: Property.extra_guest_charges,
+
+  //       standard_rules: (() => {
+  //         try {
+  //           let rules = Property.standard_rules;
+
+  //           // Parse first level (removes outer quotes)
+  //           if (typeof rules === "string") {
+  //             rules = JSON.parse(rules);
+  //           }
+
+  //           // Parse second level (removes escaped JSON)
+  //           if (typeof rules === "string") {
+  //             rules = JSON.parse(rules);
+  //           }
+
+  //           // Ensure `rules` is an object
+  //           if (!rules || typeof rules !== "object") {
+  //             rules = {};
+  //           }
+
+  //           return {
+  //             checkIn: rules.checkIn || "",
+  //             checkOut: rules.checkOut || "",
+  //             smokingAllowed: rules.smokingAllowed ?? false,
+  //           };
+  //         } catch (error) {
+  //           console.error("Error parsing standard_rules:", error);
+  //           return { checkIn: "", checkOut: "", smokingAllowed: false };
+  //         }
+  //       })(),
+
+
+  //     });
+
+  //     console.log("Property.city:", Property.city);
+  //     console.log("cityOptions:", cityOptions);
+
+  //   } catch (error) {
+  //     console.error("Error fetching Property:", error);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   const fetchActiveCities = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const token = Cookies.get("user");
+  //       if (!token) {
+  //         NotificationManager.error("No authentication token found!");
+  //         return;
+  //       }
+
+  //       const response = await api.get('/cities/active-cities', {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         }
+  //       });
+  //       console.log("API Response:", response.data);
+  //       if (response.status === 200 && response.data && response.data.cities) {
+  //         const formattedCities = response.data.cities.map((city) => ({
+  //           value: city.id,
+  //           label: `${city.title} ${city.TblCountry ? `(${city.TblCountry.countryName})` : ''}`.trim()
+  //         }));
+  //         setCityOptions(formattedCities);
+  //         console.log("Formatted Cities:", formattedCities);
+  //       } else {
+  //         console.error("Unexpected response:", response);
+  //         NotificationManager.error("Unexpected response format. Please try again.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching cities:", error);
+  //       if (error.response) {
+  //         NotificationManager.error(`Error: ${error.response.status} - ${error.response.data.message || 'Failed to fetch cities'}`);
+  //       } else {
+  //         NotificationManager.removeAll();
+  //         NotificationManager.error("Network error. Please try again.");
+  //       }
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+
+  //   fetchActiveCities();
+  // }, [])
+
+  // Fetch cities useEffect:
+useEffect(() => {
+  const fetchActiveCities = async () => {
     try {
-      const response = await api.get(`properties/${id}`)
-      const Property = response.data;
-      console.log("Property Data: ", Property);
-      const rate = Math.min(Math.max(Property.rate, 0), 5);
-      const convertToTimeFormat = (time) => {
-        const [hour, minute, period] = time.match(/(\d+):(\d+) (AM|PM)/).slice(1);
-        let hours = parseInt(hour);
-        if (period === "PM" && hours !== 12) hours += 12;
-        if (period === "AM" && hours === 12) hours = 0;
-        return `${hours.toString().padStart(2, "0")}:${minute}`;
-      };
-      setFormData({
-        id,
-        title: Property.title,
-        image: Property.image,
-        is_panorama: Property.is_panorama,
-        price: Property.price,
-        status: Property.status,
-        address: Property.address,
-        // facility: Property.facility,
-        facility: (() => {
-          if (Array.isArray(Property.facility)) {
-            return Property.facility;
-          }
-          try {
-            // Try to parse as JSON
-            const parsed = JSON.parse(Property.facility);
-            return Array.isArray(parsed) ? parsed : [];
-          } catch (e) {
-            // Fallback: if it's a comma-separated string
-            return Property.facility ? Property.facility.split(",").map(item => Number(item.trim())) : [];
-          }
-        })(),
-        description: Property.description,
-        beds: Property.beds,
-        bathroom: Property.bathroom,
-        sqrft: Property.sqrft,
-        rate: Property.rate,
-        ptype: Property.ptype,
-        latitude: Property.latitude,
-        longtitude: Property.longtitude,
-        mobile: Property.mobile,
-        city: cityOptions.find((opt) => opt.value === Property.city) || null,
-        listing_date: new Date(Property.listing_date).toISOString().split("T")[0],
-        add_user_id: Property.add_user_id,
-        rules: (() => {
-          try {
-            return JSON.parse(Property.rules);
-          } catch (error) {
-            return Property.rules ? [Property.rules] : [];
-          }
-        })(),
-        country_id: Property.country_id,
-        is_sell: Property.is_sell,
-        adults: Property.adults,
-        children: Property.children,
-        infants: Property.infants,
-        pets: Property.pets,
-        setting_id: 1,
-        extra_guest_charges: Property.extra_guest_charges,
-
-        standard_rules: (() => {
-          try {
-            let rules = Property.standard_rules;
-
-            // Parse first level (removes outer quotes)
-            if (typeof rules === "string") {
-              rules = JSON.parse(rules);
-            }
-
-            // Parse second level (removes escaped JSON)
-            if (typeof rules === "string") {
-              rules = JSON.parse(rules);
-            }
-
-            // Ensure `rules` is an object
-            if (!rules || typeof rules !== "object") {
-              rules = {};
-            }
-
-            return {
-              checkIn: rules.checkIn || "",
-              checkOut: rules.checkOut || "",
-              smokingAllowed: rules.smokingAllowed ?? false,
-            };
-          } catch (error) {
-            console.error("Error parsing standard_rules:", error);
-            return { checkIn: "", checkOut: "", smokingAllowed: false };
-          }
-        })(),
-
-
-      });
-
-      console.log("Property.city:", Property.city);
-      console.log("cityOptions:", cityOptions);
-
-    } catch (error) {
-      console.error("Error fetching Property:", error);
-    }
-  }
-
-  useEffect(() => {
-    const fetchActiveCities = async () => {
-      try {
-        setIsLoading(true);
-        const token = Cookies.get("user");
-        if (!token) {
-          NotificationManager.error("No authentication token found!");
-          return;
-        }
-
-        const response = await api.get('/cities/active-cities', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        });
-        console.log("API Response:", response.data);
-        if (response.status === 200 && response.data && response.data.cities) {
-          const formattedCities = response.data.cities.map((city) => ({
-            value: city.id,
-            label: `${city.title} ${city.TblCountry ? `(${city.TblCountry.countryName})` : ''}`.trim()
-          }));
-          setCityOptions(formattedCities);
-          console.log("Formatted Cities:", formattedCities);
-        } else {
-          console.error("Unexpected response:", response);
-          NotificationManager.error("Unexpected response format. Please try again.");
-        }
-      } catch (error) {
-        console.error("Error fetching cities:", error);
-        if (error.response) {
-          NotificationManager.error(`Error: ${error.response.status} - ${error.response.data.message || 'Failed to fetch cities'}`);
-        } else {
-          NotificationManager.removeAll();
-          NotificationManager.error("Network error. Please try again.");
-        }
-      } finally {
-        setIsLoading(false);
+      setIsLoading(true);
+      const token = Cookies.get("user");
+      if (!token) {
+        NotificationManager.error("No authentication token found!");
+        return;
       }
-    };
 
+      const response = await api.get("/cities/active-cities", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("API Response:", response.data);
+      if (response.status === 200 && response.data && response.data.cities) {
+        const formattedCities = response.data.cities.map((city) => ({
+          value: city.id,
+          label: `${city.title} ${city.TblCountry ? `(${city.TblCountry.countryName})` : ""}`.trim(),
+        }));
+        setCityOptions(formattedCities);
+        console.log("Formatted Cities:", formattedCities);
+      } else {
+        console.error("Unexpected response:", response);
+        NotificationManager.error("Unexpected response format. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+      if (error.response) {
+        NotificationManager.error(`Error: ${error.response.status} - ${error.response.data.message || 'Failed to fetch cities'}`);
+      } else {
+        NotificationManager.removeAll();
+        NotificationManager.error("Network error. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchActiveCities();
-  }, [])
+  fetchActiveCities();
+}, []);
 
+// Delay calling getProperty until cityOptions is loaded.
+useEffect(() => {
+  if (id && cityOptions && cityOptions.length > 0) {
+    getProperty();
+  }
+}, [id, cityOptions]);
+
+const flattenArray = (arr) =>
+  arr.reduce(
+    (acc, val) => (Array.isArray(val) ? acc.concat(flattenArray(val)) : acc.concat(val)),
+    []
+  );
+
+const getProperty = async () => {
+  try {
+    const response = await api.get(`properties/${id}`);
+    const Property = response.data;
+    console.log("Property Data: ", Property);
+
+    let rulesArray;
+    if (Array.isArray(Property.rules)) {
+      rulesArray = flattenArray(Property.rules);
+    } else if (typeof Property.rules === "string") {
+      try {
+        const parsed = JSON.parse(Property.rules);
+        rulesArray = Array.isArray(parsed) ? flattenArray(parsed) : [parsed];
+      } catch (error) {
+        if (Property.rules.includes("\n")) {
+          rulesArray = Property.rules.split("\n").map(rule => rule.trim()).filter(Boolean);
+        } else {
+          rulesArray = Property.rules.split(",").map(rule => rule.trim()).filter(Boolean);
+        }
+      }
+    } else {
+      rulesArray = [];
+    }
+
+    setFormData({
+      id,
+      title: Property.title,
+      image: Property.image,
+      is_panorama: Property.is_panorama,
+      price: Property.price,
+      status: Property.status,
+      address: Property.address,
+      facility: (() => {
+        if (Array.isArray(Property.facility)) {
+          return Property.facility;
+        }
+        try {
+          const parsed = JSON.parse(Property.facility);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+          return Property.facility
+            ? Property.facility.split(",").map(item => Number(item.trim()))
+            : [];
+        }
+      })(),
+      description: Property.description,
+      beds: Property.beds,
+      bathroom: Property.bathroom,
+      sqrft: Property.sqrft,
+      rate: Property.rate,
+      ptype: Property.ptype,
+      latitude: Property.latitude,
+      longtitude: Property.longtitude,
+      mobile: Property.mobile,
+      // city: cityOptions.find(
+      //   (opt) => String(opt.value).toLowerCase() === String(Property.city).toLowerCase()
+      // ) || null,
+      city:Property.city,
+      listing_date: new Date(Property.listing_date).toISOString().split("T")[0],
+      add_user_id: Property.add_user_id,
+      rules: rulesArray, // Now a flat, individual rules array
+      country_id: Property.country_id,
+      is_sell: Property.is_sell,
+      adults: Property.adults,
+      children: Property.children,
+      infants: Property.infants,
+      pets: Property.pets,
+      setting_id: 1,
+      extra_guest_charges: Property.extra_guest_charges,
+      standard_rules: (() => {
+        try {
+          let rules = Property.standard_rules;
+          if (typeof rules === "string") {
+            rules = JSON.parse(rules);
+          }
+          if (typeof rules === "string") {
+            rules = JSON.parse(rules);
+          }
+          if (!rules || typeof rules !== "object") {
+            rules = {};
+          }
+          return {
+            checkIn: rules.checkIn || "",
+            checkOut: rules.checkOut || "",
+            smokingAllowed: rules.smokingAllowed ?? false,
+          };
+        } catch (error) {
+          console.error("Error parsing standard_rules:", error);
+          return { checkIn: "", checkOut: "", smokingAllowed: false };
+        }
+      })(),
+    });
+
+    console.log("Property.city:", Property.city);
+    console.log("cityOptions:", cityOptions);
+  } catch (error) {
+    console.error("Error fetching Property:", error);
+  }
+};
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && currentRule.trim() !== '') {
@@ -1200,13 +1358,13 @@ const PropertiesAdd = () => {
                       </div>
 
 
-                      {/* City, Country */}
+                      {/* City*/}
                       <div className=" ">
                         <label
                           htmlFor="city"
                           className="text-sm  font-medium  text-[12px] font-[Montserrat]"
                         >
-                          City, Country
+                          City
                         </label>
                         <SelectComponent
                           name="city"
@@ -1219,6 +1377,7 @@ const PropertiesAdd = () => {
                           }
                           options={cityOptions || []}
                         />
+
 
                       </div>
 
@@ -1242,23 +1401,30 @@ const PropertiesAdd = () => {
                       </div>
 
                       <div className="md:col-span-1">
-                        <label
-                          htmlFor="description"
-                          className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
-                        >
-                          Property Description
-                        </label>
-                        <textarea
-                          id="description"
-                          name="description"
-                          value={formData.description}
-                          className="border rounded-lg p-3 mt-1 w-full resize-none h-64 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Enter Property Description"
-                          onChange={handleChange}
-                        >
-                        </textarea>
-                        {errors.description && <span className="text-red-500 text-sm">* {errors.description}</span>}
-                      </div>
+  <label
+    htmlFor="description"
+    className="text-sm font-medium float-left text-[12px] font-[Montserrat]"
+  >
+    Property Description
+  </label>
+  <TextareaAutosize
+    id="description"
+    name="description"
+    value={formData.description}
+    maxLength={500}  // Optional, if you want to limit characters
+    onChange={handleChange}
+    placeholder="Enter Property Description"
+    className="border rounded-lg p-3 mt-1 w-full focus:ring-blue-500 focus:border-blue-500"
+    minRows={4}
+    maxRows={8}
+  />
+  <div className="text-right text-xs text-gray-500">
+    {formData.description.length}/500
+  </div>
+  {errors.description && (
+    <span className="text-red-500 text-sm mt-1">* {errors.description}</span>
+  )}
+</div>
                       <div className="md:col-span-1 mb-7">
                         <label
                           htmlFor="rules"
