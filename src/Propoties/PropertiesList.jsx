@@ -14,6 +14,7 @@ import { StatusEntity } from '../utils/Status';
 import Loader from '../common/Loader';
 import { useLoading } from '../Context/LoadingContext';
 import Table from '../common/Table';
+import '../App.css'
 
 const PropotiesList = () => {
     const [properties, setProperties] = useState([]);
@@ -30,7 +31,7 @@ const PropotiesList = () => {
             try {
                 const response = await api.get('/properties');
                 console.log("Property data:", response.data);
-    
+
                 // const fetchedProperties = response.data.map((property) => {
                 //     return {
                 //         ...property,
@@ -45,14 +46,20 @@ const PropotiesList = () => {
                 //     }
                 // });
                 const fetchedProperties = response.data.map((property) => {
+                    const maxLength = 100;
+                    const shortDescription =
+                        property.description && property.description.length > maxLength
+                            ? property.description.substring(0, maxLength) + "..."
+                            : property.description;
                     return {
                         ...property,
-                        formatted_standard_rules: typeof property.standard_rules === "string" 
-                            ? JSON.parse(property.standard_rules) 
+                        shortDescription,
+                        formatted_standard_rules: typeof property.standard_rules === "string"
+                            ? JSON.parse(property.standard_rules)
                             : property.standard_rules
                     };
                 });
-                
+
                 setProperties(fetchedProperties);
                 setFilteredProperties(fetchedProperties);
                 setIsLoading(false);
@@ -64,7 +71,7 @@ const PropotiesList = () => {
         };
         fetchProperties();
     }, []);
-    
+
     // Search functionality
     const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
@@ -130,12 +137,12 @@ const PropotiesList = () => {
             console.error(`Invalid arguments: ID=${id}, currentStatus=${currentStatus}`);
             return;
         }
-    
+
         try {
 
             // Dynamically determine the entity type based on the field
             const entityType = field === "is_panorama" ? "Panorama" : "Property";
-    
+
             await StatusEntity(entityType, id, currentStatus, setFilteredProperties, filteredProperties, field);
 
         } catch (error) {
@@ -144,19 +151,19 @@ const PropotiesList = () => {
     };
     const formatRules = (rules) => {
         if (!rules || typeof rules !== 'object') return 'N/A';
-    
+
         return `checkIn: ${rules.checkIn}, checkOut: ${rules.checkOut}, smokingAllowed: ${rules.smokingAllowed ? 'Yes' : 'No'}`;
-    };       
-    
+    };
+
     const columns = [
         { label: "Sr. No", field: "id", sortable: true, minWidth: "130px" },
-         { label: "Image", field: "image", sortable: true, minWidth: "130px" },
+        { label: "Image", field: "image", sortable: true, minWidth: "130px" },
         { label: "title", field: "title", sortable: true, minWidth: "180px" },
         { label: "price", field: "price", sortable: true, minWidth: "120px" },
         { label: "is panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
         { label: "address", field: "address", sortable: true, minWidth: "150px" },
         { label: "facility", field: "facility", sortable: true, minWidth: "150px" },
-        { label: "description", field: "description", sortable: true, minWidth: "180px" },
+        { label: "description", field: "shortDescription", sortable: true, minWidth: "200px" },
         { label: "beds", field: "beds", sortable: true, minWidth: "120px" },
         { label: "bathroom", field: "bathroom", sortable: true, minWidth: "150px" },
         { label: "sqrft", field: "sqrft", sortable: true, minWidth: "130px" },
@@ -174,16 +181,16 @@ const PropotiesList = () => {
             sortable: true,
             minWidth: "200px",
             render: (row) => formatRules(row.formatted_standard_rules),
-        }, 
+        },
         { label: "adults", field: "adults", sortable: true, minWidth: "130px" },
         { label: "children", field: "children", sortable: true, minWidth: "150px" },
         { label: "infants", field: "infants", sortable: true, minWidth: "150px" },
         { label: "pets", field: "pets", sortable: true, minWidth: "120px" },
-        
+
         { label: "Status", field: "status", sortable: false, minWidth: "120px" },
         { label: "Actions", field: "actions", minWidth: "150px", sortable: false },
     ];
-    
+
     return (
         <div>
             {/* {isLoading && <Loader />} */}
@@ -199,7 +206,7 @@ const PropotiesList = () => {
                     {/* Card */}
                     <div className=" px-6 h-full w-[79vw] overflow-scroll scrollbar-none">
 
-                        <Table 
+                        <Table
                             columns={columns}
                             data={filteredProperties}
                             // onSort={sortedData}

@@ -34,6 +34,7 @@ const DashboardCard = () => {
         { key: "completedCount", url: "/bookings/count?status=Completed" },
         { key: "extraImagesCount", url: "/extra/count" },
         { key: "usersCount", url: "/users/user/count" },
+        {key:"faqsCount",url:"/faqs/count"}
     ];
 
     useEffect(() => {
@@ -68,12 +69,12 @@ const DashboardCard = () => {
             card_desc: "Number of Categories",
             card_data_key: "categoryCount",
         },
-        {
-            card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78] text-[28px]" />,
-            card_title: "Coupons",
-            card_desc: "Number of Coupons",
-            card_data_key: "couponCount",
-        },
+        // {
+        //     card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78] text-[28px]" />,
+        //     card_title: "Coupons",
+        //     card_desc: "Number of Coupons",
+        //     card_data_key: "couponCount",
+        // },
         {
             card_logoIcon: <CurrencyRupeeIcon className="text-[#045D78] text-[28px]" />,
             card_title: "Payment Methods",
@@ -127,6 +128,12 @@ const DashboardCard = () => {
             card_title: "Users",
             card_desc: "Number of Users",
             card_data_key: "usersCount",
+        },
+        {
+            card_logoIcon: <CardGiftcardOutlinedIcon className="text-[#045D78] text-[28px]" />,
+            card_title: "FAQ'S",
+            card_desc: "Number of FAQ'S",
+            card_data_key: "faqsCount",
         },
     ];
 

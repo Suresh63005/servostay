@@ -89,9 +89,9 @@ const FacilityAdd = () => {
       newErrors.img = "Facility Image is required.";
     }
 
-    if (!formData.status) {
+    if (formData.status === null || formData.status === undefined) {
       newErrors.status = "Facility Status is required.";
-    }
+    }    
 
     setError  (newErrors);
     return Object.keys(newErrors).length === 0;
