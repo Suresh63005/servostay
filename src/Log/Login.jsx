@@ -56,7 +56,7 @@ const Login = () => {
       }, 2000); 
     } catch (err) {
       NotificationManager.removeAll()
-      NotificationManager.error(err.res?.data?.error || "Something went wrong!");
+      NotificationManager.error(err.res?.data?.error || "Invalid username or password!");
     } finally {
       setloading(false)
     }
