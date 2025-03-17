@@ -141,14 +141,14 @@ const Settings = () => {
     e.preventDefault();
     setloading(true)
     // Update formData with editor content
-    const privacyPolicyText = new DOMParser().parseFromString(privacycontent, 'text/html').body.innerText;
-    const termsConditionsText = new DOMParser().parseFromString(termscontent, 'text/html').body.innerText;
-    const cancellationPolicyText = new DOMParser().parseFromString(cancellationContent, 'text/html').body.innerText;
+    const privacyPolicyHTML = new DOMParser().parseFromString(privacycontent, 'text/html').body.innerHTML;
+    const termsConditionsHTML = new DOMParser().parseFromString(termscontent, 'text/html').body.innerHTML;
+    const cancellationPolicyHTML = new DOMParser().parseFromString(cancellationContent, 'text/html').body.innerHTML;
     const updatedData = {
       ...formData,
-      privacy_policy: privacyPolicyText,
-      terms_conditions: termsConditionsText,
-      cancellation_policy: cancellationPolicyText,
+      privacy_policy: privacyPolicyHTML,
+      terms_conditions: termsConditionsHTML,
+      cancellation_policy: cancellationPolicyHTML,
     };
 
     try {

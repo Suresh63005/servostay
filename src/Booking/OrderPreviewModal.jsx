@@ -34,8 +34,8 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
     const PdfFormat = () => {
         const dynamicData = {
           bookingId: bookingId.id,
-          customerName: bookingId.User.name,
-          customerMobile: bookingId.User.mobile,
+          customerName: bookingId.name,
+          customerMobile: bookingId.mobile,
           customerAddress: bookingId.properties.address,
           subtotal: selectedProperty.subtotal,
           totalDays: selectedProperty.total_day,
@@ -79,9 +79,9 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
                                 <div className=" font-medium text-gray-700">Order date:</div>
                                 <div>{bookingId?.book_date || 'N/A'}</div>
                                 <div className=" font-medium text-gray-700">Mobile Number:</div>
-                                <div>+{bookingId.User?.mobile || 'N/A'}</div>
+                                <div>+{bookingId.travler_details?.mobile || 'N/A'}</div>
                                 <div className=" font-medium text-gray-700">Customer Name:</div>
-                                <div>{bookingId.User?.name || 'N/A'}</div>
+                                <div>{bookingId.travler_details?.name || 'N/A'}</div>
                             </div>
                             {/* Buttons */}
                             <div className="flex justify-end gap-2 mt-4">
@@ -181,11 +181,11 @@ const OrderPreviewModal = ({ isOpen, closeModal,selectedProperty, downloadModalA
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Booking Owner's Name:</span>
-                                        <span>{bookingId.User?.name || 'N/A'}</span>
+                                        <span>{bookingId.properties?.Owner.name || 'N/A'}</span>
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Booking Owner Mobile:</span>
-                                        <span className='font-semibold'>+ {bookingId.User?.mobile || 'N/A'}</span>
+                                        <span className='font-semibold'>+ {bookingId.properties?.Owner.mobile || 'N/A'}</span>
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-sm font-medium text-start text-[12px] font-[Montserrat]">Transaction Id:</span>
