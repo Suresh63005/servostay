@@ -75,7 +75,7 @@ export const DeleteEntity = async (entity, id) => {
           break;
 
         case "User":
-          await api.delete(`users/user/delete/${id}?forceDelete=true`);
+          await api.delete(`users/user-info/delete?forceDelete=true`);
           break;
 
         case "Admin":

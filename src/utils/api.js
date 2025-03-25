@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 const api = axios.create({
 
+
   baseURL: "http://localhost:5000",
   // baseURL: 'https://property-rental-backend-ten.vercel.app/',
   // baseURL: 'https://property-rental-backend-5.onrender.com/',
@@ -10,7 +11,10 @@ const api = axios.create({
   // baseURL: 'https://property-rental-backend-two.vercel.app/',
   // baseURL: 'https://property-rental-backend-two.vercel.app/',
   // baseURL: 'https://api.servostay.com/',
-  // baseURL:"https://property-rental-backend-9oha.vercel.app/",
+
+
+
+
  
 
   withCredentials: true, 
