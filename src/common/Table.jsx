@@ -100,9 +100,9 @@ const Table = ({
 
     return (
         <div>
-            <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `max-h-[380px]` : ''}`}>
-                <div className="relative sm:rounded-lg max-h-[370px] scrollbar-thin overflow-y-auto">
-                    <div className="flex-grow max-h-[370px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
+            <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `max-h-[67vh]` : ''}`}>
+                <div className="relative sm:rounded-lg max-h-[67vh] scrollbar-thin overflow-y-auto">
+                    <div className="flex-grow max-h-[67vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
                             {loading ? (<div className="flex flex-col justify-center items-center h-64">
                 {/* <BeatLoader 
