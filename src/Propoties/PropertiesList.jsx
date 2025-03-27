@@ -226,7 +226,6 @@ const PropotiesList = () => {
     { label: "Children", field: "children", sortable: true, minWidth: "150px" },
     { label: "Infants", field: "infants", sortable: true, minWidth: "150px" },
     { label: "Pets", field: "pets", sortable: true, minWidth: "120px" },
-    { label: "Status", field: "status", sortable: false, minWidth: "120px" },
     { label: "Actions", field: "actions", minWidth: "150px", sortable: false },
   ];
 

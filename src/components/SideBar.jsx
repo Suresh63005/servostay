@@ -119,7 +119,7 @@ const SidebarMenu = () => {
         className={`fixed top-0 left-0 h-full bg-white  transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-300 z-40 lg:relative lg:translate-x-0 lg:shadow-none`}
       >
-        <Sidebar width="250px" style={{ overflowY: 'auto', height: '100vh' }}>
+        <Sidebar width="20vw" style={{ overflowY: 'auto', height: '100vh' }}>
         <div className="h-[80px] bg-white flex justify-center items-center gap-2" style={{ border: "none" }}>
             {/* Fallback image */}
             <img
@@ -259,6 +259,19 @@ const SidebarMenu = () => {
               >
                 Payment Gateway
               </MenuItem> */}
+
+
+
+                <MenuItem
+                active={location.pathname === "/request-property"} icon={<GroupAddOutlinedIcon fontSize="small" />}
+                onClick={() => {
+                  navigate("/request-property");
+                  toggleSidebar1();
+                }}
+              >
+      Request Properties
+              </MenuItem>
+
 
               {/* propoties */}
               <SubMenu label="Properties" active={location.pathname === "/create-property" || location.pathname === "/property-list"} icon={<HomeOutlinedIcon fontSize="small" />}>
