@@ -295,7 +295,7 @@ const ViewProperty = () => {
                   </button>
                 )}
                 <button
-                  className="bg-[#045D78] text-white px-6 py-2 rounded hover:bg-blue-700 transition flex items-center gap-2"
+                  className="bg-[#045D78] text-white px-6 py-2 rounded hover:bg-[#21444f] transition flex items-center gap-2"
                   onClick={handleBack}
                 >
                   <ArrowBackIosNewIcon fontSize="small" />

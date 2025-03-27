@@ -200,7 +200,7 @@ const PropotiesList = () => {
     { label: "Image", field: "image", sortable: true, minWidth: "130px" },
     { label: "Title", field: "title", sortable: true, minWidth: "180px" },
     { label: "Price", field: "price", sortable: true, minWidth: "120px" },
-    { label: "Is Panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
+    // { label: "Is Panorama", field: "is_panorama", sortable: true, minWidth: "200px" },
     { label: "Address", field: "address", sortable: true, minWidth: "150px" },
     { label: "Facility", field: "facility", sortable: true, minWidth: "150px" },
     { label: "Description", field: "shortDescription", sortable: true, minWidth: "200px" },

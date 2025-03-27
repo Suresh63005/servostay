@@ -240,7 +240,7 @@ const PropertyRequest = () => {
                   {isLoading ? (
                     <tbody>
                       <tr>
-                        <td colSpan={columns.length} className="p-10 text-center">
+                        <td colSpan={columns.length} className="flex flex-col justify-center items-center h-64">
                           <img width={100} src="image/Hotels Search.gif" alt="loading" />
                         </td>
                       </tr>
