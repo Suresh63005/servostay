@@ -9,8 +9,8 @@ const api = axios.create({
   // baseURL: 'https://property-rental-backend-5.onrender.com/',
   // baseURL: 'https://property-rental-backend-6.onrender.com/',
   // baseURL: 'https://property-rental-backend-two.vercel.app/',
-  baseURL: 'https://property-rental-backend-two.vercel.app/',
-  // baseURL: 'https://api.servostay.com/',
+  // baseURL: 'https://property-rental-backend-two.vercel.app/',
+  baseURL: 'https://api.servostay.com/',
 
 
 
