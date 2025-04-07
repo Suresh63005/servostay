@@ -32,7 +32,6 @@ const Table = ({
         setLoadingId(null);
     };
 
-   
 
     const renderImageField = (row, col) => {
         const images = row[col.field];
@@ -68,12 +67,42 @@ const Table = ({
         }
         return <span>No Image</span>;
     };
+    const formatObject = (obj) => {
+        if (!obj || typeof obj !== 'object') return ''; // Handle null/undefined or non-object fields
+    
+        return Object.entries(obj)
+            .map(([key, value]) => {
+                // Handle specific keys for boolean values (e.g., smokingAllowed)
+                if (key === 'smokingAllowed') {
+                    return `${key}: ${value ? 'Yes' : 'No'}`;
+                }
+                // Default behavior for other fields
+                return `${key}: ${value}`;
+            })
+            .join(', ');
+    };
+    
+    const formatRules = (rules) => {
+        if (!rules) return "N/A"; // Handle empty cases
+    
+        if (typeof rules === "string") {
+            try {
+                rules = JSON.parse(rules); // Ensure JSON string is converted to an object
+            } catch (error) {
+                console.error("Error parsing rules:", error);
+                return "Invalid format";
+            }
+        }
+    
+        return `checkIn: ${rules.checkIn || "N/A"}, checkOut: ${rules.checkOut || "N/A"}, smokingAllowed: ${rules.smokingAllowed ? "Yes" : "No"}`;
+    };
+      
 
     return (
         <div>
-            <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `max-h-[380px]` : ''}`}>
-                <div className="relative sm:rounded-lg max-h-[370px] scrollbar-thin overflow-y-auto">
-                    <div className="flex-grow max-h-[370px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
+            <div className={`bg-white w-full rounded-xl border border-[#EAE5FF] ${columns.length > 0 ? `max-h-[67vh]` : ''}`}>
+                <div className="relative sm:rounded-lg max-h-[67vh] scrollbar-thin overflow-y-auto">
+                    <div className="flex-grow max-h-[67vh] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-gray-300">
                         <table className="min-w-full text-sm text-left text-gray-700">
                             {loading ? (<div className="flex flex-col justify-center items-center h-64">
                 {/* <BeatLoader 
@@ -86,7 +115,7 @@ const Table = ({
                 
             </div>):(
                 <>
-                <thead className="bg-[#045D78] bg-opacity-75 text-xs uppercase font-medium text-white sticky top-0">
+                <thead className="bg-[#045d78] bg-opacity-100 text-xs uppercase font-medium text-white sticky top-0">
                                 <tr>
                                     {columns.map((col, index) => (
                                         <th key={index} className={`px-4 py-2 ${col.minWidth ? `min-w-[${col.minWidth}]` : 'min-w-[120px]'}`}>
@@ -102,79 +131,82 @@ const Table = ({
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {filteredData.length > 0 ? (
-                                    filteredData.slice(startIndex, endIndex).map((row, index) => (
-                                        <tr key={row.id}>
-                                            {columns.map((col, colIndex) => (
-                                                <td key={colIndex} className="px-4 py-1">
-                                                    {col.field === 'id' ? (
-                                                        <span>{startIndex + index + 1}</span>
-                                                    ) : col.field === 'status'  || col.field === 'is_panorama'? (
-                                                        <div className="">
-                                                            {loadingId === row.id ? (
-                                                                <ColorRing
-                                                                    visible={true}
-                                                                    height="30"
-                                                                    width="60"
-                                                                    ariaLabel="color-ring-loading"
-                                                                    wrapperStyle={{}}
-                                                                    wrapperClass="color-ring-wrapper"
-                                                                    colors={['#045D78', '#045D78', '#045D78', '#045D78', '#045D78']}
-                                                                />
-                                                            ) : (
-                                                                <FontAwesomeIcon
-                                                                    className="h-7 w-16 cursor-pointer"
-                                                                    style={{ color: row[col.field] === 1 ? '#045D78' : '#e9ecef' }}
-                                                                    icon={row[col.field] === 1 ? faToggleOn : faToggleOff}
-                                                                    onClick={() => handleStatusChange(row.id, row[col.field], col.field)}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    ) : col.field === 'actions' ? (
-                                                        <div className="flex items-center space-x-2">
-                                                            <NotificationContainer />
-
-                                                            {showEditButton && (
-                                                                <button
-                                                                    className="bg-[#2dce89] text-white p-[5px] rounded-full hover:bg-green-600 transition"
-                                                                    onClick={() => onUpdate(row.id)}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faPen} />
-                                                                </button>
-                                                            )}
-
-                                                            <button
-                                                                className="bg-[#f5365c] text-white p-[5px] rounded-full hover:bg-red-600 transition"
-                                                                onClick={() => onDelete(row.id)}
-                                                            >
-                                                                <FontAwesomeIcon icon={faTrash} />
-                                                            </button>
-                                                        </div>
-                                                    ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' || col.field==='id_proof_img' || col.field === 'images'  ? (
-                                                        renderImageField(row, col)
-                                                    ) :
-                                                    col.field.includes(".") ? (
-                                                        // Dynamically access nested fields
-                                                        col.field
-                                                            .split(".")
-                                                            .reduce((obj, key) => obj?.[key], row) || "N/A"
-                                                    ): (
-                                                        row[col.field] || 'N/A'
-                                                    )}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))
+    {filteredData.length > 0 ? (
+        filteredData.slice(startIndex, endIndex).map((row, index) => (
+            <tr key={row.id}>
+                {columns.map((col, colIndex) => (
+                    <td key={colIndex} className="px-4 py-1">
+                        {col.field === 'id' ? (
+                            <span>{startIndex + index + 1}</span>
+                        ) : col.field === 'status' || col.field === 'is_panorama' ? (
+                            <div className="">
+                                {loadingId === row.id ? (
+                                    <ColorRing
+                                        visible={true}
+                                        height="30"
+                                        width="60"
+                                        ariaLabel="color-ring-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="color-ring-wrapper"
+                                        colors={['#045D78', '#045D78', '#045D78', '#045D78', '#045D78']}
+                                    />
                                 ) : (
-                                    <tr>
-                                        <td colSpan={columns.length + 1} className="text-[30px] w-[79vw] flex flex-col justify-center align-items-center font-semibold p-10 text-center">
-                                           <img className='w-[10%]' src="image/no-data.png" alt="" />
-      <span className='mt-3'>No data found
-        </span>   
-                                        </td>
-                                    </tr>
+                                    <FontAwesomeIcon
+                                        className="h-7 w-16 cursor-pointer"
+                                        style={{ color: row[col.field] === 1 ? '#045D78' : '#e9ecef' }}
+                                        icon={row[col.field] === 1 ? faToggleOn : faToggleOff}
+                                        onClick={() => handleStatusChange(row.id, row[col.field], col.field)}
+                                    />
                                 )}
-                            </tbody>
+                            </div>
+                        ) : col.field === 'actions' ? (
+                            <div className="flex items-center space-x-2">
+                                <NotificationContainer />
+
+                                {showEditButton && (
+                                    <button
+                                        className="bg-[#2dce89] text-white p-[5px] rounded-full hover:bg-green-600 transition"
+                                        onClick={() => onUpdate(row.id)}
+                                    >
+                                        <FontAwesomeIcon icon={faPen} />
+                                    </button>
+                                )}
+
+                                <button
+                                    className="bg-[#f5365c] text-white p-[5px] rounded-full hover:bg-red-600 transition"
+                                    onClick={() => onDelete(row.id)}
+                                >
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                            </div>
+                        ) : col.field === 'img' || col.field === 'c_img' || col.field === 'image' || col.field === 'images' || col.field === 'pro_pic' || col.field === 'id_proof_img' || col.field === 'images' ? (
+                            renderImageField(row, col)
+                        ) : col.field.includes(".") ? (
+                            // Dynamically access nested fields
+                            col.field
+                                .split(".")
+                                .reduce((obj, key) => obj?.[key], row) || "N/A"
+                        ) : (
+                            col.field === "formatted_standard_rules" ? (
+                                <span>{formatRules(row[col.field])}</span> // ✅ Correctly formats standard_rules
+                            ) : (
+                                row[col.field] || "N/A"
+                            )
+                        )}
+                    </td>
+                ))}
+            </tr>
+        ))
+    ) : (
+        <tr>
+            <td colSpan={columns.length + 1} className="text-[30px] w-[79vw] flex flex-col justify-center align-items-center font-semibold p-10 text-center">
+                <img className='w-[10%]' src="image/no-data.png" alt="" />
+                <span className='mt-3'>No data found</span>
+            </td>
+        </tr>
+    )}
+</tbody>
+
                 </>
             )
             }

@@ -51,6 +51,8 @@ import UserTable from "./common/UserTable.js";
 import CityAdd from "./City/CityAdd.jsx";
 import CityList from "./City/CityList.jsx";
 import PropotiesIcal from "./Propoties/PropertiesIcal.jsx";
+import PropertyRequest from "./PropertyRequests/PropertyRequest.jsx";
+import ViewPropertyRequest from "./PropertyRequests/ViewPropertyRequest.jsx";
 
 
 const LayoutWithSidebar = ({ children }) => (
@@ -99,6 +101,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              
               <Route
                 path="/country-list"
                 element={<ProtectedRoute>
@@ -214,6 +217,24 @@ function App() {
                 element={<ProtectedRoute>
                   <LayoutWithSidebar>
                     <PropertiesAdd />
+                  </LayoutWithSidebar>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/request-property"
+                element={<ProtectedRoute>
+                  <LayoutWithSidebar>
+                    <PropertyRequest />
+                  </LayoutWithSidebar>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/view-property/:id"
+                element={<ProtectedRoute>
+                  <LayoutWithSidebar>
+                    <ViewPropertyRequest />
                   </LayoutWithSidebar>
                   </ProtectedRoute>
                 }
