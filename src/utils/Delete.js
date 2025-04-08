@@ -100,7 +100,7 @@ export const DeleteEntity = async (entity, id) => {
           throw new Error(`Unknown entity: ${entity}`);
       }
       console.log(`Deleting ${entity} with ID: ${id}`);
-console.log(`API URL:`, `/${entity.toLowerCase()}s/delete/${id}`);
+      console.log(`API URL:`, `/${entity.toLowerCase()}s/delete/${id}`);
 
       NotificationManager.removeAll();
       NotificationManager.success(`${entity} deleted successfully!`);
@@ -113,11 +113,25 @@ console.log(`API URL:`, `/${entity.toLowerCase()}s/delete/${id}`);
     
   } catch (error) {
     console.error("Delete Error:", error.response?.data || error.message);
-  NotificationManager.error(`Failed to delete ${entity}. ${error.response?.data?.message || ''}`);
+    if (
+      entity === "Property" &&
+      error.response?.status === 400 &&
+      error.response?.data?.error === "Cannot delete property with active bookings"
+    ) {
+      await Swal.fire({
+        title: "Cannot Delete Property",
+        text: "This property has active bookings (Booked, Check_in, or Confirmed) and cannot be deleted.",
+        icon: "error",
+        confirmButtonColor: "#045D78",
+      });
+    }else{
 
-    NotificationManager.removeAll();
-    console.error(error);
-    NotificationManager.error(`Failed to delete ${entity}.`);
-    throw error;  
+      NotificationManager.error(`Failed to delete ${entity}. ${error.response?.data?.message || ''}`);
+    }
+    return false;
+    // NotificationManager.removeAll();
+    // console.error(error);
+    // NotificationManager.error(`Failed to delete ${entity}.`);
+    // throw error;  
   }
 };

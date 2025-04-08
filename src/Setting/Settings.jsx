@@ -311,7 +311,7 @@ const Settings = () => {
                   <div className="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-2  mt-6">
                     {/* * rich text editor*/}
                     <div className="flex flex-col">
-                      <label htmlFor="wlimit" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> <span style={{ color: 'red' }}>*</span> Terms & Conditions</label>
+                      <label htmlFor="wlimit" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> <span style={{ color: 'red' }}>*</span> Privacy & Policy </label>
                       {/* <JoditEditor ref={editor} value={privacycontent} config={config} onBlur={newContent => setprivacyContent(newContent)}> */}
                       <JoditEditor ref={privacyEditorRef} value={privacycontent} config={config} onBlur={newContent => setprivacyContent(newContent)}>
 
@@ -319,7 +319,7 @@ const Settings = () => {
                     </div>
 
                     <div className="flex flex-col">
-                      <label htmlFor="wlimit" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> <span style={{ color: 'red' }}>*</span> Privacy & Policy </label>
+                      <label htmlFor="wlimit" className="text-sm font-medium text-start text-[12px] font-[Montserrat]"> <span style={{ color: 'red' }}>*</span> Terms & Conditions </label>
                       <JoditEditor ref={termsEditorRef} value={termscontent} config={config} onBlur={newContent => settermscontent(newContent)}>
 
                       </JoditEditor>
