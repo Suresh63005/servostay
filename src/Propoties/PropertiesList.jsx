@@ -54,6 +54,23 @@ const PropotiesList = () => {
                 ? property.description.substring(0, maxLength) + "..."
                 : property.description;
 
+                const maxRulesLength = 50;
+                let rulesString = "";
+                if (Array.isArray(property.rules)) {
+                  rulesString = property.rules.join(", ");
+                } else if (typeof property.rules === "string") {
+                  try {
+                    const parsed = JSON.parse(property.rules);
+                    rulesString = Array.isArray(parsed) ? parsed.join(", ") : parsed;
+                  } catch (e) {
+                    rulesString = property.rules;
+                  }
+                }
+                const shortRules =
+                  rulesString && rulesString.length > maxRulesLength
+                    ? rulesString.substring(0, maxRulesLength) + "..."
+                    : rulesString || "N/A";
+
             // Process facility field: if it's a string, try parsing or splitting; if an array, use it.
             let facilityIds = [];
             if (Array.isArray(property.facility)) {
@@ -89,6 +106,7 @@ const PropotiesList = () => {
             return {
               ...property,
               shortDescription,
+              shortRules,
               // Replace facility IDs with facility names (as a comma‑separated string)
               facility: facilityNames.join(", "),
               formatted_standard_rules: standardRules,
@@ -214,7 +232,8 @@ const PropotiesList = () => {
     { label: "Mobile", field: "mobile", sortable: true, minWidth: "130px" },
     { label: "City", field: "cities.title", sortable: true, minWidth: "120px" },
     { label: "Listing Date", field: "listing_date", sortable: true, minWidth: "180px" },
-    { label: "Rules", field: "rules", sortable: true, minWidth: "150px"},
+    { label: "Rules", field: "shortRules", sortable: true, minWidth: "200px"},
+    
       {
       label: "Standard Rules",
       field: "formatted_standard_rules",

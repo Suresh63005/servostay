@@ -75,7 +75,7 @@ export const DeleteEntity = async (entity, id) => {
           break;
 
         case "User":
-          await api.delete(`users/user-info/delete?forceDelete=true`);
+          await api.delete(`admin/delete-user-by-admin/${id}`,{params:{forceDelete:true}});
           break;
 
         case "Admin":
@@ -124,14 +124,31 @@ export const DeleteEntity = async (entity, id) => {
         icon: "error",
         confirmButtonColor: "#045D78",
       });
-    }else{
-
-      NotificationManager.error(`Failed to delete ${entity}. ${error.response?.data?.message || ''}`);
+    } else if (
+      entity === "User" &&
+      error.response?.status === 403 &&
+      error.response?.data?.error === "User cannot be deleted"
+    ) {
+      await Swal.fire({
+        title: "Cannot Delete User",
+        text: "This user has active bookings (Booked, Check_in, or Confirmed) and cannot be deleted.",
+        icon: "error",
+        confirmButtonColor: "#045D78",
+      });
+    } else if (
+      entity === "User" &&
+      error.response?.status === 403 &&
+      error.response?.data?.error === "Cannot delete property"
+    ) {
+      await Swal.fire({
+        title: "Cannot Delete User",
+        text: "This user has properties with confirmed bookings and cannot be deleted.",
+        icon: "error",
+        confirmButtonColor: "#045D78",
+      });
+    } else {
+      NotificationManager.error(`Failed to delete ${entity}. ${error.response?.data?.message || error.message}`);
     }
     return false;
-    // NotificationManager.removeAll();
-    // console.error(error);
-    // NotificationManager.error(`Failed to delete ${entity}.`);
-    // throw error;  
   }
 };
